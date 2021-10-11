@@ -45,4 +45,6 @@ public interface GenTablesService extends IService<GenTables> {
      * @return 结果
      */
     Boolean deleteTablesByIds(String ids);
+
+
 }

@@ -10,6 +10,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.entity.DbDetail;
 import com.moonlit.generator.mapper.DbDetailMapper;
 import com.moonlit.generator.service.DbDetailService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import java.util.Arrays;
  * @date 2021/9/30 10:33
  * @email by.Moonlit@hotmail.com
  */
+@Service
 public class DbDetailServiceImpl extends ServiceImpl<DbDetailMapper, DbDetail> implements DbDetailService {
 
     /**
