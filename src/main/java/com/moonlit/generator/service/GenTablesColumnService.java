@@ -16,31 +16,31 @@ import com.moonlit.generator.entity.GenTablesColumn;
 public interface GenTablesColumnService extends IService<GenTablesColumn> {
 
     /**
-     * 分页查询【请填写功能名称】
+     * 分页查询
      *
-     * @param genTablesColumn 【请填写功能名称】
-     * @return 【请填写功能名称】集合
+     * @param genTablesColumn 查询条件
+     * @return 集合
      */
     PageResult<GenTables> pageList(GenTablesColumn genTablesColumn);
 
     /**
-     * 新增【请填写功能名称】
+     * 新增
      *
-     * @param genTablesColumn 【请填写功能名称】
+     * @param genTablesColumn 实体
      * @return 结果
      */
     Boolean insertTablesColumn(GenTablesColumn genTablesColumn);
 
     /**
-     * 修改【请填写功能名称】
+     * 修改
      *
-     * @param genTablesColumn 【请填写功能名称】
+     * @param genTablesColumn 实体
      * @return 结果
      */
     Boolean updateTablesColumn(GenTablesColumn genTablesColumn);
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除
      *
      * @param ids 需要删除的数据ID
      * @return 结果

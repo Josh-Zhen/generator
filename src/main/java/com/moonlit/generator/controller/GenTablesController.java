@@ -3,8 +3,6 @@ package com.moonlit.generator.controller;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.entity.GenTables;
-import com.moonlit.generator.entity.vo.DbTableDetail;
-import com.moonlit.generator.service.DbDetailService;
 import com.moonlit.generator.service.GenTablesColumnService;
 import com.moonlit.generator.service.GenTablesService;
 import org.springframework.beans.factory.annotation.Autowired;
