@@ -1,8 +1,6 @@
 package com.moonlit.generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.entity.GenTables;
 import com.moonlit.generator.entity.GenTablesColumn;
 
 /**
@@ -16,12 +14,12 @@ import com.moonlit.generator.entity.GenTablesColumn;
 public interface GenTablesColumnService extends IService<GenTablesColumn> {
 
     /**
-     * 分页查询
+     * 根据主键查询
      *
-     * @param genTablesColumn 查询条件
-     * @return 集合
+     * @param id 主键
+     * @return 对象
      */
-    PageResult<GenTables> pageList(GenTablesColumn genTablesColumn);
+    GenTablesColumn getGenTables(Integer id);
 
     /**
      * 新增

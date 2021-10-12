@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 数据库明细实体
+ * 连接库实体
  *
  * @author Joshua
  * @version 1.0
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class DbDetail {
+public class GenDb {
 
     /**
      * 主键

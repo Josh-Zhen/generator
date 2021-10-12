@@ -2,12 +2,14 @@ package com.moonlit.generator.common.exception;
 
 import com.moonlit.generator.common.exception.base.AbstractBaseExceptionEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 自定义异常
  *
  * @author tangjx
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class BusinessException extends RuntimeException {
 

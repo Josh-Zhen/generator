@@ -20,7 +20,7 @@ public enum ErrorCodeEnum implements AbstractBaseExceptionEnum {
     //对象为空
     OBJECT_EMPTY(1, "对象为空"),
     ;
+    
     private Integer code;
     private String message;
-
 }

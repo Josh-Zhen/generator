@@ -2,13 +2,13 @@ package com.moonlit.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.entity.DbDetail;
-import com.moonlit.generator.service.DbDetailService;
+import com.moonlit.generator.entity.GenDb;
+import com.moonlit.generator.service.GenDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 数据库明细控制层
+ * 连接库控制层
  *
  * @author Joshua
  * @version 1.0
@@ -16,34 +16,34 @@ import org.springframework.web.bind.annotation.*;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/dbDetail")
-public class DbDetailController {
+@RequestMapping("/genDb")
+public class GenDbController {
 
     @Autowired
-    private DbDetailService dbDetailService;
+    private GenDbService genDbService;
 
     /**
      * 分页查询数据库明细
      */
     @GetMapping("/pageList")
-    public Result<PageResult<DbDetail>> page(DbDetail dbDetail) {
-        return Result.success(dbDetailService.pageList(dbDetail));
+    public Result<PageResult<GenDb>> page(GenDb genDb) {
+        return Result.success(genDbService.pageList(genDb));
     }
 
     /**
      * 新增保存数据库明细
      */
     @PostMapping("/save")
-    public Result<Boolean> addSave(@RequestBody DbDetail dbDetail) {
-        return Result.success(dbDetailService.insertDbDetail(dbDetail));
+    public Result<Boolean> addSave(@RequestBody GenDb genDb) {
+        return Result.success(genDbService.insertDbDetail(genDb));
     }
 
     /**
      * 修改保存数据库明细
      */
     @PostMapping("/update")
-    public Result<Boolean> editSave(@RequestBody DbDetail dbDetail) {
-        return Result.success(dbDetailService.updateDbDetail(dbDetail));
+    public Result<Boolean> editSave(@RequestBody GenDb genDb) {
+        return Result.success(genDbService.updateDbDetail(genDb));
     }
 
     /**
@@ -51,6 +51,6 @@ public class DbDetailController {
      */
     @PostMapping("/delete")
     public Result<Boolean> delete(String ids) {
-        return Result.success(dbDetailService.deleteDbDetailByIds(ids));
+        return Result.success(genDbService.deleteDbDetailByIds(ids));
     }
 }

@@ -1,7 +1,7 @@
 package com.moonlit.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.moonlit.generator.entity.DbDetail;
+import com.moonlit.generator.entity.GenDb;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @email by.Moonlit@hotmail.com
  */
 @Mapper
-public interface DbDetailMapper extends BaseMapper<DbDetail> {
+public interface DbDetailMapper extends BaseMapper<GenDb> {
 
 }

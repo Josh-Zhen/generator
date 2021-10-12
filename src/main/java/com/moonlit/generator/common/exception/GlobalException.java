@@ -40,7 +40,7 @@ public class GlobalException {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public Result exceptionHandler(Exception ex) {
+    public Result<ErrorCodeEnum> exceptionHandler(Exception ex) {
         log.error("exceptionHandler: ", ex);
         String msg = specialExceptionResolve(ex) == null ? "哎呀，出问题啦" : specialExceptionResolve(ex);
         return Result.fail(ErrorCodeEnum.DEFAULT_ERROR.getCode(), msg);
