@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.entity.GenDb;
+import com.moonlit.generator.entity.vo.GenDbVo;
 import com.moonlit.generator.mapper.DbDetailMapper;
 import com.moonlit.generator.service.GenDbService;
 import org.springframework.stereotype.Service;
@@ -33,14 +34,8 @@ public class GenDbServiceImpl extends ServiceImpl<DbDetailMapper, GenDb> impleme
      * @return 结果集
      */
     @Override
-    public PageResult<GenDb> pageList(GenDb genDb) {
-        LambdaQueryWrapper<GenDb> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(genDb)) {
-            if (ObjectUtil.isNotEmpty(genDb.getDbName())) {
-                queryWrapper.eq(GenDb::getDbName, genDb.getDbName());
-            }
-        }
-        return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
+    public PageResult<GenDbVo> pageList(GenDb genDb) {
+        return new PageResult<>(baseMapper.selectAll(PageFactory.defaultPage(), genDb));
     }
 
     /**
@@ -65,6 +60,8 @@ public class GenDbServiceImpl extends ServiceImpl<DbDetailMapper, GenDb> impleme
      */
     @Override
     public Boolean updateDbDetail(GenDb genDb) {
+        // TODO 须校验用户名与密码是否修改过
+
         genDb.setUpdateDate(LocalDateTime.now());
         return this.updateById(genDb);
     }

@@ -3,6 +3,7 @@ package com.moonlit.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.entity.GenDb;
+import com.moonlit.generator.entity.vo.GenDbVo;
 
 /**
  * 连接库业务层
@@ -20,7 +21,7 @@ public interface GenDbService extends IService<GenDb> {
      * @param genDb 表实体
      * @return 结果集
      */
-    PageResult<GenDb> pageList(GenDb genDb);
+    PageResult<GenDbVo> pageList(GenDb genDb);
 
     /**
      * 新增

@@ -1,19 +1,19 @@
-package com.moonlit.generator.entity;
+package com.moonlit.generator.entity.vo;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 /**
- * 连接库实体
+ * 库查询临时实体
  *
  * @author Joshua
  * @version 1.0
- * @date 2021/9/30 10:21
+ * @date 2021/10/12 16:49
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenDb {
+public class GenDbVo {
 
     /**
      * 主键
@@ -24,21 +24,6 @@ public class GenDb {
      * 库名称
      */
     private String dbName;
-
-    /**
-     * 数据库连接类（mysql：com.mysql.cj.jdbc.Driver）
-     */
-    private String driverClassName;
-
-    /**
-     * 用户名（私钥加密）
-     */
-    private String userName;
-
-    /**
-     * 密码（私钥加密）
-     */
-    private String password;
 
     /**
      * 创建者

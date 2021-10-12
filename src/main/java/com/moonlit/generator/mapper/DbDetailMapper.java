@@ -1,7 +1,9 @@
 package com.moonlit.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.moonlit.generator.entity.GenDb;
+import com.moonlit.generator.entity.vo.GenDbVo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,4 +17,12 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DbDetailMapper extends BaseMapper<GenDb> {
 
+    /**
+     * 条件查询
+     *
+     * @param defaultPage 分页实体
+     * @param genDb       查询条件
+     * @return 结果集
+     */
+    Page<GenDbVo> selectAll(Page<Object> defaultPage, GenDb genDb);
 }
