@@ -7,7 +7,10 @@ import lombok.Getter;
 /**
  * 自定义异常枚举类
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 @Getter
 @AllArgsConstructor
@@ -20,7 +23,7 @@ public enum ErrorCodeEnum implements AbstractBaseExceptionEnum {
     //对象为空
     OBJECT_EMPTY(1, "对象为空"),
     ;
-    
+
     private Integer code;
     private String message;
 }

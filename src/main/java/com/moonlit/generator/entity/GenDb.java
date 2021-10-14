@@ -41,11 +41,6 @@ public class GenDb {
     private String password;
 
     /**
-     * 创建者
-     */
-    private String createName;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createDate;

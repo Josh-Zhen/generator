@@ -15,4 +15,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface GenConfigMapper extends BaseMapper<GenConfig> {
 
+    /**
+     * 查询状态为默认的
+     *
+     * @param type 状态
+     * @return 对象
+     */
+    GenConfig getConfigByType();
 }

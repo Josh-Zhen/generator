@@ -44,4 +44,9 @@ public class GenConfig {
      * 修改时间
      */
     private LocalDateTime updateDate;
+
+    /**
+     * 默认选择（0：否、1：是）
+     */
+    private Integer type;
 }

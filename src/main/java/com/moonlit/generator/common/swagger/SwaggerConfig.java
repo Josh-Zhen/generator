@@ -15,7 +15,8 @@ import springfox.documentation.spring.web.plugins.Docket;
  *
  * @author Joshua
  * @version 1.0
- * @date 2021/6/4 9:48
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 @Configuration
 @EnableOpenApi

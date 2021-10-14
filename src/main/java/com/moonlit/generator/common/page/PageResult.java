@@ -11,7 +11,10 @@ import java.util.List;
 /**
  * 分页结果集
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 @Data
 public class PageResult<T> implements Serializable {

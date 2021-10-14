@@ -27,7 +27,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 /**
  * 全局异常类
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 @Slf4j
 @ControllerAdvice
@@ -36,7 +39,7 @@ public class GlobalException {
     /**
      * 全局异常处理
      *
-     * @return
+     * @return 异常处理
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
@@ -49,8 +52,8 @@ public class GlobalException {
     /**
      * 系统自定义异常处理
      *
-     * @param e
-     * @return
+     * @param e 异常类
+     * @return 异常处理
      */
     @ResponseBody
     @ExceptionHandler({BusinessException.class})
@@ -63,7 +66,7 @@ public class GlobalException {
      * 加入自定义处理，实现对400， 404， 405， 406， 415， 500(参数问题导致)， 503的处理
      *
      * @param ex 异常信息
-     * @return
+     * @return 结果
      */
     private String specialExceptionResolve(Exception ex) {
         if (ex instanceof NoHandlerFoundException) {

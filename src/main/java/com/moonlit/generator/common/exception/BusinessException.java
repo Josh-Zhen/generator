@@ -7,7 +7,10 @@ import lombok.EqualsAndHashCode;
 /**
  * 自定义异常
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

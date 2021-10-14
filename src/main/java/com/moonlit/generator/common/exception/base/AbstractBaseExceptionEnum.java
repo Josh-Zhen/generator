@@ -3,8 +3,10 @@ package com.moonlit.generator.common.exception.base;
 /**
  * 异常枚举类
  *
- * @author tangjx
- * @date 2021/3/19 11:18
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 public interface AbstractBaseExceptionEnum {
 

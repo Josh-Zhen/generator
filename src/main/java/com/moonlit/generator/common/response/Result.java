@@ -7,7 +7,10 @@ import java.io.Serializable;
 /**
  * 返回结果集
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 @Data
 public class Result<T> implements Serializable {

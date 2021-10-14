@@ -32,34 +32,43 @@ public class GenConfigController {
      * @return 结果集
      */
     @GetMapping("/pageList")
-    @ApiOperation("分页查询数据库明细")
+    @ApiOperation("分页查询")
     public Result<PageResult<GenConfig>> page(GenConfig genConfig) {
         return Result.success(genConfigService.pageList(genConfig));
     }
 
     /**
-     * 新增保存连接库
+     * 新增保存
+     *
+     * @param genConfig 请求实体
+     * @return 结果
      */
     @PostMapping("/save")
-    @ApiOperation("新增保存连接库")
+    @ApiOperation("新增保存")
     public Result<Boolean> addSave(@RequestBody GenConfig genConfig) {
         return Result.success(genConfigService.insertDbDetail(genConfig));
     }
 
     /**
-     * 修改保存连接库
+     * 修改保存
+     *
+     * @param genConfig 请求实体
+     * @return 结果
      */
     @PostMapping("/update")
-    @ApiOperation("修改保存连接库")
+    @ApiOperation("修改保存")
     public Result<Boolean> editSave(@RequestBody GenConfig genConfig) {
         return Result.success(genConfigService.updateDbDetail(genConfig));
     }
 
     /**
-     * 批量删除连接库
+     * 批量删除
+     *
+     * @param ids id集合
+     * @return 结果
      */
     @PostMapping("/delete")
-    @ApiOperation("批量删除连接库")
+    @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(genConfigService.deleteDbDetailByIds(ids));
     }

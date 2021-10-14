@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 默认分页参数构建
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/10/14 8:39
+ * @email by.Moonlit@hotmail.com
  */
 public class PageFactory {
 
