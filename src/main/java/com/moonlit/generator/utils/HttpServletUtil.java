@@ -1,4 +1,4 @@
-package com.moonlit.generator.utils.db;
+package com.moonlit.generator.utils;
 
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.exception.enums.ErrorCodeEnum;
