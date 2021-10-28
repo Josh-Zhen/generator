@@ -21,9 +21,24 @@ public class GenDb {
     private Long id;
 
     /**
+     * 数据库地址
+     */
+    private String dbAddress;
+
+    /**
+     * 数据库端口
+     */
+    private String dbPort;
+
+    /**
      * 库名称
      */
     private String dbName;
+
+    /**
+     * 数据库类型
+     */
+    private Integer dbType;
 
     /**
      * 数据库连接类（mysql：com.mysql.cj.jdbc.Driver）

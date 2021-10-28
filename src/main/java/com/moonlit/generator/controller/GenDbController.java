@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 连接库控制层
+ * 连接数据库控制层
  *
  * @author Joshua
  * @version 1.0
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/genDb")
-@Api(value = "连接库", tags = {"连接库"})
+@Api(value = "数据库", tags = {"数据库"})
 public class GenDbController {
 
     @Autowired

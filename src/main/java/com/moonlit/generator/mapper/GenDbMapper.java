@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @email by.Moonlit@hotmail.com
  */
 @Mapper
-public interface DbDetailMapper extends BaseMapper<GenDb> {
+public interface GenDbMapper extends BaseMapper<GenDb> {
 
     /**
      * 条件查询

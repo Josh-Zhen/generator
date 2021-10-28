@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.entity.GenConfig;
 import com.moonlit.generator.entity.GenDb;
 import com.moonlit.generator.entity.vo.GenDbVo;
-import com.moonlit.generator.mapper.DbDetailMapper;
 import com.moonlit.generator.mapper.GenConfigMapper;
+import com.moonlit.generator.mapper.GenDbMapper;
 import com.moonlit.generator.service.GenDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ import java.util.Arrays;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class GenDbServiceImpl extends ServiceImpl<DbDetailMapper, GenDb> implements GenDbService {
+public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements GenDbService {
 
     @Autowired
     private GenConfigMapper genConfigMapper;
@@ -95,7 +94,6 @@ public class GenDbServiceImpl extends ServiceImpl<DbDetailMapper, GenDb> impleme
      * @return 结果
      */
     private String encrypt(String data) {
-        GenConfig genConfig = genConfigMapper.getConfigByType();
-        return RsaUtils.privateEncrypt(data, genConfig.getPrivateKey());
+        return RsaUtils.privateEncrypt(data, genConfigMapper.getConfigByType().getPrivateKey());
     }
 }
