@@ -52,6 +52,8 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
     @Override
     public Boolean insertDbDetail(GenConfig genConfig) {
         genConfig.setCreateDate(LocalDateTime.now());
+        // 保证只有一个唯一
+        updateType(genConfig.getType());
         return this.save(genConfig);
     }
 
@@ -64,6 +66,8 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
     @Override
     public Boolean updateDbDetail(GenConfig genConfig) {
         genConfig.setUpdateDate(LocalDateTime.now());
+        // 保证只有一个唯一
+        updateType(genConfig.getType());
         return this.updateById(genConfig);
     }
 
@@ -76,5 +80,23 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
     @Override
     public Boolean deleteDbDetailByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
+    }
+
+    /**
+     * 保证只有一个唯一的作者信息
+     *
+     * @param type 默认值
+     */
+    private void updateType(Integer type) {
+        if (type == 1) {
+            LambdaQueryWrapper<GenConfig> queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq(GenConfig::getType, type);
+            GenConfig genConfig = baseMapper.selectOne(queryWrapper);
+            // 存在其他默认时，将其他默认修改为非默认
+            if (ObjectUtil.isNotEmpty(genConfig)) {
+                genConfig.setType(0);
+                this.updateById(genConfig);
+            }
+        }
     }
 }

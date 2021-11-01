@@ -88,7 +88,7 @@ public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements
     }
 
     /**
-     * 数据加密
+     * RSA数据加密
      *
      * @param data 数据
      * @return 结果

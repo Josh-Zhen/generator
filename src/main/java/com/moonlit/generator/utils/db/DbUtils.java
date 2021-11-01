@@ -5,7 +5,6 @@ import com.moonlit.generator.entity.GenDb;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 库工具类
@@ -20,40 +19,55 @@ import java.util.List;
 public class DbUtils {
 
     /**
+     * 连接Mysql数据库
+     * <p>
      * 根据库名获取表数据
      *
      * @param genDb     实体
      * @param publicKey 公钥
-     * @throws SQLException 异常
      */
-    public void connectDb(GenDb genDb, String publicKey) throws SQLException {
+    public ArrayList<String> connectMySqlDb(GenDb genDb, String publicKey) {
+        Statement statement = null;
         Connection connection = null;
-        try {
-            //创建连接
-            String dbName = genDb.getDbName();
-            String userName = RsaUtils.publicDecrypt(genDb.getUserName(), publicKey);
-            String password = RsaUtils.publicDecrypt(genDb.getPassword(), publicKey);
+        ArrayList<String> tables = new ArrayList<>();
 
+        //数据库连接方式
+        String driverName = genDb.getDriverClassName();
+
+        String dbName = genDb.getDbName();
+        String userName = RsaUtils.publicDecrypt(genDb.getUserName(), publicKey);
+        String password = RsaUtils.publicDecrypt(genDb.getPassword(), publicKey);
+        try {
+            // 注册驱动
+            Class.forName(driverName);
             //创建url-数据库为：INFORMATION_SCHEMA
             String url = "jdbc:mysql://" + genDb.getDbAddress() + ":" + genDb.getDbPort() + "/INFORMATION_SCHEMA?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
             //获取连接
             connection = DriverManager.getConnection(url, userName, password);
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             // 根据库名筛选表
-            String sql = "SELECT DISTINCT TABLE_NAME FROM `COLUMNS` WHERE TABLE_SCHEMA = " + dbName;
+            String sql = "SELECT DISTINCT TABLE_NAME FROM `COLUMNS` WHERE TABLE_SCHEMA = '" + dbName + "'";
             //执行sql
             ResultSet resultSet = statement.executeQuery(sql);
-            ArrayList<String> tables = new ArrayList<>();
-//            //读取到List中
-//            while (resultSet.next()) {
-//                buf.add(resultSet.getString(1));
-//            }
-        } catch (SQLException e) {
+            //读取到List中
+            while (resultSet.next()) {
+                // 存放数据表
+                tables.add(resultSet.getString("TABLE_NAME"));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (connection != null) {
-                connection.close();
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
+        return tables;
     }
 }
