@@ -1,5 +1,7 @@
 package com.moonlit.generator.entity;
 
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -64,11 +66,13 @@ public class GenTables implements Serializable {
      * 创建时间
      */
     @ApiModelProperty(name = "createDate", value = "创建时间")
+    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime createDate;
 
     /**
      * 更新时间
      */
     @ApiModelProperty(name = "updateDate", value = "更新时间")
+    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateDate;
 }

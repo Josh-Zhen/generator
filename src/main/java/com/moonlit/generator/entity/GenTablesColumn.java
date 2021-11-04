@@ -1,5 +1,7 @@
 package com.moonlit.generator.entity;
 
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -113,6 +115,7 @@ public class GenTablesColumn implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime createTime;
 
     /**
@@ -123,5 +126,6 @@ public class GenTablesColumn implements Serializable {
     /**
      * 更新时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateTime;
 }

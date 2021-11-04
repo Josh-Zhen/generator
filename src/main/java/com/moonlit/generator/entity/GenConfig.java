@@ -1,5 +1,7 @@
 package com.moonlit.generator.entity;
 
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -38,11 +40,13 @@ public class GenConfig {
     /**
      * 创建时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime createDate;
 
     /**
      * 修改时间
      */
+    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateDate;
 
     /**
