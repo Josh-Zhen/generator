@@ -7,8 +7,4 @@
     <select id="getConfigByType" resultType="com.moonlit.generator.entity.GenConfig">
         SELECT * FROM `gen_config` WHERE type = 1 LIMIT 1
     </select>
-
-    <select id="getAll" resultType="com.moonlit.generator.entity.GenConfig">
-        SELECT * FROM `gen_config`
-    </select>
 </mapper>
