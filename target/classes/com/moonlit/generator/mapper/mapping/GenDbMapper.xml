@@ -5,7 +5,7 @@
 <mapper namespace="com.moonlit.generator.mapper.GenDbMapper">
 
     <select id="selectAll" resultType="com.moonlit.generator.entity.vo.GenDbVo">
-        SELECT id, db_name, db_type, driver_class_name, create_date, update_date FROM `gen_db` WHERE 1 = 1
+        SELECT id, db_name, db_type, db_address, db_port, driver_class_name, create_date, update_date FROM `gen_db` WHERE 1 = 1
         <if test="null != genDb.dbName and '' != genDb.dbName">
             AND db_name LIKE CONCAT('%', #{genDb.dbName}, '%')
         </if>

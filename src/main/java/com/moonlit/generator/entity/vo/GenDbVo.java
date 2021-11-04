@@ -28,6 +28,25 @@ public class GenDbVo {
     private String dbName;
 
     /**
+     * 数据库类型
+     */
+    private Integer dbType;
+    /**
+     * 数据库连接类型
+     */
+    private String driverClassName;
+
+    /**
+     * 数据库地址
+     */
+    private String dbAddress;
+
+    /**
+     * 数据库连接端口
+     */
+    private String dbPort;
+
+    /**
      * 创建者
      */
     private String createName;

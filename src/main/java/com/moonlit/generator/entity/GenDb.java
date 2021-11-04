@@ -43,7 +43,7 @@ public class GenDb {
     private Integer dbType;
 
     /**
-     * 数据库连接类（mysql：com.mysql.cj.jdbc.Driver）
+     * 数据库连接类型（mysql：com.mysql.cj.jdbc.Driver）
      */
     private String driverClassName;
 
