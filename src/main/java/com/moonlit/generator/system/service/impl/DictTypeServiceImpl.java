@@ -67,7 +67,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
                 queryWrapper.like(DictType::getCode, dictType.getCode());
             }
         }
-        queryWrapper.orderByDesc(DictType::getCreateTime);
+        queryWrapper.orderByDesc(DictType::getCreateDate);
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
 
@@ -80,7 +80,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Override
     public Boolean insertDictType(DictType dictType) {
         this.checkCodeExists(dictType);
-        dictType.setCreateTime(LocalDateTime.now());
+        dictType.setCreateDate(LocalDateTime.now());
         return this.save(dictType);
     }
 
@@ -93,7 +93,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Override
     public Boolean updateDictType(DictType dictType) {
         this.checkCodeExists(dictType);
-        dictType.setUpdateTime(LocalDateTime.now());
+        dictType.setUpdateDate(LocalDateTime.now());
         return this.updateById(dictType);
     }
 

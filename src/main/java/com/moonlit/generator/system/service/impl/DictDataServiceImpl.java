@@ -96,7 +96,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     public Boolean insertDictData(DictData dictData) {
         this.checkValueExists(dictData);
-        dictData.setCreateTime(LocalDateTime.now());
+        dictData.setCreateDate(LocalDateTime.now());
         return this.save(dictData);
     }
 
@@ -109,7 +109,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     public Boolean updateDictData(DictData dictData) {
         this.checkValueExists(dictData);
-        dictData.setUpdateTime(LocalDateTime.now());
+        dictData.setUpdateDate(LocalDateTime.now());
         return this.updateById(dictData);
     }
 
