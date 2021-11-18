@@ -83,6 +83,9 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
             if (ObjectUtil.isNotEmpty(dictData.getName())) {
                 queryWrapper.eq(DictData::getName, dictData.getName());
             }
+            if (ObjectUtil.isNotEmpty(dictData.getValue())) {
+                queryWrapper.eq(DictData::getValue, dictData.getValue());
+            }
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
