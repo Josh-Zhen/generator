@@ -1,6 +1,7 @@
 package com.moonlit.generator.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.DictVO;
 import com.moonlit.generator.system.entity.DictData;
 
@@ -32,4 +33,29 @@ public interface IDictDataService extends IService<DictData> {
      * @return 小类名称
      */
     DictData getDictData(String code, String value);
+
+    /**
+     * 分页查询字典管理(以父id查询)
+     *
+     * @param dictData 字典管理
+     * @return 字典管理集合
+     */
+    PageResult<DictData> pageList(DictData dictData);
+
+    /**
+     * 新增字典管理
+     *
+     * @param dictData 字典管理
+     * @return 结果
+     */
+    Boolean insertDictData(DictData dictData);
+
+    /**
+     * 修改字典管理
+     *
+     * @param dictData 字典管理
+     * @return 结果
+     */
+    Boolean updateDictData(DictData dictData);
+
 }

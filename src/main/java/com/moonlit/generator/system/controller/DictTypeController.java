@@ -1,14 +1,14 @@
 package com.moonlit.generator.system.controller;
 
+import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.DictVO;
 import com.moonlit.generator.common.response.Result;
+import com.moonlit.generator.system.entity.DictType;
 import com.moonlit.generator.system.service.IDictTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import java.util.List;
 public class DictTypeController {
 
     @Autowired
-    private IDictTypeService sysDictTypeService;
+    private IDictTypeService dictTypeService;
 
     /**
      * 根据CODE查询字典所有值
@@ -37,7 +37,39 @@ public class DictTypeController {
     @GetMapping("/dropDown")
     @ApiOperation("根据code查询对应的字段")
     public Result<List<DictVO>> dropDown(String code) {
-        return Result.success(sysDictTypeService.dropDown(code));
+        return Result.success(dictTypeService.dropDown(code));
+    }
+
+    /**
+     * 分页查询字典管理
+     */
+    @GetMapping("/pageList")
+    public Result<PageResult<DictType>> page(DictType dictType) {
+        return Result.success(dictTypeService.pageList(dictType));
+    }
+
+    /**
+     * 新增保存字典管理
+     */
+    @PostMapping("/save")
+    public Result<Boolean> save(@RequestBody DictType dictType) {
+        return Result.success(dictTypeService.insertDictType(dictType));
+    }
+
+    /**
+     * 修改字典管理
+     */
+    @PostMapping("/update")
+    public Result<Boolean> update(@RequestBody DictType dictType) {
+        return Result.success(dictTypeService.updateDictType(dictType));
+    }
+
+    /**
+     * 删除字典管理
+     */
+    @PostMapping("/delete")
+    public Result<Boolean> delete(Long id) {
+        return Result.success(dictTypeService.deleteDictTypeById(id));
     }
 
 }

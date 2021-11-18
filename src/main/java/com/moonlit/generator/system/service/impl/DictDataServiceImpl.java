@@ -1,15 +1,20 @@
 package com.moonlit.generator.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.exception.BusinessException;
+import com.moonlit.generator.common.page.PageFactory;
+import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.DictVO;
 import com.moonlit.generator.system.entity.DictData;
 import com.moonlit.generator.system.mapper.DictDataMapper;
 import com.moonlit.generator.system.service.IDictDataService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -60,5 +65,68 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     public DictData getDictData(String code, String value) {
         return this.baseMapper.getDictDataByCodeAndValue(code, value);
+    }
+
+    /**
+     * 分页查询字典管理(以父id查询)
+     *
+     * @param dictData 字典管理
+     * @return 字典管理集合
+     */
+    @Override
+    public PageResult<DictData> pageList(DictData dictData) {
+        LambdaQueryWrapper<DictData> queryWrapper = Wrappers.lambdaQuery();
+        if (ObjectUtil.isNotNull(dictData)) {
+            if (ObjectUtil.isNotEmpty(dictData.getTypeId())) {
+                queryWrapper.eq(DictData::getTypeId, dictData.getTypeId());
+            }
+            if (ObjectUtil.isNotEmpty(dictData.getName())) {
+                queryWrapper.eq(DictData::getName, dictData.getName());
+            }
+        }
+        return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
+    }
+
+    /**
+     * 新增字典管理
+     *
+     * @param dictData 字典管理
+     * @return 结果
+     */
+    @Override
+    public Boolean insertDictData(DictData dictData) {
+        this.checkValueExists(dictData);
+        dictData.setCreateTime(LocalDateTime.now());
+        return this.save(dictData);
+    }
+
+    /**
+     * 修改字典管理
+     *
+     * @param dictData 字典管理
+     * @return 结果
+     */
+    @Override
+    public Boolean updateDictData(DictData dictData) {
+        this.checkValueExists(dictData);
+        dictData.setUpdateTime(LocalDateTime.now());
+        return this.updateById(dictData);
+    }
+
+    /**
+     * 校验是否存在相同键
+     *
+     * @param dictData 参数
+     */
+    private void checkValueExists(DictData dictData) {
+        LambdaQueryWrapper<DictData> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(DictData::getId, dictData.getId())
+                .eq(DictData::getValue, dictData.getValue());
+        DictData one = this.getOne(queryWrapper);
+        if (null != one && !dictData.getId().equals(one.getId())) {
+            if (dictData.getValue().equals(one.getValue())) {
+                throw new BusinessException(11013, "键已存在");
+            }
+        }
     }
 }
