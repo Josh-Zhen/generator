@@ -3,7 +3,6 @@ package com.moonlit.generator.generator.controller;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenDb;
-import com.moonlit.generator.generator.entity.vo.GenDbVo;
 import com.moonlit.generator.generator.service.GenDbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +33,7 @@ public class GenDbController {
      */
     @GetMapping("/pageList")
     @ApiOperation("分页查询数据库明细")
-    public Result<PageResult<GenDbVo>> page(GenDb genDb) {
+    public Result<PageResult<GenDb>> page(GenDb genDb) {
         return Result.success(genDbService.pageList(genDb));
     }
 
@@ -50,7 +49,7 @@ public class GenDbController {
     /**
      * 修改连接库
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation("修改保存连接库")
     public Result<Boolean> editSave(@RequestBody GenDb genDb) {
         return Result.success(genDbService.updateDbDetail(genDb));
@@ -59,7 +58,7 @@ public class GenDbController {
     /**
      * 批量删除连接库
      */
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation("批量删除连接库")
     public Result<Boolean> delete(String ids) {
         return Result.success(genDbService.deleteDbDetailByIds(ids));

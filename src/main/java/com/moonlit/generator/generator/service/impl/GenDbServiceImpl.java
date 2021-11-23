@@ -6,7 +6,6 @@ import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenDb;
-import com.moonlit.generator.generator.entity.vo.GenDbVo;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDbMapper;
 import com.moonlit.generator.generator.service.GenDbService;
@@ -37,7 +36,7 @@ public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements
      * @return 结果集
      */
     @Override
-    public PageResult<GenDbVo> pageList(GenDb genDb) {
+    public PageResult<GenDb> pageList(GenDb genDb) {
         return new PageResult<>(baseMapper.selectAll(PageFactory.defaultPage(), genDb));
     }
 
@@ -66,10 +65,10 @@ public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements
         GenDb db = this.getById(genDb.getId());
 
         // 校验用户名与密码是否修改过
-        if (db.getUserName().equals(encrypt(genDb.getUserName()))) {
+        if (!db.getUserName().equals(genDb.getUserName())) {
             genDb.setUserName(encrypt(genDb.getUserName()));
         }
-        if (db.getPassword().equals(encrypt(genDb.getPassword()))) {
+        if (!db.getPassword().equals(genDb.getPassword())) {
             genDb.setPassword(encrypt(genDb.getPassword()));
         }
         genDb.setUpdateDate(LocalDateTime.now());

@@ -3,7 +3,6 @@ package com.moonlit.generator.generator.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.moonlit.generator.generator.entity.GenDb;
-import com.moonlit.generator.generator.entity.vo.GenDbVo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -24,5 +23,5 @@ public interface GenDbMapper extends BaseMapper<GenDb> {
      * @param genDb       查询条件
      * @return 结果集
      */
-    Page<GenDbVo> selectAll(Page<Object> defaultPage, GenDb genDb);
+    Page<GenDb> selectAll(Page<Object> defaultPage, GenDb genDb);
 }
