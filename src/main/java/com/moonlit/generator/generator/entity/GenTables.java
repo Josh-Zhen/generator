@@ -27,10 +27,10 @@ public class GenTables implements Serializable {
     private Integer id;
 
     /**
-     * 数据库名称
+     * 数据库id
      */
-    @ApiModelProperty(name = "dbName", value = "数据库名称")
-    private String dbName;
+    @ApiModelProperty(name = "dbId", value = "数据库id")
+    private Long dbId;
 
     /**
      * 表名称

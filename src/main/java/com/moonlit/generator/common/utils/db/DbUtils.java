@@ -26,7 +26,7 @@ public class DbUtils {
      * @param genDb     实体
      * @param publicKey 公钥
      */
-    public ArrayList<String> connectMySqlDb(GenDb genDb, String publicKey) {
+    public static ArrayList<String> connectMySqlDb(GenDb genDb, String publicKey) {
         Statement statement = null;
         Connection connection = null;
         ArrayList<String> tables = new ArrayList<>();

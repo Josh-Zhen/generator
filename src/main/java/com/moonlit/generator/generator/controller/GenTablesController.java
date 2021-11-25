@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 库表生成_表控制层
+ * 表生成控制层
  *
  * @author Joshua
  * @version 1.0
@@ -63,5 +63,13 @@ public class GenTablesController {
     @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(genTablesService.deleteTablesByIds(ids));
+    }
+
+    /**
+     * 生成表
+     */
+    @GetMapping("/generate")
+    public Result<Boolean> generate(Long id) {
+        return Result.success(genTablesService.generate(id));
     }
 }

@@ -45,4 +45,5 @@ public interface GenDbService extends IService<GenDb> {
      * @return 结果
      */
     Boolean deleteDbDetailByIds(String ids);
+    
 }

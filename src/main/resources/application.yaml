@@ -7,10 +7,10 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://127.0.0.1:3307/generator?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.119.201.187:3306/generator?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: root
-    password: qwe123
+    username: generator
+    password: generator
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/*/*.xml

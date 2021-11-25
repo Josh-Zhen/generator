@@ -63,4 +63,5 @@ public class GenDbController {
     public Result<Boolean> delete(String ids) {
         return Result.success(genDbService.deleteDbDetailByIds(ids));
     }
+    
 }

@@ -58,6 +58,11 @@ public class GenDb {
     private String password;
 
     /**
+     * 状态(0：禁止，1默认)
+     */
+    private Integer status;
+
+    /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)

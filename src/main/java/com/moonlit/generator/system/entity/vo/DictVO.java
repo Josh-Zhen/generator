@@ -1,4 +1,4 @@
-package com.moonlit.generator.common.response;
+package com.moonlit.generator.system.entity.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

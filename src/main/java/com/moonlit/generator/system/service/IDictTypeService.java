@@ -2,7 +2,7 @@ package com.moonlit.generator.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.response.DictVO;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.entity.DictType;
 
 import java.util.List;

@@ -8,7 +8,7 @@ import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.exception.enums.SystemCodeEnum;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.response.DictVO;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.entity.DictType;
 import com.moonlit.generator.system.mapper.DictTypeMapper;
 import com.moonlit.generator.system.service.IDictDataService;

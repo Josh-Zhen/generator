@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.response.DictVO;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.entity.DictData;
 import com.moonlit.generator.system.mapper.DictDataMapper;
 import com.moonlit.generator.system.service.IDictDataService;

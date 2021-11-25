@@ -5,7 +5,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTables;
 
 /**
- * 库表生成_表业务层
+ * 表生成业务层
  *
  * @author Joshua
  * @version 1.0
@@ -46,5 +46,11 @@ public interface GenTablesService extends IService<GenTables> {
      */
     Boolean deleteTablesByIds(String ids);
 
-
+    /**
+     * 生成表
+     *
+     * @param id 主键
+     * @return 结果
+     */
+    Boolean generate(Long id);
 }

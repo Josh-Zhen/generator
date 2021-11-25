@@ -1,7 +1,7 @@
 package com.moonlit.generator.system.controller;
 
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.response.DictVO;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.system.entity.DictType;
 import com.moonlit.generator.system.service.IDictTypeService;
