@@ -7,41 +7,30 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 表明细实体（用于查询并添加表类型使用）
+ * 未添加的表名
  *
  * @author Joshua
  * @version 1.0
- * @date 2021/9/30 9:44
+ * @date 7/12/2021 16:34
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class DbTableDetail {
+public class DbTablesVO {
 
     /**
-     * 库名称
-     */
-    private String dbName;
-
-    /**
-     * 表名称
+     * 表名
      */
     private String tableName;
 
     /**
-     * 创建者
+     * 備注
      */
-    private String createName;
+    private String note;
 
     /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime createDate;
-
-    /**
-     * 更新时间
-     */
-    @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
-    private LocalDateTime updateDate;
-
+    
 }

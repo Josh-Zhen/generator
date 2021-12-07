@@ -2,8 +2,10 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
+import com.moonlit.generator.generator.entity.GenDb;
 import com.moonlit.generator.generator.entity.GenTables;
-import com.moonlit.generator.generator.service.GenTablesColumnService;
+import com.moonlit.generator.generator.entity.vo.DbTablesVO;
+import com.moonlit.generator.generator.service.GenDbService;
 import com.moonlit.generator.generator.service.GenTablesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +29,7 @@ public class GenTablesController {
     private GenTablesService genTablesService;
 
     @Autowired
-    private GenTablesColumnService genTablesColumnService;
+    private GenDbService genDbService;
 
     /**
      * 条件分页查询
@@ -63,6 +65,18 @@ public class GenTablesController {
     @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(genTablesService.deleteTablesByIds(ids));
+    }
+
+    /**
+     * 根據庫id獲取庫内所有的表
+     *
+     * @param dbId 庫id
+     * @return 表數據
+     */
+    @GetMapping("/getDbTables")
+    public Result<PageResult<DbTablesVO>> getDbTables(Long dbId) {
+        genDbService.getById(dbId);
+        return Result.success(null);
     }
 
     /**
