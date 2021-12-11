@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.utils.db.DbUtils;
+import com.moonlit.generator.common.utils.DbUtils;
 import com.moonlit.generator.generator.constant.DbErrorCode;
 import com.moonlit.generator.generator.entity.GenDb;
 import com.moonlit.generator.generator.entity.GenTables;

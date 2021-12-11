@@ -38,6 +38,11 @@ public class GenConfig {
     private String publicKey;
 
     /**
+     * 默认选择（0：否、1：是）
+     */
+    private Integer type;
+
+    /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
@@ -49,8 +54,4 @@ public class GenConfig {
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateDate;
 
-    /**
-     * 默认选择（0：否、1：是）
-     */
-    private Integer type;
 }

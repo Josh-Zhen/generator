@@ -1,4 +1,4 @@
-package com.moonlit.generator.common.utils.db;
+package com.moonlit.generator.common.utils;
 
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.generator.entity.GenDb;
@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 /**
  * 库工具类
- * <p>
- * 该类用于动态连接查询库表内容
  *
  * @author Joshua
  * @version 1.0
@@ -19,9 +17,7 @@ import java.util.ArrayList;
 public class DbUtils {
 
     /**
-     * 连接Mysql数据库
-     * <p>
-     * 根据库名获取表数据
+     * 根据库名获取表名
      *
      * @param genDb     实体
      * @param publicKey 公钥

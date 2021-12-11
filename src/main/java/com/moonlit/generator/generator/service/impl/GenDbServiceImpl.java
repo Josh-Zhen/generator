@@ -1,16 +1,10 @@
 package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.encrypt.RsaUtils;
-import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.utils.db.DbUtils;
-import com.moonlit.generator.generator.constant.DbErrorCode;
 import com.moonlit.generator.generator.entity.GenDb;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDbMapper;
@@ -20,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -96,7 +89,7 @@ public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements
     public Boolean deleteDbDetailByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
-    
+
     /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**

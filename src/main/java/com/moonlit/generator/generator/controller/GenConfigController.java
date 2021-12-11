@@ -72,4 +72,5 @@ public class GenConfigController {
     public Result<Boolean> delete(String ids) {
         return Result.success(genConfigService.deleteDbDetailByIds(ids));
     }
+
 }
