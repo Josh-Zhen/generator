@@ -62,10 +62,8 @@ public class RsaUtils {
             KeyPair keyPair = keyPairGen.generateKeyPair();
             PrivateKey privateKey = keyPair.getPrivate();
             PublicKey publicKey = keyPair.getPublic();
-            String publicKeyString = new String(Base64.encodeBase64(publicKey.getEncoded()));
-            String privateKeyString = new String(Base64.encodeBase64(privateKey.getEncoded()));
-            hashMap.put("publicKey", publicKeyString);
-            hashMap.put("privateKey", privateKeyString);
+            hashMap.put("publicKey", new String(Base64.encodeBase64(publicKey.getEncoded())));
+            hashMap.put("privateKey", new String(Base64.encodeBase64(privateKey.getEncoded())));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -269,5 +267,5 @@ public class RsaUtils {
         }
         return encryptStr;
     }
-    
+
 }
