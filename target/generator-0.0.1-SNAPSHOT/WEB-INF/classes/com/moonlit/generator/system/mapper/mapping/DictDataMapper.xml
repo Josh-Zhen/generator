@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moonlit.generator.system.mapper.DictDataMapper">
+    <sql id="Base_Column_List">
+        `id`,
+        `type_id`,
+        `name`,
+        `value`,
+        `sort`,
+        `remark`,
+        `status`,
+        `create_time`,
+        `create_user`,
+        `update_time`,
+        `update_user`
+    </sql>
+
+    <select id="getDictDataByCodeAndValue" resultType="com.moonlit.generator.system.entity.DictData">
+        SELECT d.* FROM `dict_data` d LEFT JOIN `dict_type` t ON d.type_id = t.id WHERE
+        t.`code` = #{code} AND d.`value` = #{value}
+    </select>
+
+    <select id="selectDataByCode" resultType="com.moonlit.generator.system.entity.DictData">
+        select * from dict_data d left join dict_type t on d.type_id = t.id
+        where t.`code` = #{code}
+    </select>
+
+</mapper>

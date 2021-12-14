@@ -2,10 +2,7 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenConfig;
 import com.moonlit.generator.generator.entity.GenDb;
-import com.moonlit.generator.generator.entity.GenTables;
-import com.moonlit.generator.generator.entity.vo.TestVO;
 import com.moonlit.generator.generator.service.GenDbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

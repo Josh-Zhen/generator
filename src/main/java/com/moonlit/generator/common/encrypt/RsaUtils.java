@@ -1,22 +1,21 @@
 package com.moonlit.generator.common.encrypt;
 
-import com.moonlit.generator.common.constant.CharacterConstant;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.HashMap;
 
 /**
  * RSA工具类
  *
  * @author Joshua
  * @version 1.0
- * @date 2021/10/12 17:15
- * @email by.Moonlit@hotmail.com
+ * @date 2021/6/8 18:33
  */
 public class RsaUtils {
 
@@ -54,6 +53,24 @@ public class RsaUtils {
      * 使用的 PKCS8 格式的密钥
      */
     private static final String ALGORITHM_RSA = "RSA";
+
+    public static HashMap<String, String> genKeyPair() {
+        HashMap<String, String> hashMap = new HashMap<>(2);
+        try {
+            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+            keyPairGen.initialize(1024);
+            KeyPair keyPair = keyPairGen.generateKeyPair();
+            PrivateKey privateKey = keyPair.getPrivate();
+            PublicKey publicKey = keyPair.getPublic();
+            String publicKeyString = new String(Base64.encodeBase64(publicKey.getEncoded()));
+            String privateKeyString = new String(Base64.encodeBase64(privateKey.getEncoded()));
+            hashMap.put("publicKey", publicKeyString);
+            hashMap.put("privateKey", privateKeyString);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashMap;
+    }
 
     /**
      * 使用公钥将数据加密
@@ -233,10 +250,9 @@ public class RsaUtils {
      * @param encryptStr 原始字符
      * @return string
      */
-    public static String urlSafeEncode(String encryptStr) {
-        return encryptStr.replaceAll("\\+", CharacterConstant.DASH)
-                .replaceAll(CharacterConstant.LEFT_DIVIDE, CharacterConstant.UNDER_SCORE)
-                .replaceAll(CharacterConstant.EQUAL, "").replaceAll("(\r\n|\r|\n|\n\r)", "");
+    public static String urlsafeEncode(String encryptStr) {
+        return encryptStr.replaceAll("\\+", "-").replaceAll("/", "_")
+                .replaceAll("=", "").replaceAll("(\r\n|\r|\n|\n\r)", "");
     }
 
     /**
@@ -245,14 +261,13 @@ public class RsaUtils {
      * @param encryptStr 原始字符
      * @return string
      */
-    public static String urlSafeDecode(String encryptStr) {
-        encryptStr = encryptStr.replaceAll(CharacterConstant.DASH, CharacterConstant.PLUS)
-                .replaceAll(CharacterConstant.UNDER_SCORE, CharacterConstant.LEFT_DIVIDE);
+    public static String urlsafeDecode(String encryptStr) {
+        encryptStr = encryptStr.replaceAll("-", "+").replaceAll("_", "/");
         int mob = encryptStr.length() % 4;
         if (mob > 0) {
             encryptStr += "====".substring(mob);
         }
         return encryptStr;
     }
-
+    
 }

@@ -1,13 +1,17 @@
 package com.moonlit.generator.generator.controller;
 
+import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenConfig;
+import com.moonlit.generator.generator.entity.vo.KeyPairVO;
 import com.moonlit.generator.generator.service.GenConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 作者相关配置值控制层
@@ -71,6 +75,19 @@ public class GenConfigController {
     @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(genConfigService.deleteDbDetailByIds(ids));
+    }
+
+    /**
+     * 生成密鑰
+     *
+     * @return 密鑰對
+     */
+    @ApiOperation("生成密鑰")
+    @GetMapping("/generateKeys")
+    public Result<KeyPairVO> generateKeys() {
+        Map<String, String> genKeyPair = RsaUtils.genKeyPair();
+        KeyPairVO keyPairVO = new KeyPairVO(genKeyPair.get("publicKey"), genKeyPair.get("privateKey"));
+        return Result.success(keyPairVO);
     }
 
 }
