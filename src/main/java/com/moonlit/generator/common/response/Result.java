@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 返回结果集
+ * 響應結果集
  *
  * @author Joshua
  * @version 1.0
@@ -91,8 +91,4 @@ public class Result<T> implements Serializable {
         return success;
     }
 
-    public Result<T> setData(T data) {
-        this.data = data;
-        return this;
-    }
 }
