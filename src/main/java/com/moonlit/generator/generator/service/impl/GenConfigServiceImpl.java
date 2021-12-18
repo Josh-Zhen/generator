@@ -5,8 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.generator.constant.DbErrorCode;
 import com.moonlit.generator.generator.entity.GenConfig;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
 import com.moonlit.generator.generator.service.GenConfigService;
@@ -52,8 +54,7 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
     @Override
     public Boolean insertDbDetail(GenConfig genConfig) {
         genConfig.setCreateDate(LocalDateTime.now());
-        // 保证只有一个唯一
-        updateType(genConfig.getType());
+        checkOnlyOneAndType(genConfig);
         return this.save(genConfig);
     }
 
@@ -66,8 +67,7 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
     @Override
     public Boolean updateDbDetail(GenConfig genConfig) {
         genConfig.setUpdateDate(LocalDateTime.now());
-        // 保证只有一个唯一
-        updateType(genConfig.getType());
+        checkOnlyOneAndType(genConfig);
         return this.updateById(genConfig);
     }
 
@@ -85,18 +85,25 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
     /**
      * 保证只有一个唯一的作者信息
      *
-     * @param type 默认值
+     * @param genConfig 默认值
      */
-    private void updateType(Integer type) {
-        if (type == 1) {
-            LambdaQueryWrapper<GenConfig> queryWrapper = Wrappers.lambdaQuery();
-            queryWrapper.eq(GenConfig::getType, type);
-            GenConfig genConfig = baseMapper.selectOne(queryWrapper);
+    private void checkOnlyOneAndType(GenConfig genConfig) {
+        LambdaQueryWrapper<GenConfig> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenConfig::getAuthor, genConfig.getAuthor());
+        if (!genConfig.getId().equals(baseMapper.selectOne(queryWrapper).getId())) {
+            throw new BusinessException(DbErrorCode.DATA_IS_TRUE);
+        }
+
+        if (genConfig.getType() == 1) {
+            queryWrapper = Wrappers.lambdaQuery();
+            queryWrapper.eq(GenConfig::getType, genConfig.getType());
+            GenConfig one = baseMapper.selectOne(queryWrapper);
             // 存在其他默认时，将其他默认修改为非默认
-            if (ObjectUtil.isNotEmpty(genConfig)) {
-                genConfig.setType(0);
-                this.updateById(genConfig);
+            if (ObjectUtil.isNotEmpty(one)) {
+                one.setType(0);
+                this.updateById(one);
             }
         }
+
     }
 }

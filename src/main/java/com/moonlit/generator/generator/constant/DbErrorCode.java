@@ -17,7 +17,7 @@ public enum DbErrorCode implements AbstractBaseExceptionEnum {
      * 枚举
      */
     GENERATE_FAIL(11001, "生成库失败，无法连接库"),
-
+    DATA_IS_TRUE(11002, "数据已存在，请检查是否存在同名数据"),
     ;
 
     private Integer code;
