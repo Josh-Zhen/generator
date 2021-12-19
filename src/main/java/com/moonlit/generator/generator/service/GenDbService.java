@@ -2,7 +2,7 @@ package com.moonlit.generator.generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenDb;
+import com.moonlit.generator.generator.entity.GenDatabase;
 
 /**
  * 连接库业务层
@@ -12,31 +12,31 @@ import com.moonlit.generator.generator.entity.GenDb;
  * @date 2021/9/30 10:28
  * @email by.Moonlit@hotmail.com
  */
-public interface GenDbService extends IService<GenDb> {
+public interface GenDbService extends IService<GenDatabase> {
 
     /**
      * 条件分页查询
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果集
      */
-    PageResult<GenDb> pageList(GenDb genDb);
+    PageResult<GenDatabase> pageList(GenDatabase genDatabase);
 
     /**
      * 新增
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果
      */
-    Boolean insertDbDetail(GenDb genDb);
+    Boolean insertDbDetail(GenDatabase genDatabase);
 
     /**
      * 修改
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果
      */
-    Boolean updateDbDetail(GenDb genDb);
+    Boolean updateDbDetail(GenDatabase genDatabase);
 
     /**
      * 批量删除

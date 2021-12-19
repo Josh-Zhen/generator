@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moonlit.generator.generator.mapper.GenDatabaseMapper">
+
+    <select id="selectAll" resultType="com.moonlit.generator.generator.entity.GenDatabase">
+        SELECT * FROM `gen_database` WHERE 1 = 1
+        <if test="null != genDatabase.dbName and '' != genDatabase.dbName">
+            AND db_name LIKE CONCAT('%', #{genDatabase.dbName}, '%')
+        </if>
+        ORDER BY create_date DESC
+    </select>
+
+</mapper>

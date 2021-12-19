@@ -1,7 +1,8 @@
 package com.moonlit.generator.common.utils;
 
 import com.moonlit.generator.common.encrypt.RsaUtils;
-import com.moonlit.generator.generator.entity.GenDb;
+import com.moonlit.generator.generator.entity.GenDatabase;
+import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,53 +18,77 @@ import java.util.ArrayList;
 public class DbUtils {
 
     /**
-     * 根据库名获取表名
-     *
-     * @param genDb     实体
-     * @param publicKey 公钥
+     * 獲取表字段信息
      */
-    public static ArrayList<String> connectMySqlDb(GenDb genDb, String publicKey) {
-        Statement statement = null;
+    private static final String get = "";
+
+    /**
+     * 連接數據庫
+     *
+     * @param genDatabase 实体
+     * @param publicKey   公钥
+     * @return 連接對象
+     */
+    private static Connection connectMySql(GenDatabase genDatabase, String publicKey) {
         Connection connection = null;
-        ArrayList<String> tables = new ArrayList<>();
 
-        //数据库连接方式
-        String driverName = genDb.getDriverClassName();
-
-        String dbName = genDb.getDbName();
-        String userName = RsaUtils.publicDecrypt(genDb.getUserName(), publicKey);
-        String password = RsaUtils.publicDecrypt(genDb.getPassword(), publicKey);
+        String address = genDatabase.getDbAddress();
+        String port = genDatabase.getDbPort();
+        String userName = RsaUtils.publicDecrypt(genDatabase.getUserName(), publicKey);
+        String password = RsaUtils.publicDecrypt(genDatabase.getPassword(), publicKey);
+        String url = "jdbc:mysql://" + address + ":" + port;
         try {
-            // 注册驱动
-            Class.forName(driverName);
-            //创建url-数据库为：INFORMATION_SCHEMA
-            String url = "jdbc:mysql://" + genDb.getDbAddress() + ":" + genDb.getDbPort() + "/INFORMATION_SCHEMA?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
-            //获取连接
+            Class.forName(genDatabase.getDriverClassName());
             connection = DriverManager.getConnection(url, userName, password);
-            statement = connection.createStatement();
-            // 根据库名筛选表
-            String sql = "SELECT DISTINCT TABLE_NAME FROM `COLUMNS` WHERE TABLE_SCHEMA = '" + dbName + "'";
-            //执行sql
-            ResultSet resultSet = statement.executeQuery(sql);
-            //读取到List中
-            while (resultSet.next()) {
-                // 存放数据表
-                tables.add(resultSet.getString("TABLE_NAME"));
-            }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-        return tables;
+        return connection;
     }
+
+    /**
+     * 關閉連接
+     *
+     * @param connection 連接對象
+     * @param statement  語句對象
+     */
+    private static void close(Connection connection, Statement statement) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 獲取表詳情
+     *
+     * @param genDatabase 实体
+     * @param publicKey   公钥
+     * @return 結果集
+     */
+    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String publicKey, String tableName) {
+        Connection connection = connectMySql(genDatabase, publicKey);
+
+        String sql = "SELECT TABLE_NAME AS tableName, TABLE_COMMENT AS tableComment FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?;";
+
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, tableName);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(connection, statement);
+        }
+
+        return null;
+    }
+
 }

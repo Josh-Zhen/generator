@@ -2,7 +2,7 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenDb;
+import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.service.GenDbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/genDb")
 @Api(value = "数据库", tags = {"数据库"})
-public class GenDbController {
+public class GenDatabaseController {
 
     @Autowired
     private GenDbService genDbService;
@@ -28,13 +28,13 @@ public class GenDbController {
     /**
      * 条件分页查询
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果集
      */
     @GetMapping("/pageList")
     @ApiOperation("分页查询数据库明细")
-    public Result<PageResult<GenDb>> page(GenDb genDb) {
-        return Result.success(genDbService.pageList(genDb));
+    public Result<PageResult<GenDatabase>> page(GenDatabase genDatabase) {
+        return Result.success(genDbService.pageList(genDatabase));
     }
 
     /**
@@ -42,8 +42,8 @@ public class GenDbController {
      */
     @PostMapping("/save")
     @ApiOperation("新增保存连接库")
-    public Result<Boolean> addSave(@RequestBody GenDb genDb) {
-        return Result.success(genDbService.insertDbDetail(genDb));
+    public Result<Boolean> addSave(@RequestBody GenDatabase genDatabase) {
+        return Result.success(genDbService.insertDbDetail(genDatabase));
     }
 
     /**
@@ -51,8 +51,8 @@ public class GenDbController {
      */
     @PostMapping("/update")
     @ApiOperation("修改保存连接库")
-    public Result<Boolean> editSave(@RequestBody GenDb genDb) {
-        return Result.success(genDbService.updateDbDetail(genDb));
+    public Result<Boolean> editSave(@RequestBody GenDatabase genDatabase) {
+        return Result.success(genDbService.updateDbDetail(genDatabase));
     }
 
     /**

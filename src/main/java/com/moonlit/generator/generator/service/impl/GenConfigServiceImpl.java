@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.constant.DbErrorCode;
+import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenConfig;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
 import com.moonlit.generator.generator.service.GenConfigService;
@@ -91,7 +91,7 @@ public class GenConfigServiceImpl extends ServiceImpl<GenConfigMapper, GenConfig
         LambdaQueryWrapper<GenConfig> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(GenConfig::getAuthor, genConfig.getAuthor());
         if (!genConfig.getId().equals(baseMapper.selectOne(queryWrapper).getId())) {
-            throw new BusinessException(DbErrorCode.DATA_IS_TRUE);
+            throw new BusinessException(DatabaseErrorCode.DATA_IS_TRUE);
         }
 
         if (genConfig.getType() == 1) {

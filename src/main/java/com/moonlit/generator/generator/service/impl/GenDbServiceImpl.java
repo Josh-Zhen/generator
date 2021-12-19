@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenDb;
+import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
-import com.moonlit.generator.generator.mapper.GenDbMapper;
+import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
 import com.moonlit.generator.generator.service.GenDbService;
 import com.moonlit.generator.generator.service.GenTablesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.Arrays;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements GenDbService {
+public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase> implements GenDbService {
 
     @Autowired
     private GenConfigMapper genConfigMapper;
@@ -36,47 +36,47 @@ public class GenDbServiceImpl extends ServiceImpl<GenDbMapper, GenDb> implements
     /**
      * 条件分页查询
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果集
      */
     @Override
-    public PageResult<GenDb> pageList(GenDb genDb) {
-        return new PageResult<>(baseMapper.selectAll(PageFactory.defaultPage(), genDb));
+    public PageResult<GenDatabase> pageList(GenDatabase genDatabase) {
+        return new PageResult<>(baseMapper.selectAll(PageFactory.defaultPage(), genDatabase));
     }
 
     /**
      * 新增
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果
      */
     @Override
-    public Boolean insertDbDetail(GenDb genDb) {
-        genDb.setUserName(encrypt(genDb.getUserName()));
-        genDb.setPassword(encrypt(genDb.getPassword()));
-        genDb.setCreateDate(LocalDateTime.now());
-        return this.save(genDb);
+    public Boolean insertDbDetail(GenDatabase genDatabase) {
+        genDatabase.setUserName(encrypt(genDatabase.getUserName()));
+        genDatabase.setPassword(encrypt(genDatabase.getPassword()));
+        genDatabase.setCreateDate(LocalDateTime.now());
+        return this.save(genDatabase);
     }
 
     /**
      * 修改
      *
-     * @param genDb 表实体
+     * @param genDatabase 表实体
      * @return 结果
      */
     @Override
-    public Boolean updateDbDetail(GenDb genDb) {
-        GenDb db = this.getById(genDb.getId());
+    public Boolean updateDbDetail(GenDatabase genDatabase) {
+        GenDatabase db = this.getById(genDatabase.getId());
 
         // 校验用户名与密码是否修改过
-        if (!db.getUserName().equals(genDb.getUserName())) {
-            genDb.setUserName(encrypt(genDb.getUserName()));
+        if (!db.getUserName().equals(genDatabase.getUserName())) {
+            genDatabase.setUserName(encrypt(genDatabase.getUserName()));
         }
-        if (!db.getPassword().equals(genDb.getPassword())) {
-            genDb.setPassword(encrypt(genDb.getPassword()));
+        if (!db.getPassword().equals(genDatabase.getPassword())) {
+            genDatabase.setPassword(encrypt(genDatabase.getPassword()));
         }
-        genDb.setUpdateDate(LocalDateTime.now());
-        return this.updateById(genDb);
+        genDatabase.setUpdateDate(LocalDateTime.now());
+        return this.updateById(genDatabase);
     }
 
     /**

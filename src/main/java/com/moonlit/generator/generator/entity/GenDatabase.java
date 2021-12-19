@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenDb {
+public class GenDatabase {
 
     /**
      * 主键

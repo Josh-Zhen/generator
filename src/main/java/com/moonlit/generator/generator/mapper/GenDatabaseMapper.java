@@ -2,7 +2,7 @@ package com.moonlit.generator.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.moonlit.generator.generator.entity.GenDb;
+import com.moonlit.generator.generator.entity.GenDatabase;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,14 +14,15 @@ import org.apache.ibatis.annotations.Mapper;
  * @email by.Moonlit@hotmail.com
  */
 @Mapper
-public interface GenDbMapper extends BaseMapper<GenDb> {
+public interface GenDatabaseMapper extends BaseMapper<GenDatabase> {
 
     /**
      * 条件查询
      *
      * @param defaultPage 分页实体
-     * @param genDb       查询条件
+     * @param genDatabase 查询条件
      * @return 结果集
      */
-    Page<GenDb> selectAll(Page<Object> defaultPage, GenDb genDb);
+    Page<GenDatabase> selectAll(Page<Object> defaultPage, GenDatabase genDatabase);
+
 }

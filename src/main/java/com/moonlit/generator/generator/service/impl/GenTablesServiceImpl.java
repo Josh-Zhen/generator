@@ -8,20 +8,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.utils.DbUtils;
-import com.moonlit.generator.generator.constant.DbErrorCode;
-import com.moonlit.generator.generator.entity.GenDb;
+import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
+import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTables;
+import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
-import com.moonlit.generator.generator.mapper.GenDbMapper;
+import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
 import com.moonlit.generator.generator.mapper.GenTablesMapper;
 import com.moonlit.generator.generator.service.GenTablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 表生成业务实现层
@@ -35,7 +35,7 @@ import java.util.Arrays;
 public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables> implements GenTablesService {
 
     @Autowired
-    private GenDbMapper genDbMapper;
+    private GenDatabaseMapper genDatabaseMapper;
     @Autowired
     private GenConfigMapper genConfigMapper;
 
@@ -49,9 +49,6 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     public PageResult<GenTables> pageList(GenTables genTables) {
         LambdaQueryWrapper<GenTables> queryWrapper = Wrappers.lambdaQuery();
         if (ObjectUtil.isNotNull(genTables)) {
-            if (ObjectUtil.isNotEmpty(genTables.getDbId())) {
-                queryWrapper.eq(GenTables::getDbId, genTables.getDbId());
-            }
             if (ObjectUtil.isNotEmpty(genTables.getTableName())) {
                 queryWrapper.eq(GenTables::getTableName, genTables.getTableName());
             }
@@ -63,9 +60,6 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
             }
             if (ObjectUtil.isNotEmpty(genTables.getClassName())) {
                 queryWrapper.eq(GenTables::getClassName, genTables.getClassName());
-            }
-            if (ObjectUtil.isNotEmpty(genTables.getCreateName())) {
-                queryWrapper.eq(GenTables::getCreateName, genTables.getCreateName());
             }
             if (ObjectUtil.isNotEmpty(genTables.getCreateDate())) {
                 queryWrapper.eq(GenTables::getCreateDate, genTables.getCreateDate());
@@ -115,21 +109,18 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     /**
      * 生成表
      *
-     * @param id 主键
+     * @param databaseId 主键
      * @return 结果
      */
     @Override
-    public Boolean generate(Long id) {
-        LambdaQueryWrapper<GenDb> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(GenDb::getId, id).eq(GenDb::getStatus, 1);
-        GenDb genDb = genDbMapper.selectOne(queryWrapper);
-        if (ObjectUtil.isEmpty(genDb)) {
-            throw new BusinessException(DbErrorCode.GENERATE_FAIL);
+    public List<DatabaseTablesVO> list(Long databaseId) {
+        LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenDatabase::getId, databaseId);
+        GenDatabase genDatabase = genDatabaseMapper.selectOne(queryWrapper);
+        if (ObjectUtil.isEmpty(genDatabase)) {
+            throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
 
-
-        //
-        ArrayList<String> dbList = DbUtils.connectMySqlDb(genDb, genConfigMapper.getConfigByType().getPrivateKey());
-        return true;
+        return null;
     }
 }

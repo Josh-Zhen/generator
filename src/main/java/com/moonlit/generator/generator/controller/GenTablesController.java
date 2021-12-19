@@ -2,15 +2,16 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenDb;
 import com.moonlit.generator.generator.entity.GenTables;
-import com.moonlit.generator.generator.entity.vo.DbTablesVO;
+import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.service.GenDbService;
 import com.moonlit.generator.generator.service.GenTablesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 表生成控制层
@@ -70,20 +71,12 @@ public class GenTablesController {
     /**
      * 根據庫id獲取庫内所有的表
      *
-     * @param dbId 庫id
+     * @param databaseId 庫id
      * @return 表數據
      */
-    @GetMapping("/getDbTables")
-    public Result<PageResult<DbTablesVO>> getDbTables(Long dbId) {
-        genDbService.getById(dbId);
-        return Result.success(null);
+    @GetMapping("/list")
+    public Result<List<DatabaseTablesVO>> list(Long databaseId) {
+        return Result.success(genTablesService.list(databaseId));
     }
 
-    /**
-     * 生成表
-     */
-    @GetMapping("/generate")
-    public Result<Boolean> generate(Long id) {
-        return Result.success(genTablesService.generate(id));
-    }
 }

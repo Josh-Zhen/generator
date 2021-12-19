@@ -29,14 +29,20 @@ public class GenTables implements Serializable {
     /**
      * 数据库id
      */
-    @ApiModelProperty(name = "dbId", value = "数据库id")
-    private Long dbId;
+    @ApiModelProperty(name = "databaseId", value = "数据库id")
+    private Long databaseId;
 
     /**
      * 表名称
      */
     @ApiModelProperty(name = "tableName", value = "表名称")
     private String tableName;
+
+    /**
+     * 表描述
+     */
+    @ApiModelProperty(name = "tableComment", value = "表描述")
+    private String tableComment;
 
     /**
      * 包路径
@@ -53,14 +59,20 @@ public class GenTables implements Serializable {
     /**
      * 类名
      */
-    @ApiModelProperty(name = "actTime", value = "激活时间")
+    @ApiModelProperty(name = "className", value = "类名")
     private String className;
 
     /**
-     * 创建者
+     * 业务名
      */
-    @ApiModelProperty(name = "createName", value = "创建者")
-    private String createName;
+    @ApiModelProperty(name = "businessName", value = "业务名")
+    private String businessName;
+
+    /**
+     * 类作者
+     */
+    @ApiModelProperty(name = "classAuthor", value = "类作者")
+    private String classAuthor;
 
     /**
      * 创建时间

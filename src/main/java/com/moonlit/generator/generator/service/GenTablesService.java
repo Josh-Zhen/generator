@@ -3,6 +3,9 @@ package com.moonlit.generator.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTables;
+import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
+
+import java.util.List;
 
 /**
  * 表生成业务层
@@ -47,10 +50,10 @@ public interface GenTablesService extends IService<GenTables> {
     Boolean deleteTablesByIds(String ids);
 
     /**
-     * 生成表
+     * 獲取表
      *
-     * @param id 主键
+     * @param databaseId 主键
      * @return 结果
      */
-    Boolean generate(Long id);
+    List<DatabaseTablesVO> list(Long databaseId);
 }
