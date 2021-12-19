@@ -8,7 +8,7 @@ package com.moonlit.generator.generator.constants;
  * @date 19/12/2021 0:20
  * @email by.Moonlit@hotmail.com
  */
-public class GenConstants {
+public class DatabaseConstants {
 
     /**
      * 字符型

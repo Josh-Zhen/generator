@@ -1,6 +1,8 @@
 package com.moonlit.generator.common.utils;
 
 import com.moonlit.generator.common.encrypt.RsaUtils;
+import com.moonlit.generator.common.exception.BusinessException;
+import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 
@@ -15,12 +17,7 @@ import java.util.ArrayList;
  * @date 2021/9/30 9:59
  * @email by.Moonlit@hotmail.com
  */
-public class DbUtils {
-
-    /**
-     * 獲取表字段信息
-     */
-    private static final String get = "";
+public class DatabaseUtils {
 
     /**
      * 連接數據庫
@@ -30,7 +27,7 @@ public class DbUtils {
      * @return 連接對象
      */
     private static Connection connectMySql(GenDatabase genDatabase, String publicKey) {
-        Connection connection = null;
+        Connection connection;
 
         String address = genDatabase.getDbAddress();
         String port = genDatabase.getDbPort();
@@ -41,7 +38,7 @@ public class DbUtils {
             Class.forName(genDatabase.getDriverClassName());
             connection = DriverManager.getConnection(url, userName, password);
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
         return connection;
     }
@@ -61,7 +58,7 @@ public class DbUtils {
                 statement.close();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
     }
 
@@ -72,23 +69,24 @@ public class DbUtils {
      * @param publicKey   公钥
      * @return 結果集
      */
-    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String publicKey, String tableName) {
+    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String publicKey) {
+        ArrayList<DatabaseTablesVO> listVo = new ArrayList<>();
         Connection connection = connectMySql(genDatabase, publicKey);
-
-        String sql = "SELECT TABLE_NAME AS tableName, TABLE_COMMENT AS tableComment FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?;";
-
+        String sql = "SELECT TABLE_NAME, TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?;";
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sql);
-            statement.setString(1, tableName);
-
+            statement.setString(1, genDatabase.getDbName());
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                listVo.add(new DatabaseTablesVO(resultSet.getString(1), resultSet.getString(2)));
+            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         } finally {
             close(connection, statement);
         }
-
-        return null;
+        return listVo;
     }
 
 }

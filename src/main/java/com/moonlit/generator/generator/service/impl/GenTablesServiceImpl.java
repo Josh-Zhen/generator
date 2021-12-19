@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.common.utils.DatabaseUtils;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTables;
@@ -36,6 +37,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
 
     @Autowired
     private GenDatabaseMapper genDatabaseMapper;
+
     @Autowired
     private GenConfigMapper genConfigMapper;
 
@@ -120,7 +122,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         if (ObjectUtil.isEmpty(genDatabase)) {
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
-
-        return null;
+        return DatabaseUtils.getTablesDetails(genDatabase, genConfigMapper.getConfigByType().getPublicKey());
     }
+
 }

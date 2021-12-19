@@ -1,6 +1,8 @@
 package com.moonlit.generator.generator.entity.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 未添加的表名
@@ -11,6 +13,8 @@ import lombok.Data;
  * @email by.Moonlit@hotmail.com
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DatabaseTablesVO {
 
     /**
