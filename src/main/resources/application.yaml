@@ -11,6 +11,9 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: generator
     password: generator
+    hikari:
+      minimum-idle: 3
+      max-lifetime: 18000
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/*/*.xml

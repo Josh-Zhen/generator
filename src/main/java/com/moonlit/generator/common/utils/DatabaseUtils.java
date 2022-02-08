@@ -78,12 +78,15 @@ public class DatabaseUtils {
             statement = connection.prepareStatement(sql);
             statement.setString(1, genDatabase.getDbName());
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                listVo.add(new DatabaseTablesVO(resultSet.getString(1), resultSet.getString(2)));
+            if (resultSet.next()) {
+                while (resultSet.next()) {
+                    listVo.add(new DatabaseTablesVO(resultSet.getString(1), resultSet.getString(2)));
+                }
             }
         } catch (SQLException e) {
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         } finally {
+
             close(connection, statement);
         }
         return listVo;
