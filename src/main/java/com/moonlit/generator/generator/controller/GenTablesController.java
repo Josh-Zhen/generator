@@ -3,8 +3,8 @@ package com.moonlit.generator.generator.controller;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenTables;
+import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
-import com.moonlit.generator.generator.service.GenDbService;
 import com.moonlit.generator.generator.service.GenTablesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,16 +29,13 @@ public class GenTablesController {
     @Autowired
     private GenTablesService genTablesService;
 
-    @Autowired
-    private GenDbService genDbService;
-
     /**
      * 条件分页查询
      */
     @GetMapping("/pageList")
     @ApiOperation("条件分页查询")
-    public Result<PageResult<GenTables>> page(GenTables genTables) {
-        return Result.success(genTablesService.pageList(genTables));
+    public Result<PageResult<GenTables>> page(GenTablesDTO genTablesDTO) {
+        return Result.success(genTablesService.pageList(genTablesDTO));
     }
 
     /**

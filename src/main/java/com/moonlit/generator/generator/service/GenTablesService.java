@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTables;
+import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 
 import java.util.List;
@@ -20,10 +21,10 @@ public interface GenTablesService extends IService<GenTables> {
     /**
      * 条件分页查询
      *
-     * @param tables 表实体
+     * @param genTablesDTO 查询实体
      * @return 结果集
      */
-    PageResult<GenTables> pageList(GenTables tables);
+    PageResult<GenTables> pageList(GenTablesDTO genTablesDTO);
 
     /**
      * 新增

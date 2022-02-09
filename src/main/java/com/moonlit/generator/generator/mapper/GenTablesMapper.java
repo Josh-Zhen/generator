@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.moonlit.generator.generator.entity.GenTables;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 库表生成_表Mapper层
  *
@@ -15,4 +17,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface GenTablesMapper extends BaseMapper<GenTables> {
 
+    /**
+     * 根據庫id獲取表明
+     *
+     * @param databaseId 庫id
+     * @return 表名集合
+     */
+    List<String> selectTableNames(Long databaseId);
 }

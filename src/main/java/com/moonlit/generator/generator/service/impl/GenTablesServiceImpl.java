@@ -12,6 +12,7 @@ import com.moonlit.generator.common.utils.DatabaseUtils;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTables;
+import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.mapper.GenConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
@@ -20,7 +21,9 @@ import com.moonlit.generator.generator.service.GenTablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.Name;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,30 +47,21 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     /**
      * 条件分页查询
      *
-     * @param genTables 表实体
+     * @param genTablesDTO 查询实体
      * @return 结果集
      */
     @Override
-    public PageResult<GenTables> pageList(GenTables genTables) {
+    public PageResult<GenTables> pageList(GenTablesDTO genTablesDTO) {
         LambdaQueryWrapper<GenTables> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(genTables)) {
-            if (ObjectUtil.isNotEmpty(genTables.getTableName())) {
-                queryWrapper.eq(GenTables::getTableName, genTables.getTableName());
+        if (ObjectUtil.isNotNull(genTablesDTO)) {
+            if (ObjectUtil.isNotEmpty(genTablesDTO.getDatabaseId())) {
+                queryWrapper.eq(GenTables::getDatabaseId, genTablesDTO.getDatabaseId());
             }
-            if (ObjectUtil.isNotEmpty(genTables.getPackageName())) {
-                queryWrapper.eq(GenTables::getPackageName, genTables.getPackageName());
+            if (ObjectUtil.isNotEmpty(genTablesDTO.getTableName())) {
+                queryWrapper.eq(GenTables::getTableName, genTablesDTO.getTableName());
             }
-            if (ObjectUtil.isNotEmpty(genTables.getModuleName())) {
-                queryWrapper.eq(GenTables::getModuleName, genTables.getModuleName());
-            }
-            if (ObjectUtil.isNotEmpty(genTables.getClassName())) {
-                queryWrapper.eq(GenTables::getClassName, genTables.getClassName());
-            }
-            if (ObjectUtil.isNotEmpty(genTables.getCreateDate())) {
-                queryWrapper.eq(GenTables::getCreateDate, genTables.getCreateDate());
-            }
-            if (ObjectUtil.isNotEmpty(genTables.getUpdateDate())) {
-                queryWrapper.eq(GenTables::getUpdateDate, genTables.getUpdateDate());
+            if (ObjectUtil.isNotEmpty(genTablesDTO.getTableComment())) {
+                queryWrapper.eq(GenTables::getTableComment, genTablesDTO.getTableComment());
             }
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
@@ -116,13 +110,27 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      */
     @Override
     public List<DatabaseTablesVO> list(Long databaseId) {
+        // 檢查庫是否存在
         LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(GenDatabase::getId, databaseId);
         GenDatabase genDatabase = genDatabaseMapper.selectOne(queryWrapper);
         if (ObjectUtil.isEmpty(genDatabase)) {
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
-        return DatabaseUtils.getTablesDetails(genDatabase, genConfigMapper.getConfigByType().getPublicKey());
+        // 獲取庫内所有的表
+        ArrayList<DatabaseTablesVO> list = DatabaseUtils.getTablesDetails(genDatabase, genConfigMapper.getConfigByType().getPublicKey());
+        List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
+        // 移除已存在的表
+        if (tableNames.size() > 0) {
+            for (DatabaseTablesVO databaseTablesVO : list) {
+                for (String tableName : tableNames) {
+                    if (databaseTablesVO.getTableName().equals(tableName)) {
+                        list.remove(databaseTablesVO);
+                    }
+                }
+            }
+        }
+        return list;
     }
 
 }

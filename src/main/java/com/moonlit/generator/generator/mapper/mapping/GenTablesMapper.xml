@@ -4,4 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.moonlit.generator.generator.mapper.GenTablesMapper">
 
+    <select id="selectTableNames" resultType="java.lang.String">
+        select table_name from gen_tables where database_id = #{databaseId}
+    </select>
 </mapper>
