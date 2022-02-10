@@ -1,15 +1,18 @@
 package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenDatabase;
-import com.moonlit.generator.generator.mapper.GenConfigMapper;
+import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
+import com.moonlit.generator.generator.mapper.GenAuthorConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
 import com.moonlit.generator.generator.service.GenDbService;
-import com.moonlit.generator.generator.service.GenTablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
- * 连接库业务实现层
+ * 数据库配置业务实现层
  *
  * @author Joshua
  * @version 1.0
@@ -28,20 +31,27 @@ import java.util.Arrays;
 public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase> implements GenDbService {
 
     @Autowired
-    private GenConfigMapper genConfigMapper;
-    @Autowired
-    private GenTablesService genTablesService;
-
+    private GenAuthorConfigMapper genAuthorConfigMapper;
 
     /**
      * 条件分页查询
      *
-     * @param genDatabase 表实体
+     * @param genDatabaseDTO 表实体
      * @return 结果集
      */
     @Override
-    public PageResult<GenDatabase> pageList(GenDatabase genDatabase) {
-        return new PageResult<>(baseMapper.selectAll(PageFactory.defaultPage(), genDatabase));
+    public PageResult<GenDatabase> pageList(GenDatabaseDTO genDatabaseDTO) {
+        LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
+        if (ObjectUtil.isNotNull(genDatabaseDTO)) {
+            if (ObjectUtil.isNotEmpty(genDatabaseDTO.getDbAddress())) {
+                queryWrapper.eq(GenDatabase::getDbAddress, genDatabaseDTO.getDbAddress());
+            }
+            if (ObjectUtil.isNotEmpty(genDatabaseDTO.getDbName())) {
+                queryWrapper.like(GenDatabase::getDbName, "%" + genDatabaseDTO.getDbName() + "%");
+            }
+        }
+        queryWrapper.orderByDesc(GenDatabase::getCreateDate);
+        return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
 
     /**
@@ -99,6 +109,6 @@ public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase
      * @return 结果
      */
     private String encrypt(String data) {
-        return RsaUtils.privateEncrypt(data, genConfigMapper.getConfigByType().getPrivateKey());
+        return RsaUtils.privateEncrypt(data, genAuthorConfigMapper.getConfigByType().getPrivateKey());
     }
 }

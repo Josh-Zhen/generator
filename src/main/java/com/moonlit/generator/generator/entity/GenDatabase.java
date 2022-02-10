@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 连接库实体
+ * 數據库实体
  *
  * @author Joshua
  * @version 1.0

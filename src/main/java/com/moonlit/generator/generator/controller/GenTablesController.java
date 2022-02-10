@@ -4,6 +4,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenTables;
 import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
+import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.service.GenTablesService;
 import io.swagger.annotations.Api;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 表生成控制层
+ * 數據表配置控制层
  *
  * @author Joshua
  * @version 1.0
@@ -23,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/genTables")
-@Api(value = "表生成", tags = {"表生成"})
+@Api(value = "數據表配置", tags = {"數據表配置"})
 public class GenTablesController {
 
     @Autowired
@@ -43,7 +44,7 @@ public class GenTablesController {
      */
     @PostMapping("/save")
     @ApiOperation("新增保存")
-    public Result<Boolean> addSave(@RequestBody GenTables genTables) {
+    public Result<Boolean> addSave(@RequestBody SaveGenTablesDTO genTables) {
         return Result.success(genTablesService.insertTables(genTables));
     }
 

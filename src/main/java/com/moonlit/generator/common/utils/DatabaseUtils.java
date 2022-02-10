@@ -86,7 +86,6 @@ public class DatabaseUtils {
         } catch (SQLException e) {
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         } finally {
-
             close(connection, statement);
         }
         return listVo;

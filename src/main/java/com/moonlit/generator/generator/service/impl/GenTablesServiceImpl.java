@@ -13,22 +13,22 @@ import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTables;
 import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
+import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
-import com.moonlit.generator.generator.mapper.GenConfigMapper;
+import com.moonlit.generator.generator.mapper.GenAuthorConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
 import com.moonlit.generator.generator.mapper.GenTablesMapper;
 import com.moonlit.generator.generator.service.GenTablesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.naming.Name;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * 表生成业务实现层
+ * 數據表配置业务实现层
  *
  * @author Joshua
  * @version 1.0
@@ -42,7 +42,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     private GenDatabaseMapper genDatabaseMapper;
 
     @Autowired
-    private GenConfigMapper genConfigMapper;
+    private GenAuthorConfigMapper genAuthorConfigMapper;
 
     /**
      * 条件分页查询
@@ -74,9 +74,18 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @return 结果
      */
     @Override
-    public Boolean insertTables(GenTables genTables) {
-        genTables.setCreateDate(LocalDateTime.now());
-        return this.save(genTables);
+    public Boolean insertTables(SaveGenTablesDTO genTables) {
+        //
+        Long databaseId = genTables.getDatabaseId();
+
+        for (String tableName : genTables.getTableNames()) {
+
+        }
+
+
+
+        GenTables tables = new GenTables();
+        return this.save(tables);
     }
 
     /**
@@ -118,7 +127,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
         // 獲取庫内所有的表
-        ArrayList<DatabaseTablesVO> list = DatabaseUtils.getTablesDetails(genDatabase, genConfigMapper.getConfigByType().getPublicKey());
+        ArrayList<DatabaseTablesVO> list = DatabaseUtils.getTablesDetails(genDatabase, genAuthorConfigMapper.getConfigByType().getPublicKey());
         List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
         // 移除已存在的表
         if (tableNames.size() > 0) {

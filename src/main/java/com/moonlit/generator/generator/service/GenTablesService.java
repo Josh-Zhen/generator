@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTables;
 import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
+import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 
 import java.util.List;
 
 /**
- * 表生成业务层
+ * 數據表配置业务层
  *
  * @author Joshua
  * @version 1.0
@@ -29,10 +30,10 @@ public interface GenTablesService extends IService<GenTables> {
     /**
      * 新增
      *
-     * @param tables 表实体
+     * @param genTables 表实体
      * @return 结果
      */
-    Boolean insertTables(GenTables tables);
+    Boolean insertTables(SaveGenTablesDTO genTables);
 
     /**
      * 修改

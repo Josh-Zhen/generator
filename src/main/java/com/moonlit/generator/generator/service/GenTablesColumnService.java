@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.generator.entity.GenTablesColumn;
 
 /**
- * 库表生成_表字段明细业务层
+ * 數據表字段明细业务层
  *
  * @author Joshua
  * @version 1.0

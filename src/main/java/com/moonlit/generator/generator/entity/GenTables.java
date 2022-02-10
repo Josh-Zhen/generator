@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ApiModel(value = "GenTables", description = "库表生成_表实体")
+@NoArgsConstructor
 public class GenTables implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,18 +47,6 @@ public class GenTables implements Serializable {
     private String tableComment;
 
     /**
-     * 包路径
-     */
-    @ApiModelProperty(name = "packageName", value = "包路径")
-    private String packageName;
-
-    /**
-     * 模块名
-     */
-    @ApiModelProperty(name = "moduleName", value = "模块名")
-    private String moduleName;
-
-    /**
      * 类名
      */
     @ApiModelProperty(name = "className", value = "类名")
@@ -69,10 +59,10 @@ public class GenTables implements Serializable {
     private String businessName;
 
     /**
-     * 类作者
+     * 功能名
      */
-    @ApiModelProperty(name = "classAuthor", value = "类作者")
-    private String classAuthor;
+    @ApiModelProperty(name = "functionName", value = "功能名")
+    private String functionName;
 
     /**
      * 创建时间
@@ -87,4 +77,20 @@ public class GenTables implements Serializable {
     @ApiModelProperty(name = "updateDate", value = "更新时间")
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateDate;
+
+    /**
+     * @param databaseId   庫id
+     * @param tableName    表名
+     * @param tableComment 表描述
+     * @param className    类名
+     * @param businessName 业务名
+     */
+    public GenTables(Long databaseId, String tableName, String tableComment, String className, String businessName) {
+        this.databaseId = databaseId;
+        this.tableName = tableName;
+        this.tableComment = tableComment;
+        this.className = className;
+        this.businessName = businessName;
+        this.createDate = LocalDateTime.now();
+    }
 }

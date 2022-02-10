@@ -1,11 +1,11 @@
 package com.moonlit.generator.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.moonlit.generator.generator.entity.GenConfig;
+import com.moonlit.generator.generator.entity.GenAuthorConfig;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 作者相关配置Mapper层
+ * 作者配置Mapper层
  *
  * @author Joshua
  * @version 1.0
@@ -13,12 +13,12 @@ import org.apache.ibatis.annotations.Mapper;
  * @email by.Moonlit@hotmail.com
  */
 @Mapper
-public interface GenConfigMapper extends BaseMapper<GenConfig> {
+public interface GenAuthorConfigMapper extends BaseMapper<GenAuthorConfig> {
 
     /**
      * 查询状态为默认的
      *
      * @return 对象
      */
-    GenConfig getConfigByType();
+    GenAuthorConfig getConfigByType();
 }

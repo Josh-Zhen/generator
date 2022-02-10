@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
- * 库表生成_表字段明细业务实现层
+ * 數據表字段明细务实现层
  *
  * @author Joshua
  * @version 1.0

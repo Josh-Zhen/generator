@@ -2,42 +2,41 @@ package com.moonlit.generator.generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenDatabase;
-import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
+import com.moonlit.generator.generator.entity.GenPackageConfig;
 
 /**
- * 数据库配置业务层
+ * 包配置业务层
  *
  * @author Joshua
  * @version 1.0
- * @date 2021/9/30 10:28
+ * @date 2021/10/14 9:06
  * @email by.Moonlit@hotmail.com
  */
-public interface GenDbService extends IService<GenDatabase> {
+public interface GenPackageConfigService extends IService<GenPackageConfig> {
 
     /**
      * 条件分页查询
      *
-     * @param genDatabaseDTO 表实体
+     * @param genPackageConfig 表实体
      * @return 结果集
      */
-    PageResult<GenDatabase> pageList(GenDatabaseDTO genDatabaseDTO);
+    PageResult<GenPackageConfig> pageList(GenPackageConfig genPackageConfig);
 
     /**
      * 新增
      *
-     * @param genDatabase 表实体
+     * @param genPackageConfig 表实体
      * @return 结果
      */
-    Boolean insertDbDetail(GenDatabase genDatabase);
+    Boolean insertDbDetail(GenPackageConfig genPackageConfig);
 
     /**
      * 修改
      *
-     * @param genDatabase 表实体
+     * @param genPackageConfig 表实体
      * @return 结果
      */
-    Boolean updateDbDetail(GenDatabase genDatabase);
+    Boolean updateDbDetail(GenPackageConfig genPackageConfig);
 
     /**
      * 批量删除
@@ -46,5 +45,4 @@ public interface GenDbService extends IService<GenDatabase> {
      * @return 结果
      */
     Boolean deleteDbDetailByIds(String ids);
-    
 }

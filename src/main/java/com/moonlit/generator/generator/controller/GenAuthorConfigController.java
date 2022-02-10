@@ -3,8 +3,9 @@ package com.moonlit.generator.generator.controller;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenConfig;
-import com.moonlit.generator.generator.service.GenConfigService;
+import com.moonlit.generator.generator.entity.GenAuthorConfig;
+import com.moonlit.generator.generator.entity.dto.GenAuthorConfigDTO;
+import com.moonlit.generator.generator.service.GenAuthorConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 /**
- * 作者相关配置值控制层
+ * 作者配置控制层
  *
  * @author Joshua
  * @version 1.0
@@ -21,47 +22,47 @@ import java.util.HashMap;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/genConfig")
-@Api(value = "作者相关配置", tags = {"作者相关配置"})
-public class GenConfigController {
+@RequestMapping("/genAuthorConfig")
+@Api(value = "作者配置", tags = {"作者配置"})
+public class GenAuthorConfigController {
 
     @Autowired
-    private GenConfigService genConfigService;
+    private GenAuthorConfigService genAuthorConfigService;
 
     /**
      * 条件分页查询
      *
-     * @param genConfig 表实体
+     * @param genAuthorConfigDTO 表实体
      * @return 结果集
      */
     @GetMapping("/pageList")
     @ApiOperation("分页查询")
-    public Result<PageResult<GenConfig>> page(GenConfig genConfig) {
-        return Result.success(genConfigService.pageList(genConfig));
+    public Result<PageResult<GenAuthorConfig>> page(GenAuthorConfigDTO genAuthorConfigDTO) {
+        return Result.success(genAuthorConfigService.pageList(genAuthorConfigDTO));
     }
 
     /**
      * 新增保存
      *
-     * @param genConfig 请求实体
+     * @param genAuthorConfig 请求实体
      * @return 结果
      */
     @PostMapping("/save")
     @ApiOperation("新增保存")
-    public Result<Boolean> addSave(@RequestBody GenConfig genConfig) {
-        return Result.success(genConfigService.insertDbDetail(genConfig));
+    public Result<Boolean> addSave(@RequestBody GenAuthorConfig genAuthorConfig) {
+        return Result.success(genAuthorConfigService.insertDbDetail(genAuthorConfig));
     }
 
     /**
      * 修改保存
      *
-     * @param genConfig 请求实体
+     * @param genAuthorConfig 请求实体
      * @return 结果
      */
     @PostMapping("/update")
     @ApiOperation("修改保存")
-    public Result<Boolean> editSave(@RequestBody GenConfig genConfig) {
-        return Result.success(genConfigService.updateDbDetail(genConfig));
+    public Result<Boolean> editSave(@RequestBody GenAuthorConfig genAuthorConfig) {
+        return Result.success(genAuthorConfigService.updateDbDetail(genAuthorConfig));
     }
 
     /**
@@ -73,7 +74,7 @@ public class GenConfigController {
     @PostMapping("/delete")
     @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
-        return Result.success(genConfigService.deleteDbDetailByIds(ids));
+        return Result.success(genAuthorConfigService.deleteDbDetailByIds(ids));
     }
 
     /**

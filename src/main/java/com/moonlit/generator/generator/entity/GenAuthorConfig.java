@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 作者相关配置实体
+ * 作者配置实体
  *
  * @author Joshua
  * @version 1.0
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenConfig {
+public class GenAuthorConfig {
 
     /**
      * id

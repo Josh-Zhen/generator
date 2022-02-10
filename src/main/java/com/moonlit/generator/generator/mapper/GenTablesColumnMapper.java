@@ -5,7 +5,7 @@ import com.moonlit.generator.generator.entity.GenTablesColumn;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 库表生成_表字段明细Mapper层
+ * 數據表字段明细Mapper层
  *
  * @author Joshua
  * @version 1.0
