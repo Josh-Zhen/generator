@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenPackageConfig;
-import com.moonlit.generator.generator.mapper.GenPackageConfigMapper;
-import com.moonlit.generator.generator.service.GenPackageConfigService;
+import com.moonlit.generator.generator.entity.GenTablesConfig;
+import com.moonlit.generator.generator.mapper.GenTablesConfigMapper;
+import com.moonlit.generator.generator.service.GenTablesConfigService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,41 +23,41 @@ import java.util.Arrays;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class GenPackageConfigServiceImpl extends ServiceImpl<GenPackageConfigMapper, GenPackageConfig> implements GenPackageConfigService {
+public class GenTablesConfigServiceImpl extends ServiceImpl<GenTablesConfigMapper, GenTablesConfig> implements GenTablesConfigService {
 
     /**
      * 条件分页查询
      *
-     * @param genPackageConfig 表实体
+     * @param genTablesConfig 表实体
      * @return 结果集
      */
     @Override
-    public PageResult<GenPackageConfig> pageList(GenPackageConfig genPackageConfig) {
-        LambdaQueryWrapper<GenPackageConfig> queryWrapper = Wrappers.lambdaQuery();
+    public PageResult<GenTablesConfig> pageList(GenTablesConfig genTablesConfig) {
+        LambdaQueryWrapper<GenTablesConfig> queryWrapper = Wrappers.lambdaQuery();
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
 
     /**
      * 新增
      *
-     * @param genPackageConfig 包实体
+     * @param genTablesConfig 包实体
      * @return 结果
      */
     @Override
-    public Boolean insertDbDetail(GenPackageConfig genPackageConfig) {
-        genPackageConfig.setCreateDate(LocalDateTime.now());
-        return this.save(genPackageConfig);
+    public Boolean insertDbDetail(GenTablesConfig genTablesConfig) {
+        genTablesConfig.setCreateDate(LocalDateTime.now());
+        return this.save(genTablesConfig);
     }
 
     /**
      * 修改
      *
-     * @param genPackageConfig 表实体
+     * @param genTablesConfig 表实体
      * @return 结果
      */
     @Override
-    public Boolean updateDbDetail(GenPackageConfig genPackageConfig) {
-        return this.updateById(genPackageConfig);
+    public Boolean updateDbDetail(GenTablesConfig genTablesConfig) {
+        return this.updateById(genTablesConfig);
     }
 
     /**

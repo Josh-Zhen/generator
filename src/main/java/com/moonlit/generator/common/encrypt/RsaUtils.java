@@ -1,5 +1,6 @@
 package com.moonlit.generator.common.encrypt;
 
+import com.moonlit.generator.common.constant.CharacterConstant;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -249,8 +250,10 @@ public class RsaUtils {
      * @return string
      */
     public static String urlsafeEncode(String encryptStr) {
-        return encryptStr.replaceAll("\\+", "-").replaceAll("/", "_")
-                .replaceAll("=", "").replaceAll("(\r\n|\r|\n|\n\r)", "");
+        return encryptStr.replaceAll("\\+", CharacterConstant.DASH)
+                .replaceAll(CharacterConstant.LEFT_DIVIDE, CharacterConstant.UNDERLINE)
+                .replaceAll("=", CharacterConstant.EMPTY)
+                .replaceAll("(\r\n|\r|\n|\n\r)", CharacterConstant.EMPTY);
     }
 
     /**
@@ -260,7 +263,8 @@ public class RsaUtils {
      * @return string
      */
     public static String urlsafeDecode(String encryptStr) {
-        encryptStr = encryptStr.replaceAll("-", "+").replaceAll("_", "/");
+        encryptStr = encryptStr.replaceAll(CharacterConstant.DASH, CharacterConstant.PLUS)
+                .replaceAll(CharacterConstant.UNDERLINE, CharacterConstant.LEFT_DIVIDE);
         int mob = encryptStr.length() % 4;
         if (mob > 0) {
             encryptStr += "====".substring(mob);

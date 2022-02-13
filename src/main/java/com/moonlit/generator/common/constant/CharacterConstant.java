@@ -8,63 +8,67 @@ package com.moonlit.generator.common.constant;
  * @date 2021/10/12 17:26
  * @email by.Moonlit@hotmail.com
  */
-public interface CharacterConstant {
+public final class CharacterConstant {
 
-    String PERIOD = ".";
+    public static String EMPTY = "";
 
-    String COMMA = ",";
+    public static String PERIOD = ".";
 
-    String COLON = ":";
+    public static String COMMA = ",";
 
-    String SEMICOLON = ";";
+    public static String COLON = ":";
 
-    String EXCLAMATION_MARK = "!";
+    public static String SEMICOLON = ";";
 
-    String QUESTION_MARK = "?";
+    public static String EXCLAMATION_MARK = "!";
 
-    String HYPHEN = "-";
+    public static String QUESTION_MARK = "?";
 
-    String ASTERISK = "*";
+    public static String HYPHEN = "-";
 
-    String APOSTROPHE = "`";
+    public static String ASTERISK = "*";
 
-    String DASH = "-";
+    public static String APOSTROPHE = "`";
 
-    String PLUS = "+";
+    public static String DASH = "-";
 
-    String UNDER_SCORE = "_";
+    public static String PLUS = "+";
 
-    String SINGLE_QUOTATION_MARK = "'";
+    public static String UNDERLINE = "_";
 
-    String DOUBLE_QUOTATION_MARK = "\"";
+    public static String SINGLE_QUOTATION_MARK = "'";
 
-    String LEFT_ROUND_BRACKETS = "(";
+    public static String DOUBLE_QUOTATION_MARK = "\"";
 
-    String RIGHT_ROUND_BRACKETS = ")";
+    public static String LEFT_ROUND_BRACKETS = "(";
 
-    String LEFT_SQUARE_BRACKETS = "[";
+    public static String RIGHT_ROUND_BRACKETS = ")";
 
-    String RIGHT_SQUARE_BRACKETS = "]";
+    public static String LEFT_SQUARE_BRACKETS = "[";
 
-    String LEFT_ANGLE_BRACKETS = "<";
+    public static String RIGHT_SQUARE_BRACKETS = "]";
 
-    String RIGHT_ANGLE_BRACKETS = ">";
+    public static String LEFT_ANGLE_BRACKETS = "<";
 
-    String LEFT_CURLY_BRACKETS = "{";
+    public static String RIGHT_ANGLE_BRACKETS = ">";
 
-    String RIGHT_CURLY_BRACKETS = "}";
+    public static String LEFT_CURLY_BRACKETS = "{";
 
-    String DOLLAR = "$";
+    public static String RIGHT_CURLY_BRACKETS = "}";
 
-    String PERCENT = "%";
+    public static String DOLLAR = "$";
 
-    String LEFT_DIVIDE = "/";
+    public static String PERCENT = "%";
 
-    String RIGHT_DIVIDE = "\\";
+    public static String HAT = "^";
 
-    String LEFT_DOUBLE_DIVIDE = "//";
+    public static String LEFT_DIVIDE = "/";
 
-    String RIGHT_DOUBLE_DIVIDE = "\\\\";
+    public static String RIGHT_DIVIDE = "\\";
 
-    String EQUAL = "=";
+    public static String LEFT_DOUBLE_DIVIDE = "//";
+
+    public static String RIGHT_DOUBLE_DIVIDE = "\\\\";
+
+    public static String EQUAL = "=";
 }

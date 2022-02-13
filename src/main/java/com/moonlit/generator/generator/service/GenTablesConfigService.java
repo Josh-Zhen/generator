@@ -2,7 +2,7 @@ package com.moonlit.generator.generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenPackageConfig;
+import com.moonlit.generator.generator.entity.GenTablesConfig;
 
 /**
  * 包配置业务层
@@ -12,31 +12,31 @@ import com.moonlit.generator.generator.entity.GenPackageConfig;
  * @date 2021/10/14 9:06
  * @email by.Moonlit@hotmail.com
  */
-public interface GenPackageConfigService extends IService<GenPackageConfig> {
+public interface GenTablesConfigService extends IService<GenTablesConfig> {
 
     /**
      * 条件分页查询
      *
-     * @param genPackageConfig 表实体
+     * @param genTablesConfig 表实体
      * @return 结果集
      */
-    PageResult<GenPackageConfig> pageList(GenPackageConfig genPackageConfig);
+    PageResult<GenTablesConfig> pageList(GenTablesConfig genTablesConfig);
 
     /**
      * 新增
      *
-     * @param genPackageConfig 表实体
+     * @param genTablesConfig 表实体
      * @return 结果
      */
-    Boolean insertDbDetail(GenPackageConfig genPackageConfig);
+    Boolean insertDbDetail(GenTablesConfig genTablesConfig);
 
     /**
      * 修改
      *
-     * @param genPackageConfig 表实体
+     * @param genTablesConfig 表实体
      * @return 结果
      */
-    Boolean updateDbDetail(GenPackageConfig genPackageConfig);
+    Boolean updateDbDetail(GenTablesConfig genTablesConfig);
 
     /**
      * 批量删除

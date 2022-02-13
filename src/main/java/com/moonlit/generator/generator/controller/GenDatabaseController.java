@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/genDb")
+@RequestMapping("/genDatabase")
 @Api(value = "数据库配置", tags = {"数据库配置"})
 public class GenDatabaseController {
 

@@ -75,17 +75,14 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      */
     @Override
     public Boolean insertTables(SaveGenTablesDTO genTables) {
-        //
+        // TODO
         Long databaseId = genTables.getDatabaseId();
 
         for (String tableName : genTables.getTableNames()) {
 
         }
 
-
-
-        GenTables tables = new GenTables();
-        return this.save(tables);
+        return this.save(null);
     }
 
     /**

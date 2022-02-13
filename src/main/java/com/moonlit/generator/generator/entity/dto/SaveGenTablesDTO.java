@@ -32,4 +32,10 @@ public class SaveGenTablesDTO implements Serializable {
      */
     @ApiModelProperty(name = "tableNames", value = "表名")
     private ArrayList<String> tableNames;
+
+    /**
+     * 移除前綴
+     */
+    @ApiModelProperty(name = "removePrefix", value = "移除前綴")
+    private Boolean removePrefix;
 }

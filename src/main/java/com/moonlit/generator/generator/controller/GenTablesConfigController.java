@@ -2,8 +2,8 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenPackageConfig;
-import com.moonlit.generator.generator.service.GenPackageConfigService;
+import com.moonlit.generator.generator.entity.GenTablesConfig;
+import com.moonlit.generator.generator.service.GenTablesConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,45 +20,45 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/genPackageConfig")
 @Api(value = "包配置", tags = {"包配置"})
-public class GenPackageConfigController {
+public class GenTablesConfigController {
 
     @Autowired
-    private GenPackageConfigService genPackageConfigService;
+    private GenTablesConfigService genTablesConfigService;
 
     /**
      * 条件分页查询
      *
-     * @param genPackageConfig 表实体
+     * @param genTablesConfig 表实体
      * @return 结果集
      */
     @GetMapping("/pageList")
     @ApiOperation("分页查询")
-    public Result<PageResult<GenPackageConfig>> page(GenPackageConfig genPackageConfig) {
-        return Result.success(genPackageConfigService.pageList(genPackageConfig));
+    public Result<PageResult<GenTablesConfig>> page(GenTablesConfig genTablesConfig) {
+        return Result.success(genTablesConfigService.pageList(genTablesConfig));
     }
 
     /**
      * 新增保存
      *
-     * @param genPackageConfig 请求实体
+     * @param genTablesConfig 请求实体
      * @return 结果
      */
     @PostMapping("/save")
     @ApiOperation("新增保存")
-    public Result<Boolean> addSave(@RequestBody GenPackageConfig genPackageConfig) {
-        return Result.success(genPackageConfigService.insertDbDetail(genPackageConfig));
+    public Result<Boolean> addSave(@RequestBody GenTablesConfig genTablesConfig) {
+        return Result.success(genTablesConfigService.insertDbDetail(genTablesConfig));
     }
 
     /**
      * 修改保存
      *
-     * @param genPackageConfig 请求实体
+     * @param genTablesConfig 请求实体
      * @return 结果
      */
     @PostMapping("/update")
     @ApiOperation("修改保存")
-    public Result<Boolean> editSave(@RequestBody GenPackageConfig genPackageConfig) {
-        return Result.success(genPackageConfigService.updateDbDetail(genPackageConfig));
+    public Result<Boolean> editSave(@RequestBody GenTablesConfig genTablesConfig) {
+        return Result.success(genTablesConfigService.updateDbDetail(genTablesConfig));
     }
 
     /**
@@ -70,7 +70,7 @@ public class GenPackageConfigController {
     @PostMapping("/delete")
     @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
-        return Result.success(genPackageConfigService.deleteDbDetailByIds(ids));
+        return Result.success(genTablesConfigService.deleteDbDetailByIds(ids));
     }
 
 }

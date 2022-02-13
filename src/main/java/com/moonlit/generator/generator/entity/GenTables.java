@@ -79,18 +79,16 @@ public class GenTables implements Serializable {
     private LocalDateTime updateDate;
 
     /**
+     * 實體構造器
+     *
      * @param databaseId   庫id
      * @param tableName    表名
      * @param tableComment 表描述
-     * @param className    类名
-     * @param businessName 业务名
      */
-    public GenTables(Long databaseId, String tableName, String tableComment, String className, String businessName) {
+    public GenTables(Long databaseId, String tableName, String tableComment) {
         this.databaseId = databaseId;
         this.tableName = tableName;
         this.tableComment = tableComment;
-        this.className = className;
-        this.businessName = businessName;
         this.createDate = LocalDateTime.now();
     }
 }

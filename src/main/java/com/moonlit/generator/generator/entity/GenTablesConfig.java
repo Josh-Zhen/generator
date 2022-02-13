@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * 包配置实体
+ * TODO 查詢時將其他屬性組成備注返回給前端
  *
  * @author Joshua
  * @version 1.0
@@ -16,13 +17,19 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenPackageConfig {
+public class GenTablesConfig {
 
     /**
      * id
      */
     @ApiModelProperty(name = "id", value = "id")
     private Long id;
+
+    /**
+     * 配置名稱
+     */
+    @ApiModelProperty(name = "name", value = "配置名稱")
+    private String name;
 
     /**
      * 包路径
