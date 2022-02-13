@@ -67,7 +67,7 @@ public class GenTablesController {
     }
 
     /**
-     * 根據庫id獲取庫内所有的表
+     * 根據庫id獲取庫内未添加的表
      *
      * @param databaseId 庫id
      * @return 表數據

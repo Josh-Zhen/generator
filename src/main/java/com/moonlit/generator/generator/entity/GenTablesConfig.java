@@ -44,6 +44,18 @@ public class GenTablesConfig {
     private String moduleName;
 
     /**
+     * 表前綴
+     */
+    @ApiModelProperty(name = "tablePrefix", value = "表前綴")
+    private String tablePrefix;
+
+    /**
+     * 移除表前綴(0 否 1 是)
+     */
+    @ApiModelProperty(name = "removePrefix", value = "移除表前綴(0 否 1 是)")
+    private Boolean removePrefix;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(name = "createDate", value = "创建时间")

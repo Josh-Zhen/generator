@@ -34,8 +34,8 @@ public class SaveGenTablesDTO implements Serializable {
     private ArrayList<String> tableNames;
 
     /**
-     * 移除前綴
+     * 表配置id
      */
-    @ApiModelProperty(name = "removePrefix", value = "移除前綴")
-    private Boolean removePrefix;
+    @ApiModelProperty(name = "tableConfigId", value = "表配置id")
+    private Long tableConfigId;
 }

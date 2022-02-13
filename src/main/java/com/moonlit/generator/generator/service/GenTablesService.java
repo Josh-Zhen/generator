@@ -52,7 +52,7 @@ public interface GenTablesService extends IService<GenTables> {
     Boolean deleteTablesByIds(String ids);
 
     /**
-     * 獲取表
+     * 獲取未添加的表
      *
      * @param databaseId 主键
      * @return 结果
