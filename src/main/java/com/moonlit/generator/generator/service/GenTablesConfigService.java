@@ -5,7 +5,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
 
 /**
- * 包配置业务层
+ * 表配置业务层
  *
  * @author Joshua
  * @version 1.0

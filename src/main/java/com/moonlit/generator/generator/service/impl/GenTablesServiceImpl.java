@@ -77,19 +77,16 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     /**
      * 新增
      *
-     * @param genTables 表实体
+     * @param genTablesDTO 表实体
      * @return 结果
      */
     @Override
-    public Boolean insertTables(SaveGenTablesDTO genTables) {
-        // TODO
-        Long databaseId = genTables.getDatabaseId();
-
-        for (String tableName : genTables.getTableNames()) {
-
+    public Boolean insertTables(SaveGenTablesDTO genTablesDTO) {
+        ArrayList<GenTables> genTables = new ArrayList<>();
+        for (DatabaseTablesVO tablesVO : genTablesDTO.getTables()) {
+            genTables.add(initializeTable(genTablesDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), genTablesDTO.getTableConfigId()));
         }
-
-        return this.save(null);
+        return this.saveBatch(genTables);
     }
 
     /**

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 包配置控制层
+ * 表配置控制层
  *
  * @author Joshua
  * @version 1.0
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/genPackageConfig")
-@Api(value = "包配置", tags = {"包配置"})
+@RequestMapping("/genTablesConfig")
+@Api(value = "表配置", tags = {"表配置"})
 public class GenTablesConfigController {
 
     @Autowired

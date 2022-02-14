@@ -1,5 +1,6 @@
 package com.moonlit.generator.generator.entity.dto;
 
+import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -31,7 +32,7 @@ public class SaveGenTablesDTO implements Serializable {
      * 表名
      */
     @ApiModelProperty(name = "tableNames", value = "表名")
-    private ArrayList<String> tableNames;
+    private ArrayList<DatabaseTablesVO> tables;
 
     /**
      * 表配置id

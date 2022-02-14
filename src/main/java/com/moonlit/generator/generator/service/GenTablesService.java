@@ -30,10 +30,10 @@ public interface GenTablesService extends IService<GenTables> {
     /**
      * 新增
      *
-     * @param genTables 表实体
+     * @param genTablesDTO 表实体
      * @return 结果
      */
-    Boolean insertTables(SaveGenTablesDTO genTables);
+    Boolean insertTables(SaveGenTablesDTO genTablesDTO);
 
     /**
      * 修改

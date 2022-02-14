@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 包配置实体
+ * 表配置实体
  * TODO 查詢時將其他屬性組成備注返回給前端
  *
  * @author Joshua
@@ -32,9 +32,9 @@ public class GenTablesConfig {
     private String name;
 
     /**
-     * 包路径
+     * 包名
      */
-    @ApiModelProperty(name = "packageName", value = "包路径")
+    @ApiModelProperty(name = "packageName", value = "包名")
     private String packageName;
 
     /**

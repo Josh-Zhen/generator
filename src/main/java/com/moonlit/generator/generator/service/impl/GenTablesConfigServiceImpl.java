@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 /**
- * 包配置业务实现层
+ * 表配置业务实现层
  *
  * @author Joshua
  * @version 1.0
