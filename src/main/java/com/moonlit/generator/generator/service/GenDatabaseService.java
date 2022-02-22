@@ -50,8 +50,7 @@ public interface GenDatabaseService extends IService<GenDatabase> {
     /**
      * 更新用戶名與密碼
      *
-     * @param publicKey  公鑰
-     * @param key       鹽
+     * @param key 鹽
      */
-    void updateDatabasesInData(String publicKey, String key);
+    void updateDatabasesInData(String key);
 }

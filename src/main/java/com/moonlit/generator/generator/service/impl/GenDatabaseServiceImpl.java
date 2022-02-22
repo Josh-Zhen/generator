@@ -106,14 +106,13 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     /**
      * 更新用戶名與密碼
      *
-     * @param publicKey 公鑰
-     * @param key      鹽
+     * @param key 鹽
      */
     @Override
-    public void updateDatabasesInData(String publicKey, String key) {
+    public void updateDatabasesInData(String key) {
         // 獲取原來的
         GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
-        String originalKey = RsaUtils.publicDecrypt(systemConfig.getSalt(), publicKey);
+        String originalKey = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
 
         List<GenDatabase> list = this.list();
         for (GenDatabase genDatabase : list) {

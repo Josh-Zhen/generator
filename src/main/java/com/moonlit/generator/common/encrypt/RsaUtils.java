@@ -103,11 +103,11 @@ public class RsaUtils {
      * 使用公钥解密
      *
      * @param encryptedData 数据
-     * @param privateKey    公钥
+     * @param publicKey     公钥
      * @return data
      */
-    public static String publicDecrypt(String encryptedData, String privateKey) {
-        return rsaDecrypt(encryptedData, privateKey, false, "UTF-8");
+    public static String publicDecrypt(String encryptedData, String publicKey) {
+        return rsaDecrypt(encryptedData, publicKey, false, "UTF-8");
     }
 
     /**

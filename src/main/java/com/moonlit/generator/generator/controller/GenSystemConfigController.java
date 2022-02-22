@@ -39,22 +39,20 @@ public class GenSystemConfigController {
      * 刷新密鑰
      */
     @ApiOperation("刷新密鑰")
-    @GetMapping("/refreshKeys")
-    public Result<Boolean> refreshKeys() {
+    @GetMapping("/refreshKey")
+    public Result<Boolean> refreshKey() {
         // 获取新密钥
         HashMap<String, String> keys = RsaUtils.genKeyPair();
-        String publicKey = keys.get("publicKey");
         String privateKey = keys.get("privateKey");
-
         GenSystemConfig systemConfig = genSystemConfigService.getById(1);
-        systemConfig.setPublicKey(publicKey);
+        systemConfig.setPublicKey(keys.get("publicKey"));
         systemConfig.setPrivateKey(privateKey);
         String salt = RandomUtil.randomString(10);
         systemConfig.setSalt(RsaUtils.privateEncrypt(salt, privateKey));
         systemConfig.setUpdateDate(LocalDateTime.now());
 
         // 更新數據庫連接的用戶名與密碼
-        genDatabaseService.updateDatabasesInData(publicKey, salt);
+        genDatabaseService.updateDatabasesInData(salt);
         return Result.success(genSystemConfigService.updateById(systemConfig));
     }
 
