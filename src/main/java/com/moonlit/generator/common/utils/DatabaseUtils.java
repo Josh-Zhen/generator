@@ -1,6 +1,6 @@
 package com.moonlit.generator.common.utils;
 
-import com.moonlit.generator.common.encrypt.RsaUtils;
+import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
@@ -23,16 +23,16 @@ public class DatabaseUtils {
      * 連接數據庫
      *
      * @param genDatabase 实体
-     * @param publicKey   公钥
+     * @param key         密鑰
      * @return 連接對象
      */
-    private static Connection connectMySql(GenDatabase genDatabase, String publicKey) {
+    private static Connection connectMySql(GenDatabase genDatabase, String key) {
         Connection connection;
 
-        String address = genDatabase.getDbAddress();
-        String port = genDatabase.getDbPort();
-        String userName = RsaUtils.publicDecrypt(genDatabase.getUserName(), publicKey);
-        String password = RsaUtils.publicDecrypt(genDatabase.getPassword(), publicKey);
+        String address = genDatabase.getAddress();
+        String port = genDatabase.getPort();
+        String userName = AesUtils.decryptBase64(genDatabase.getUserName(), key);
+        String password = AesUtils.decryptBase64(genDatabase.getPassword(), key);
         String url = "jdbc:mysql://" + address + ":" + port;
         try {
             Class.forName(genDatabase.getDriverClassName());
@@ -66,17 +66,17 @@ public class DatabaseUtils {
      * 獲取表詳情
      *
      * @param genDatabase 实体
-     * @param publicKey   公钥
+     * @param key   密鑰
      * @return 結果集
      */
-    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String publicKey) {
+    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String key) {
         ArrayList<DatabaseTablesVO> listVo = new ArrayList<>();
-        Connection connection = connectMySql(genDatabase, publicKey);
+        Connection connection = connectMySql(genDatabase, key);
         String sql = "SELECT TABLE_NAME, TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?;";
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sql);
-            statement.setString(1, genDatabase.getDbName());
+            statement.setString(1, genDatabase.getName());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 while (resultSet.next()) {

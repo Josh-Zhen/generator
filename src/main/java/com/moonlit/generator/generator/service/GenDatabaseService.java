@@ -13,7 +13,7 @@ import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
  * @date 2021/9/30 10:28
  * @email by.Moonlit@hotmail.com
  */
-public interface GenDbService extends IService<GenDatabase> {
+public interface GenDatabaseService extends IService<GenDatabase> {
 
     /**
      * 条件分页查询
@@ -29,7 +29,7 @@ public interface GenDbService extends IService<GenDatabase> {
      * @param genDatabase 表实体
      * @return 结果
      */
-    Boolean insertDbDetail(GenDatabase genDatabase);
+    Boolean insertDatabase(GenDatabase genDatabase);
 
     /**
      * 修改
@@ -37,7 +37,7 @@ public interface GenDbService extends IService<GenDatabase> {
      * @param genDatabase 表实体
      * @return 结果
      */
-    Boolean updateDbDetail(GenDatabase genDatabase);
+    Boolean updateDatabase(GenDatabase genDatabase);
 
     /**
      * 批量删除
@@ -45,6 +45,13 @@ public interface GenDbService extends IService<GenDatabase> {
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-    Boolean deleteDbDetailByIds(String ids);
-    
+    Boolean deleteDatabaseByIds(String ids);
+
+    /**
+     * 更新用戶名與密碼
+     *
+     * @param publicKey  公鑰
+     * @param key       鹽
+     */
+    void updateDatabasesInData(String publicKey, String key);
 }

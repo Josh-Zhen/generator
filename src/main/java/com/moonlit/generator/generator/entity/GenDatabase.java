@@ -25,22 +25,22 @@ public class GenDatabase {
     /**
      * 数据库地址
      */
-    private String dbAddress;
+    private String address;
 
     /**
      * 数据库端口
      */
-    private String dbPort;
+    private String port;
 
     /**
      * 库名称
      */
-    private String dbName;
+    private String name;
 
     /**
      * 数据库类型
      */
-    private Integer dbType;
+    private Integer type;
 
     /**
      * 数据库连接类型（mysql：com.mysql.cj.jdbc.Driver）

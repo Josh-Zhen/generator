@@ -90,7 +90,7 @@ public class Des3Util {
         return null;
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         String content = "111";
         String key = "key11111";
         System.out.println("content:" + content);
@@ -98,7 +98,7 @@ public class Des3Util {
         System.out.println("加密:" + s1);
 
         System.out.println("解密:" + Des3Util.decrypt(s1, key));
-    }
+    }*/
 
 }
 

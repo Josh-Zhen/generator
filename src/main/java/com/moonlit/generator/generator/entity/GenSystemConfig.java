@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 作者配置实体
+ * 系統配置实体
  *
  * @author Joshua
  * @version 1.0
@@ -15,17 +15,12 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenAuthorConfig {
+public class GenSystemConfig {
 
     /**
      * id
      */
     private Long id;
-
-    /**
-     * 作者
-     */
-    private String author;
 
     /**
      * 私钥
@@ -38,9 +33,9 @@ public class GenAuthorConfig {
     private String publicKey;
 
     /**
-     * 默认选择（0：否、1：是）
+     * 鹽
      */
-    private Integer type;
+    private String salt;
 
     /**
      * 创建时间
@@ -53,5 +48,4 @@ public class GenAuthorConfig {
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateDate;
-
 }

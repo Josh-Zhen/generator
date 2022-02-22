@@ -55,10 +55,16 @@ public class RsaUtils {
      */
     private static final String ALGORITHM_RSA = "RSA";
 
+    /**
+     * 生成公私鈅
+     *
+     * @return 公私鈅
+     */
     public static HashMap<String, String> genKeyPair() {
         HashMap<String, String> hashMap = new HashMap<>(2);
         try {
-            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(ALGORITHM_RSA);
+            // 密钥长度
             keyPairGen.initialize(1024);
             KeyPair keyPair = keyPairGen.generateKeyPair();
             PrivateKey privateKey = keyPair.getPrivate();

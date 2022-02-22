@@ -26,6 +26,12 @@ public class GenTablesConfig {
     private Long id;
 
     /**
+     * 作者
+     */
+    @ApiModelProperty(name = "author", value = "作者")
+    private String author;
+
+    /**
      * 配置名稱
      */
     @ApiModelProperty(name = "name", value = "配置名稱")

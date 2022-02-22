@@ -5,6 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.constant.CharacterConstant;
+import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
@@ -12,13 +14,14 @@ import com.moonlit.generator.common.utils.DatabaseUtils;
 import com.moonlit.generator.common.utils.NamingStrategy;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
+import com.moonlit.generator.generator.entity.GenSystemConfig;
 import com.moonlit.generator.generator.entity.GenTables;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
 import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
-import com.moonlit.generator.generator.mapper.GenAuthorConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
+import com.moonlit.generator.generator.mapper.GenSystemConfigMapper;
 import com.moonlit.generator.generator.mapper.GenTablesConfigMapper;
 import com.moonlit.generator.generator.mapper.GenTablesMapper;
 import com.moonlit.generator.generator.service.GenTablesService;
@@ -46,7 +49,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     private GenDatabaseMapper genDatabaseMapper;
 
     @Autowired
-    private GenAuthorConfigMapper genAuthorConfigMapper;
+    private GenSystemConfigMapper genSystemConfigMapper;
 
     @Autowired
     private GenTablesConfigMapper genTablesConfigMapper;
@@ -127,8 +130,12 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         if (ObjectUtil.isEmpty(genDatabase)) {
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
         }
+
+        // 獲取AES密鑰
+        GenSystemConfig genSystemConfig = genSystemConfigMapper.selectById(1);
+        String key = RsaUtils.publicDecrypt(genSystemConfig.getSalt(), genSystemConfig.getPublicKey());
         // 獲取庫内所有的表
-        ArrayList<DatabaseTablesVO> list = DatabaseUtils.getTablesDetails(genDatabase, genAuthorConfigMapper.getConfigByType().getPublicKey());
+        ArrayList<DatabaseTablesVO> list = DatabaseUtils.getTablesDetails(genDatabase, key);
         List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
         // 移除已存在的表
         if (tableNames.size() > 0) {
@@ -184,7 +191,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @return 业务名
      */
     public static String getBusinessName(String tableName) {
-        int lastIndex = tableName.lastIndexOf("_");
+        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDERLINE);
         int nameLength = tableName.length();
         return StringUtils.substring(tableName, lastIndex + 1, nameLength);
     }

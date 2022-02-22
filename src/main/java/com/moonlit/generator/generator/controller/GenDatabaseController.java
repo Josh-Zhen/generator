@@ -4,7 +4,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
-import com.moonlit.generator.generator.service.GenDbService;
+import com.moonlit.generator.generator.service.GenDatabaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class GenDatabaseController {
 
     @Autowired
-    private GenDbService genDbService;
+    private GenDatabaseService genDatabaseService;
 
     /**
      * 条件分页查询
@@ -35,7 +35,7 @@ public class GenDatabaseController {
     @GetMapping("/pageList")
     @ApiOperation("分页查询数据库明细")
     public Result<PageResult<GenDatabase>> page(GenDatabaseDTO genDatabaseDTO) {
-        return Result.success(genDbService.pageList(genDatabaseDTO));
+        return Result.success(genDatabaseService.pageList(genDatabaseDTO));
     }
 
     /**
@@ -44,7 +44,7 @@ public class GenDatabaseController {
     @PostMapping("/save")
     @ApiOperation("新增保存连接库")
     public Result<Boolean> addSave(@RequestBody GenDatabase genDatabase) {
-        return Result.success(genDbService.insertDbDetail(genDatabase));
+        return Result.success(genDatabaseService.insertDatabase(genDatabase));
     }
 
     /**
@@ -53,7 +53,7 @@ public class GenDatabaseController {
     @PostMapping("/update")
     @ApiOperation("修改保存连接库")
     public Result<Boolean> editSave(@RequestBody GenDatabase genDatabase) {
-        return Result.success(genDbService.updateDbDetail(genDatabase));
+        return Result.success(genDatabaseService.updateDatabase(genDatabase));
     }
 
     /**
@@ -62,7 +62,7 @@ public class GenDatabaseController {
     @PostMapping("/delete")
     @ApiOperation("批量删除连接库")
     public Result<Boolean> delete(String ids) {
-        return Result.success(genDbService.deleteDbDetailByIds(ids));
+        return Result.success(genDatabaseService.deleteDatabaseByIds(ids));
     }
 
 }

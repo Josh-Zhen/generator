@@ -5,19 +5,22 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenDatabase;
+import com.moonlit.generator.generator.entity.GenSystemConfig;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
-import com.moonlit.generator.generator.mapper.GenAuthorConfigMapper;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
-import com.moonlit.generator.generator.service.GenDbService;
+import com.moonlit.generator.generator.mapper.GenSystemConfigMapper;
+import com.moonlit.generator.generator.service.GenDatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 数据库配置业务实现层
@@ -28,10 +31,10 @@ import java.util.Arrays;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase> implements GenDbService {
+public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase> implements GenDatabaseService {
 
     @Autowired
-    private GenAuthorConfigMapper genAuthorConfigMapper;
+    private GenSystemConfigMapper genSystemConfigMapper;
 
     /**
      * 条件分页查询
@@ -44,10 +47,10 @@ public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase
         LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
         if (ObjectUtil.isNotNull(genDatabaseDTO)) {
             if (ObjectUtil.isNotEmpty(genDatabaseDTO.getDbAddress())) {
-                queryWrapper.eq(GenDatabase::getDbAddress, genDatabaseDTO.getDbAddress());
+                queryWrapper.eq(GenDatabase::getAddress, genDatabaseDTO.getDbAddress());
             }
             if (ObjectUtil.isNotEmpty(genDatabaseDTO.getDbName())) {
-                queryWrapper.like(GenDatabase::getDbName, "%" + genDatabaseDTO.getDbName() + "%");
+                queryWrapper.like(GenDatabase::getName, "%" + genDatabaseDTO.getDbName() + "%");
             }
         }
         queryWrapper.orderByDesc(GenDatabase::getCreateDate);
@@ -61,7 +64,7 @@ public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase
      * @return 结果
      */
     @Override
-    public Boolean insertDbDetail(GenDatabase genDatabase) {
+    public Boolean insertDatabase(GenDatabase genDatabase) {
         genDatabase.setUserName(encrypt(genDatabase.getUserName()));
         genDatabase.setPassword(encrypt(genDatabase.getPassword()));
         genDatabase.setCreateDate(LocalDateTime.now());
@@ -75,7 +78,7 @@ public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase
      * @return 结果
      */
     @Override
-    public Boolean updateDbDetail(GenDatabase genDatabase) {
+    public Boolean updateDatabase(GenDatabase genDatabase) {
         GenDatabase db = this.getById(genDatabase.getId());
 
         // 校验用户名与密码是否修改过
@@ -96,8 +99,32 @@ public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase
      * @return 结果
      */
     @Override
-    public Boolean deleteDbDetailByIds(String ids) {
+    public Boolean deleteDatabaseByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
+    }
+
+    /**
+     * 更新用戶名與密碼
+     *
+     * @param publicKey 公鑰
+     * @param key      鹽
+     */
+    @Override
+    public void updateDatabasesInData(String publicKey, String key) {
+        // 獲取原來的
+        GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
+        String originalKey = RsaUtils.publicDecrypt(systemConfig.getSalt(), publicKey);
+
+        List<GenDatabase> list = this.list();
+        for (GenDatabase genDatabase : list) {
+            String userName = AesUtils.decryptBase64(genDatabase.getUserName(), originalKey);
+            String password = AesUtils.decryptBase64(genDatabase.getPassword(), originalKey);
+            // 重新加密用戶名稱與密碼
+            genDatabase.setUserName(AesUtils.encryptBase64(userName, key));
+            genDatabase.setPassword(AesUtils.encryptBase64(password, key));
+            genDatabase.setUpdateDate(LocalDateTime.now());
+        }
+        this.updateBatchById(list);
     }
 
     /*---------------------------------------- 内部方法 ----------------------------------------*/
@@ -109,6 +136,8 @@ public class GenDbServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase
      * @return 结果
      */
     private String encrypt(String data) {
-        return RsaUtils.privateEncrypt(data, genAuthorConfigMapper.getConfigByType().getPrivateKey());
+        GenSystemConfig genSystemConfig = genSystemConfigMapper.selectById(1);
+        String key = RsaUtils.publicDecrypt(genSystemConfig.getSalt(), genSystemConfig.getPublicKey());
+        return AesUtils.encryptBase64(data, key);
     }
 }
