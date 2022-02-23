@@ -22,12 +22,12 @@ public class GenDatabaseDTO implements Serializable {
     /**
      * 数据库地址
      */
-    private String dbAddress;
+    private String address;
 
     /**
      * 库名称
      */
-    private String dbName;
+    private String name;
 
 
 }

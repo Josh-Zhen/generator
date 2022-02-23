@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 /**
  * 表配置实体
- * TODO 查詢時將其他屬性組成備注返回給前端
  *
  * @author Joshua
  * @version 1.0
@@ -26,16 +25,16 @@ public class GenTablesConfig {
     private Long id;
 
     /**
-     * 作者
-     */
-    @ApiModelProperty(name = "author", value = "作者")
-    private String author;
-
-    /**
      * 配置名稱
      */
     @ApiModelProperty(name = "name", value = "配置名稱")
     private String name;
+
+    /**
+     * 作者
+     */
+    @ApiModelProperty(name = "author", value = "作者")
+    private String author;
 
     /**
      * 包名

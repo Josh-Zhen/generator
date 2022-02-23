@@ -60,7 +60,7 @@ public class GenDatabase {
     /**
      * 状态(0：禁止，1默认)
      */
-    private Integer status;
+    private Boolean status;
 
     /**
      * 创建时间

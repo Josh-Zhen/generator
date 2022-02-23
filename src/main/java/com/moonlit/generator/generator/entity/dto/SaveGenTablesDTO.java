@@ -29,10 +29,10 @@ public class SaveGenTablesDTO implements Serializable {
     private Long databaseId;
 
     /**
-     * 表名
+     * 數據集合
      */
-    @ApiModelProperty(name = "tableNames", value = "表名")
-    private ArrayList<DatabaseTablesVO> tables;
+    @ApiModelProperty(name = "tableNames", value = "數據集合")
+    private ArrayList<DatabaseTablesVO> list;
 
     /**
      * 表配置id

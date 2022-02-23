@@ -46,11 +46,11 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     public PageResult<GenDatabase> pageList(GenDatabaseDTO genDatabaseDTO) {
         LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
         if (ObjectUtil.isNotNull(genDatabaseDTO)) {
-            if (ObjectUtil.isNotEmpty(genDatabaseDTO.getDbAddress())) {
-                queryWrapper.eq(GenDatabase::getAddress, genDatabaseDTO.getDbAddress());
+            if (ObjectUtil.isNotEmpty(genDatabaseDTO.getAddress())) {
+                queryWrapper.eq(GenDatabase::getAddress, genDatabaseDTO.getAddress());
             }
-            if (ObjectUtil.isNotEmpty(genDatabaseDTO.getDbName())) {
-                queryWrapper.like(GenDatabase::getName, "%" + genDatabaseDTO.getDbName() + "%");
+            if (ObjectUtil.isNotEmpty(genDatabaseDTO.getName())) {
+                queryWrapper.like(GenDatabase::getName, "%" + genDatabaseDTO.getName() + "%");
             }
         }
         queryWrapper.orderByDesc(GenDatabase::getCreateDate);

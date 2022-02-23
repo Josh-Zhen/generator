@@ -41,11 +41,11 @@ public class GenSystemConfigController {
     @ApiOperation("刷新密鑰")
     @GetMapping("/refreshKey")
     public Result<Boolean> refreshKey() {
+        GenSystemConfig systemConfig = genSystemConfigService.getById(1);
         // 获取新密钥
         HashMap<String, String> keys = RsaUtils.genKeyPair();
-        String privateKey = keys.get("privateKey");
-        GenSystemConfig systemConfig = genSystemConfigService.getById(1);
         systemConfig.setPublicKey(keys.get("publicKey"));
+        String privateKey = keys.get("privateKey");
         systemConfig.setPrivateKey(privateKey);
         String salt = RandomUtil.randomString(10);
         systemConfig.setSalt(RsaUtils.privateEncrypt(salt, privateKey));

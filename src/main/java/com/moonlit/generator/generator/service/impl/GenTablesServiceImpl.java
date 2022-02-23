@@ -86,7 +86,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     @Override
     public Boolean insertTables(SaveGenTablesDTO genTablesDTO) {
         ArrayList<GenTables> genTables = new ArrayList<>();
-        for (DatabaseTablesVO tablesVO : genTablesDTO.getTables()) {
+        for (DatabaseTablesVO tablesVO : genTablesDTO.getList()) {
             genTables.add(initializeTable(genTablesDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), genTablesDTO.getTableConfigId()));
         }
         return this.saveBatch(genTables);

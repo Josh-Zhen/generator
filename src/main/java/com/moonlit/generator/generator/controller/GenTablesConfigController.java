@@ -3,11 +3,14 @@ package com.moonlit.generator.generator.controller;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
+import com.moonlit.generator.generator.entity.vo.GenTablesConfigVO;
 import com.moonlit.generator.generator.service.GenTablesConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 /**
  * 表配置控制层
@@ -73,4 +76,18 @@ public class GenTablesConfigController {
         return Result.success(genTablesConfigService.deleteDbDetailByIds(ids));
     }
 
+    /**
+     * 獲取表配置
+     *
+     * @return 數據集合
+     */
+    @GetMapping("/getTablesConfig")
+    @ApiOperation("獲取表配置")
+    public Result<ArrayList<GenTablesConfigVO>> getTablesConfig() {
+        ArrayList<GenTablesConfigVO> list = new ArrayList<>();
+        for (GenTablesConfig genTablesConfig : genTablesConfigService.list()) {
+            list.add(new GenTablesConfigVO(genTablesConfig));
+        }
+        return Result.success(list);
+    }
 }
