@@ -1,6 +1,5 @@
 package com.moonlit.generator.system.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -8,13 +7,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.entity.DictData;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.mapper.DictDataMapper;
 import com.moonlit.generator.system.service.IDictDataService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +45,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         List<DictData> results = this.list(queryWrapper);
 
         //抽取code和value封装到map返回
-        List<DictVO> dictList = CollectionUtil.newArrayList();
+        List<DictVO> dictList = new ArrayList<>();
         results.forEach(dictData -> dictList.add(new DictVO(dictData.getName(), dictData.getValue())));
         return dictList;
     }
