@@ -31,10 +31,10 @@ public class DatabaseUtils {
         Connection connection;
 
         String address = genDatabase.getAddress();
-        String port = genDatabase.getPort();
+        String port = CharacterConstant.COLON + genDatabase.getPort();
         String userName = AesUtils.decryptBase64(genDatabase.getUserName(), key);
         String password = AesUtils.decryptBase64(genDatabase.getPassword(), key);
-        String url = "jdbc:mysql://" + address + CharacterConstant.COLON + port;
+        String url = "jdbc:mysql://" + address + port;
         try {
             Class.forName(genDatabase.getDriverClassName());
             connection = DriverManager.getConnection(url, userName, password);
@@ -73,16 +73,14 @@ public class DatabaseUtils {
     public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String key) {
         ArrayList<DatabaseTablesVO> listVo = new ArrayList<>();
         Connection connection = connectMySql(genDatabase, key);
-        String sql = "SELECT TABLE_NAME, TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?;";
+        String sql = "SELECT TABLE_NAME, TABLE_COMMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?";
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(sql);
             statement.setString(1, genDatabase.getName());
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                while (resultSet.next()) {
-                    listVo.add(new DatabaseTablesVO(resultSet.getString(1), resultSet.getString(2)));
-                }
+            while (resultSet.next()) {
+                listVo.add(new DatabaseTablesVO(resultSet.getString("TABLE_NAME"), resultSet.getString("TABLE_COMMENT")));
             }
         } catch (SQLException e) {
             throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
