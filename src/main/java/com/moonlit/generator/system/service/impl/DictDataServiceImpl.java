@@ -38,15 +38,13 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     public List<DictVO> getDictDataListByDictTypeId(Long dictTypeId) {
         //构造查询条件
         LambdaQueryWrapper<DictData> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(DictData::getTypeId, dictTypeId).eq(DictData::getStatus, 1)
-                //根据排序升序排列，序号越小越在前
-                .orderByAsc(DictData::getSort);
+        queryWrapper.eq(DictData::getTypeId, dictTypeId).eq(DictData::getStatus, 1).orderByAsc(DictData::getSort);
         //查询dictTypeId下所有的字典项
         List<DictData> results = this.list(queryWrapper);
 
         //抽取code和value封装到map返回
         List<DictVO> dictList = new ArrayList<>();
-        results.forEach(dictData -> dictList.add(new DictVO(dictData.getName(), dictData.getValue())));
+        results.forEach(dictData -> dictList.add(new DictVO(dictData.getValue(), dictData.getName())));
         return dictList;
     }
 

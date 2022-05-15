@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
+import com.moonlit.generator.system.entity.vo.DictVO;
+
+import java.util.List;
 
 /**
  * 数据库配置业务层
@@ -53,4 +56,11 @@ public interface GenDatabaseService extends IService<GenDatabase> {
      * @param key 鹽
      */
     void updateDatabasesInData(String key);
+
+    /**
+     * 獲取數據庫名
+     *
+     * @return 结果集
+     */
+    List<DictVO> dropDown();
 }

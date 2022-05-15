@@ -58,11 +58,6 @@ public class GenDatabase {
     private String password;
 
     /**
-     * 状态(0：禁止，1默认)
-     */
-    private Boolean status;
-
-    /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)

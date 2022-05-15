@@ -5,10 +5,13 @@ import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
 import com.moonlit.generator.generator.service.GenDatabaseService;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 数据库配置控制层
@@ -65,4 +68,14 @@ public class GenDatabaseController {
         return Result.success(genDatabaseService.deleteDatabaseByIds(ids));
     }
 
+    /**
+     * 獲取數據庫名
+     *
+     * @return 结果集
+     */
+    @GetMapping("/dropDown")
+    @ApiOperation("數據庫字典")
+    public Result<List<DictVO>> dropDown() {
+        return Result.success(genDatabaseService.dropDown());
+    }
 }

@@ -139,13 +139,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
         // 移除已存在的表
         if (tableNames.size() > 0) {
-            for (DatabaseTablesVO databaseTablesVO : list) {
-                for (String tableName : tableNames) {
-                    if (databaseTablesVO.getTableName().equals(tableName)) {
-                        list.remove(databaseTablesVO);
-                    }
-                }
-            }
+            list.removeIf(databaseTablesVO -> tableNames.contains(databaseTablesVO.getTableName()));
         }
         return list;
     }
@@ -165,6 +159,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         GenTables genTables = new GenTables(databaseId, tableName, tableComment);
         genTables.setClassName(convertClassName(tableName, tableConfigId));
         genTables.setBusinessName(getBusinessName(tableName));
+        // TODO 表名
         genTables.setFunctionName(tableName.replaceAll("表", ""));
         return genTables;
     }

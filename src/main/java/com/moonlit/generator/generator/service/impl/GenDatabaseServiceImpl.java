@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -135,6 +136,19 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         this.updateBatchById(list);
     }
 
+    /**
+     * 獲取數據庫名
+     *
+     * @return 结果集
+     */
+    @Override
+    public List<DictVO> dropDown() {
+        ArrayList<DictVO> vos = new ArrayList<>();
+        List<GenDatabase> list = this.list();
+        list.forEach(genDatabase -> vos.add(new DictVO(genDatabase.getId().toString(), genDatabase.getName())));
+        return vos;
+    }
+
     /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
@@ -145,7 +159,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     private void matchDriver(GenDatabase genDatabase) {
         Collection<DictVO> vos = dictTypeService.dropDown("database_type");
         for (DictVO vo : vos) {
-            if (genDatabase.getType().equals(Integer.parseInt(vo.getValue()))) {
+            if (genDatabase.getType().equals(Integer.parseInt(vo.getKey()))) {
                 genDatabase.setDriverClassName(DatabaseConstant.getDriverClass(vo.getName()));
             }
         }

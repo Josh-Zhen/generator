@@ -18,12 +18,13 @@ import lombok.NoArgsConstructor;
 public class DictVO {
 
     /**
+     * 鍵值
+     */
+    private String key;
+
+    /**
      * code
      */
     private String name;
 
-    /**
-     * 值
-     */
-    private String value;
 }
