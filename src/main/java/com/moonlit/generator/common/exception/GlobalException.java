@@ -57,12 +57,11 @@ public class GlobalException {
      */
     @ResponseBody
     @ExceptionHandler({BusinessException.class})
-    public Result handleMicrosException(BusinessException e) {
+    public Result<Object> handleMicrosException(BusinessException e) {
         return Result.fail(e.getCode(), e.getMessage());
     }
 
     /**
-     * 这个方法是拷贝
      * 加入自定义处理，实现对400， 404， 405， 406， 415， 500(参数问题导致)， 503的处理
      *
      * @param ex 异常信息
@@ -99,14 +98,12 @@ public class GlobalException {
             if (fieldError != null) {
                 return fieldError.getDefaultMessage();
             }
-            return null;
         } else if (ex instanceof MethodArgumentNotValidException) {
             BindingResult bindingResult = ((MethodArgumentNotValidException) ex).getBindingResult();
             FieldError fieldError = bindingResult.getFieldError();
             if (fieldError != null) {
                 return fieldError.getDefaultMessage();
             }
-            return null;
         } else if (ex instanceof AsyncRequestTimeoutException) {
             return ex.getMessage();
         }

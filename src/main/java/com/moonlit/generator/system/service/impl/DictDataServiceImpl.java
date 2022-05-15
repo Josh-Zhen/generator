@@ -10,7 +10,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.system.entity.DictData;
 import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.mapper.DictDataMapper;
-import com.moonlit.generator.system.service.IDictDataService;
+import com.moonlit.generator.system.service.DictDataService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ import java.util.List;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> implements IDictDataService {
+public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> implements DictDataService {
 
     /**
      * 通过字典类型id查询字典name和value

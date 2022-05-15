@@ -1,5 +1,6 @@
 package com.moonlit.generator.common.utils;
 
+import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
@@ -33,7 +34,7 @@ public class DatabaseUtils {
         String port = genDatabase.getPort();
         String userName = AesUtils.decryptBase64(genDatabase.getUserName(), key);
         String password = AesUtils.decryptBase64(genDatabase.getPassword(), key);
-        String url = "jdbc:mysql://" + address + ":" + port;
+        String url = "jdbc:mysql://" + address + CharacterConstant.COLON + port;
         try {
             Class.forName(genDatabase.getDriverClassName());
             connection = DriverManager.getConnection(url, userName, password);
@@ -66,7 +67,7 @@ public class DatabaseUtils {
      * 獲取表詳情
      *
      * @param genDatabase 实体
-     * @param key   密鑰
+     * @param key         密鑰
      * @return 結果集
      */
     public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String key) {

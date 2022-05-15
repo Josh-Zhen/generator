@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * HttpServlet工具类，获取当前request和response
  *
- * @author tangjx
+ * @author Joshua
+ * @version 1.0
+ * @date 2021/9/30 9:59
+ * @email by.Moonlit@hotmail.com
  */
 public class HttpServletUtil {
 

@@ -24,10 +24,10 @@ public class Result<T> implements Serializable {
     /**
      * 成功标志
      */
-    private boolean success;
+    private Boolean success;
 
     /**
-     * 失败消息
+     * 消息
      */
     private String message;
 
@@ -39,7 +39,7 @@ public class Result<T> implements Serializable {
     /**
      * 时间戳
      */
-    private long timestamp = System.currentTimeMillis();
+    private Long timestamp = System.currentTimeMillis();
 
     /**
      * 返回的数据

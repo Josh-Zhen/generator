@@ -1,10 +1,10 @@
 package com.moonlit.generator.system.controller;
 
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.system.entity.DictType;
-import com.moonlit.generator.system.service.IDictTypeService;
+import com.moonlit.generator.system.entity.vo.DictVO;
+import com.moonlit.generator.system.service.DictTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.List;
 public class DictTypeController {
 
     @Autowired
-    private IDictTypeService dictTypeService;
+    private DictTypeService dictTypeService;
 
     /**
      * 根据CODE查询字典所有值

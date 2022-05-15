@@ -2,8 +2,8 @@ package com.moonlit.generator.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.entity.DictType;
+import com.moonlit.generator.system.entity.vo.DictVO;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2021/10/14 8:39
  * @email by.Moonlit@hotmail.com
  */
-public interface IDictTypeService extends IService<DictType> {
+public interface DictTypeService extends IService<DictType> {
 
     /**
      * 根据CODE查询字典所有值

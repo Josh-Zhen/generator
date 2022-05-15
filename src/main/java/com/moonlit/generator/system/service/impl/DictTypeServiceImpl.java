@@ -8,11 +8,11 @@ import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.exception.enums.SystemCodeEnum;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.entity.DictType;
+import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.mapper.DictTypeMapper;
-import com.moonlit.generator.system.service.IDictDataService;
-import com.moonlit.generator.system.service.IDictTypeService;
+import com.moonlit.generator.system.service.DictDataService;
+import com.moonlit.generator.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +28,10 @@ import java.util.List;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements IDictTypeService {
+public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements DictTypeService {
 
     @Autowired
-    private IDictDataService dictDataService;
+    private DictDataService dictDataService;
 
     /**
      * 根据CODE查询字典所有值

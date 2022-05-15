@@ -20,9 +20,9 @@ public enum DatabaseErrorCode implements AbstractBaseExceptionEnum {
      */
     UNABLE_TO_CONNECT(11001, "无法连接库"),
     DATA_IS_TRUE(11002, "数据已存在，请检查是否存在同名数据"),
+    DRIVEN_IS_NOT_EXIST(11003, "数据库驱动不存在"),
     ;
 
     private Integer code;
-
     private String message;
 }

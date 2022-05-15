@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.constant.DatabaseConstant;
 import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
@@ -15,11 +16,14 @@ import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
 import com.moonlit.generator.generator.mapper.GenSystemConfigMapper;
 import com.moonlit.generator.generator.service.GenDatabaseService;
+import com.moonlit.generator.system.entity.vo.DictVO;
+import com.moonlit.generator.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,6 +36,9 @@ import java.util.List;
  */
 @Service
 public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDatabase> implements GenDatabaseService {
+
+    @Autowired
+    private DictTypeService dictTypeService;
 
     @Autowired
     private GenSystemConfigMapper genSystemConfigMapper;
@@ -67,6 +74,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     public Boolean insertDatabase(GenDatabase genDatabase) {
         genDatabase.setUserName(encrypt(genDatabase.getUserName()));
         genDatabase.setPassword(encrypt(genDatabase.getPassword()));
+        this.matchDriver(genDatabase);
         genDatabase.setCreateDate(LocalDateTime.now());
         return this.save(genDatabase);
     }
@@ -88,6 +96,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         if (!db.getPassword().equals(genDatabase.getPassword())) {
             genDatabase.setPassword(encrypt(genDatabase.getPassword()));
         }
+        this.matchDriver(genDatabase);
         genDatabase.setUpdateDate(LocalDateTime.now());
         return this.updateById(genDatabase);
     }
@@ -127,6 +136,20 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     }
 
     /*---------------------------------------- 内部方法 ----------------------------------------*/
+
+    /**
+     * 匹配數據庫驅動
+     *
+     * @param genDatabase 表实体
+     */
+    private void matchDriver(GenDatabase genDatabase) {
+        Collection<DictVO> vos = dictTypeService.dropDown("database_type");
+        for (DictVO vo : vos) {
+            if (genDatabase.getType().equals(Integer.parseInt(vo.getValue()))) {
+                genDatabase.setDriverClassName(DatabaseConstant.getDriverClass(vo.getName()));
+            }
+        }
+    }
 
     /**
      * RSA数据加密

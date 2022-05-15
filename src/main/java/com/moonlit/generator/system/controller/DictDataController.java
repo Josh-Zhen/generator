@@ -3,7 +3,7 @@ package com.moonlit.generator.system.controller;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.system.entity.DictData;
-import com.moonlit.generator.system.service.IDictDataService;
+import com.moonlit.generator.system.service.DictDataService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class DictDataController {
 
     @Autowired
-    private IDictDataService dictDataService;
+    private DictDataService dictDataService;
 
     /**
      * 分页查询字典管理(以父id查询)

@@ -1,7 +1,7 @@
 package com.moonlit.generator.generator.constants;
 
 /**
- * 代碼生成通用常量
+ * 數據庫數據類型通用常量
  *
  * @author Joshua
  * @version 1.0

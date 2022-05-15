@@ -43,7 +43,7 @@ public class GenDatabase {
     private Integer type;
 
     /**
-     * 数据库连接类型（mysql：com.mysql.cj.jdbc.Driver）
+     * 数据库驱动
      */
     private String driverClassName;
 
