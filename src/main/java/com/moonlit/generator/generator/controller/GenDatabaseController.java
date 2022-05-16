@@ -70,7 +70,6 @@ public class GenDatabaseController {
 
     /**
      * 獲取數據庫名
-     *
      * @return 结果集
      */
     @GetMapping("/dropDown")
