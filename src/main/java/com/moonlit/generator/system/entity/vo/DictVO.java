@@ -23,7 +23,7 @@ public class DictVO {
     private String key;
 
     /**
-     * code
+     * 名稱
      */
     private String name;
 
