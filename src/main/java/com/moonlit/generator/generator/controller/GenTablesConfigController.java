@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 /**
- * 表配置控制层
+ * 數據表控制层
  *
  * @author Joshua
  * @version 1.0
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/genTablesConfig")
-@Api(value = "表配置", tags = {"表配置"})
+@Api(value = "數據表", tags = {"數據表"})
 public class GenTablesConfigController {
 
     @Autowired

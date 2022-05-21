@@ -22,8 +22,10 @@ public class GenTablesColumn implements Serializable {
      */
     private Integer id;
 
+    //-------------------- 數據庫字段 --------------------/
+
     /**
-     * 关联键
+     * 表id
      */
     private Integer tableId;
 
@@ -38,9 +40,31 @@ public class GenTablesColumn implements Serializable {
     private String columnComment;
 
     /**
+     * 排序
+     */
+    private Long sort;
+
+    /**
      * 列类型
      */
     private String columnType;
+
+    /**
+     * 是否主键
+     */
+    private Integer isPrimaryKey;
+
+    /**
+     * 是否自增（0否，1是）
+     */
+    private String isIncrement;
+
+    /**
+     * 是否為空（0否，1是）
+     */
+    private String isRequired;
+
+    //-------------------- 數據字段 --------------------/
 
     /**
      * JAVA类型
@@ -53,37 +77,22 @@ public class GenTablesColumn implements Serializable {
     private String javaField;
 
     /**
-     * 是否主键
-     */
-    private Integer isPk;
-
-    /**
-     * 是否自增（1是）
-     */
-    private String isIncrement;
-
-    /**
-     * 是否必填（1是）
-     */
-    private String isRequired;
-
-    /**
-     * 是否为插入字段（1是）
+     * 是否为插入字段（0否，1是）
      */
     private String isInsert;
 
     /**
-     * 是否编辑字段（1是）
+     * 是否编辑字段（0否，1是）
      */
     private String isEdit;
 
     /**
-     * 是否列表字段（1是）
+     * 是否列表字段（0否，1是）
      */
     private String isList;
 
     /**
-     * 是否查询字段（1是）
+     * 是否查询字段（0否，1是）
      */
     private String isQuery;
 
@@ -103,25 +112,10 @@ public class GenTablesColumn implements Serializable {
     private String dictType;
 
     /**
-     * 排序
-     */
-    private Long sort;
-
-    /**
-     * 创建者
-     */
-    private String createBy;
-
-    /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime createTime;
-
-    /**
-     * 更新者
-     */
-    private String updateBy;
 
     /**
      * 更新时间

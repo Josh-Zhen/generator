@@ -34,7 +34,7 @@ public final class CharacterConstant {
 
     public static String PLUS = "+";
 
-    public static String UNDERLINE = "_";
+    public static String UNDER_LINE = "_";
 
     public static String SINGLE_QUOTATION_MARK = "'";
 

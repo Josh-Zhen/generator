@@ -65,6 +65,12 @@ public class GenTables implements Serializable {
     private String functionName;
 
     /**
+     * 配置表id
+     */
+    @ApiModelProperty(name = "configId", value = "配置表id")
+    private Long configId;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(name = "createDate", value = "创建时间")
@@ -84,11 +90,13 @@ public class GenTables implements Serializable {
      * @param databaseId   庫id
      * @param tableName    表名
      * @param tableComment 表描述
+     * @param configId     配置表id
      */
-    public GenTables(Long databaseId, String tableName, String tableComment) {
+    public GenTables(Long databaseId, String tableName, String tableComment, Long configId) {
         this.databaseId = databaseId;
         this.tableName = tableName;
         this.tableComment = tableComment;
+        this.configId = configId;
         this.createDate = LocalDateTime.now();
     }
 }

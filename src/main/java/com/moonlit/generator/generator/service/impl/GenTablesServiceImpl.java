@@ -10,7 +10,7 @@ import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.common.utils.DatabaseUtils;
+import com.moonlit.generator.common.utils.MySqlUtils;
 import com.moonlit.generator.common.utils.NamingStrategy;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
@@ -28,6 +28,7 @@ import com.moonlit.generator.generator.service.GenTablesService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -78,30 +79,26 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     }
 
     /**
-     * 新增
+     * 获取业务名
+     * TODO 設計不合理
      *
-     * @param genTablesDTO 表实体
-     * @return 结果
+     * @param tableName 表名
+     * @return 业务名
      */
-    @Override
-    public Boolean insertTables(SaveGenTablesDTO genTablesDTO) {
-        ArrayList<GenTables> genTables = new ArrayList<>();
-        for (DatabaseTablesVO tablesVO : genTablesDTO.getList()) {
-            genTables.add(initializeTable(genTablesDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), genTablesDTO.getTableConfigId()));
-        }
-        return this.saveBatch(genTables);
+    public static String getBusinessName(String tableName) {
+        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
+        return StringUtils.substring(tableName, lastIndex + 1, tableName.length());
     }
 
     /**
-     * 修改
+     * 獲取業務描述
      *
-     * @param genTables 表实体
-     * @return 结果
+     * @param tableComment 表描述
+     * @return 業務描述
      */
-    @Override
-    public Boolean updateTables(GenTables genTables) {
-        genTables.setUpdateDate(LocalDateTime.now());
-        return this.updateById(genTables);
+    public static String getBusinessComment(String tableComment) {
+        int index = tableComment.length() - 1;
+        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
     }
 
     /**
@@ -113,6 +110,54 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     @Override
     public Boolean deleteTablesByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
+    }
+
+    /**
+     * 新增
+     *
+     * @param genTablesDTO 表实体
+     * @return 结果
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class, timeout = 30)
+    public Boolean insertTables(SaveGenTablesDTO genTablesDTO) {
+        for (DatabaseTablesVO tablesVO : genTablesDTO.getList()) {
+            GenTables tables = null;
+            try {
+                tables = initializeTable(genTablesDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), genTablesDTO.getTableConfigId());
+                baseMapper.insert(tables);
+                // 插入數據後的主鍵
+                Integer row = tables.getId();
+                if (row > 0) {
+                    //  TODO 插入表字段信息
+
+
+                }
+            } catch (Exception e) {
+                throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
+            }
+        }
+        // TODO 添加表字段
+        return true;
+    }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
+
+    /**
+     * 修改
+     *
+     * @param genTables 表实体
+     * @return 结果
+     */
+    @Override
+    public Boolean updateTables(GenTables genTables) {
+        GenTables tables = this.getById(genTables.getId());
+        // 表配置變動
+        if (!genTables.getConfigId().equals(tables.getConfigId())) {
+            genTables.setClassName(convertClassName(genTables.getTableName(), genTables.getConfigId()));
+        }
+        genTables.setUpdateDate(LocalDateTime.now());
+        return this.updateById(genTables);
     }
 
     /**
@@ -128,14 +173,14 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         queryWrapper.eq(GenDatabase::getId, databaseId);
         GenDatabase genDatabase = genDatabaseMapper.selectOne(queryWrapper);
         if (ObjectUtil.isEmpty(genDatabase)) {
-            throw new BusinessException(DatabaseErrorCode.UNABLE_TO_CONNECT);
+            throw new BusinessException(DatabaseErrorCode.DATABASE_NOT_EXIST);
         }
 
         // 獲取AES密鑰
-        GenSystemConfig genSystemConfig = genSystemConfigMapper.selectById(1);
-        String key = RsaUtils.publicDecrypt(genSystemConfig.getSalt(), genSystemConfig.getPublicKey());
+        GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
+        String key = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
         // 獲取庫内所有的表
-        ArrayList<DatabaseTablesVO> list = DatabaseUtils.getTablesDetails(genDatabase, key);
+        ArrayList<DatabaseTablesVO> list = MySqlUtils.getTablesDetails(genDatabase, key);
         List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
         // 移除已存在的表
         if (tableNames.size() > 0) {
@@ -143,8 +188,6 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         }
         return list;
     }
-
-    /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
      * 初始化表實體
@@ -156,11 +199,10 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @return 表實體
      */
     private GenTables initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
-        GenTables genTables = new GenTables(databaseId, tableName, tableComment);
+        GenTables genTables = new GenTables(databaseId, tableName, tableComment, tableConfigId);
         genTables.setClassName(convertClassName(tableName, tableConfigId));
         genTables.setBusinessName(getBusinessName(tableName));
-        // TODO 表名
-        genTables.setFunctionName(tableName.replaceAll("表", ""));
+        genTables.setFunctionName(tableName);
         return genTables;
     }
 
@@ -174,21 +216,8 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     private String convertClassName(String tableName, Long tableConfigId) {
         GenTablesConfig tablesConfig = genTablesConfigMapper.selectById(tableConfigId);
         if (tablesConfig.getRemovePrefix()) {
-            return NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix());
+            return NamingStrategy.firstToUpperCase(NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix()));
         }
-        return NamingStrategy.underlineToCamel(tableName);
+        return NamingStrategy.firstToUpperCase(NamingStrategy.underlineToCamel(tableName));
     }
-
-    /**
-     * 获取业务名
-     *
-     * @param tableName 表名
-     * @return 业务名
-     */
-    public static String getBusinessName(String tableName) {
-        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDERLINE);
-        int nameLength = tableName.length();
-        return StringUtils.substring(tableName, lastIndex + 1, nameLength);
-    }
-
 }
