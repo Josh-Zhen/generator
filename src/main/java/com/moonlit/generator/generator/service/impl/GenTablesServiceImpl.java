@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.constant.CharacterConstant;
-import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
@@ -14,16 +13,17 @@ import com.moonlit.generator.common.utils.MySqlUtils;
 import com.moonlit.generator.common.utils.NamingStrategy;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
-import com.moonlit.generator.generator.entity.GenSystemConfig;
 import com.moonlit.generator.generator.entity.GenTables;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
 import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
+import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
-import com.moonlit.generator.generator.mapper.GenSystemConfigMapper;
 import com.moonlit.generator.generator.mapper.GenTablesConfigMapper;
 import com.moonlit.generator.generator.mapper.GenTablesMapper;
+import com.moonlit.generator.generator.service.GenSystemConfigService;
+import com.moonlit.generator.generator.service.GenTablesColumnService;
 import com.moonlit.generator.generator.service.GenTablesService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +47,16 @@ import java.util.List;
 public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables> implements GenTablesService {
 
     @Autowired
-    private GenDatabaseMapper genDatabaseMapper;
+    private GenDatabaseMapper databaseMapper;
 
     @Autowired
-    private GenSystemConfigMapper genSystemConfigMapper;
+    private GenSystemConfigService configService;
 
     @Autowired
-    private GenTablesConfigMapper genTablesConfigMapper;
+    private GenTablesConfigMapper tablesConfigMapper;
+
+    @Autowired
+    private GenTablesColumnService tablesColumnService;
 
     /**
      * 条件分页查询
@@ -85,63 +88,10 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @param tableName 表名
      * @return 业务名
      */
-    public static String getBusinessName(String tableName) {
+    private static String getBusinessName(String tableName) {
         int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
         return StringUtils.substring(tableName, lastIndex + 1, tableName.length());
     }
-
-    /**
-     * 獲取業務描述
-     *
-     * @param tableComment 表描述
-     * @return 業務描述
-     */
-    public static String getBusinessComment(String tableComment) {
-        int index = tableComment.length() - 1;
-        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
-    }
-
-    /**
-     * 批量删除
-     *
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    @Override
-    public Boolean deleteTablesByIds(String ids) {
-        return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
-    }
-
-    /**
-     * 新增
-     *
-     * @param genTablesDTO 表实体
-     * @return 结果
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class, timeout = 30)
-    public Boolean insertTables(SaveGenTablesDTO genTablesDTO) {
-        for (DatabaseTablesVO tablesVO : genTablesDTO.getList()) {
-            GenTables tables = null;
-            try {
-                tables = initializeTable(genTablesDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), genTablesDTO.getTableConfigId());
-                baseMapper.insert(tables);
-                // 插入數據後的主鍵
-                Integer row = tables.getId();
-                if (row > 0) {
-                    //  TODO 插入表字段信息
-
-
-                }
-            } catch (Exception e) {
-                throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
-            }
-        }
-        // TODO 添加表字段
-        return true;
-    }
-
-    /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
      * 修改
@@ -161,33 +111,44 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     }
 
     /**
-     * 獲取未添加的表
+     * 獲取業務描述
      *
-     * @param databaseId 主键
+     * @param tableComment 表描述
+     * @return 業務描述
+     */
+    private static String getBusinessComment(String tableComment) {
+        int index = tableComment.length() - 1;
+        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
+    }
+
+    /**
+     * 新增
+     *
+     * @param saveDTO 表实体
      * @return 结果
      */
     @Override
-    public List<DatabaseTablesVO> list(Long databaseId) {
-        // 檢查庫是否存在
-        LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(GenDatabase::getId, databaseId);
-        GenDatabase genDatabase = genDatabaseMapper.selectOne(queryWrapper);
-        if (ObjectUtil.isEmpty(genDatabase)) {
-            throw new BusinessException(DatabaseErrorCode.DATABASE_NOT_EXIST);
+    @Transactional(rollbackFor = Exception.class, timeout = 30)
+    public Boolean insertTables(SaveGenTablesDTO saveDTO) {
+        for (DatabaseTablesVO tablesVO : saveDTO.getList()) {
+            try {
+                GenTables tables = initializeTable(saveDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), saveDTO.getTableConfigId());
+                baseMapper.insert(tables);
+                // 插入數據後的主鍵
+                Long row = tables.getId();
+                if (row > 0) {
+                    // 插入表字段信息
+                    SaveTablesColumnDTO columnDTO = new SaveTablesColumnDTO(saveDTO.getDatabaseId(), tablesVO.getTableName(), row);
+                    tablesColumnService.insertTablesColumn(columnDTO);
+                }
+            } catch (Exception e) {
+                throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
+            }
         }
-
-        // 獲取AES密鑰
-        GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
-        String key = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
-        // 獲取庫内所有的表
-        ArrayList<DatabaseTablesVO> list = MySqlUtils.getTablesDetails(genDatabase, key);
-        List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
-        // 移除已存在的表
-        if (tableNames.size() > 0) {
-            list.removeIf(databaseTablesVO -> tableNames.contains(databaseTablesVO.getTableName()));
-        }
-        return list;
+        return true;
     }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
      * 初始化表實體
@@ -207,6 +168,46 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     }
 
     /**
+     * 批量删除
+     *
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    @Override
+    public Boolean deleteTablesByIds(String ids) {
+        return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
+    }
+
+    /**
+     * 獲取未添加的表
+     *
+     * @param databaseId 主键
+     * @return 结果
+     */
+    @Override
+    public List<DatabaseTablesVO> list(Long databaseId) {
+        // 檢查庫是否存在
+        LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenDatabase::getId, databaseId);
+        GenDatabase genDatabase = databaseMapper.selectOne(queryWrapper);
+        if (ObjectUtil.isEmpty(genDatabase)) {
+            throw new BusinessException(DatabaseErrorCode.DATABASE_NOT_EXIST);
+        }
+
+        // TODO 該密鑰應該交給用戶存儲或者讓用戶選擇是否交給平臺
+        // 獲取AES密鑰
+        String rsaKey = configService.getRsaKey();
+        // 獲取庫内所有的表
+        ArrayList<DatabaseTablesVO> list = MySqlUtils.getTablesDetails(genDatabase, rsaKey);
+        List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
+        // 移除已存在的表
+        if (tableNames.size() > 0) {
+            list.removeIf(databaseTablesVO -> tableNames.contains(databaseTablesVO.getTableName()));
+        }
+        return list;
+    }
+
+    /**
      * 表名轉類名
      *
      * @param tableName     表名稱
@@ -214,7 +215,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @return 類名稱
      */
     private String convertClassName(String tableName, Long tableConfigId) {
-        GenTablesConfig tablesConfig = genTablesConfigMapper.selectById(tableConfigId);
+        GenTablesConfig tablesConfig = tablesConfigMapper.selectById(tableConfigId);
         if (tablesConfig.getRemovePrefix()) {
             return NamingStrategy.firstToUpperCase(NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix()));
         }

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class SaveGenTablesDTO implements Serializable {
     /**
      * 数据库id
      */
+    @NotNull(message = "数据库id不能为空")
     @ApiModelProperty(name = "databaseId", value = "数据库id")
     private Long databaseId;
 
@@ -37,6 +39,7 @@ public class SaveGenTablesDTO implements Serializable {
     /**
      * 表配置id
      */
+    @NotNull(message = "数据表配置id不能为空")
     @ApiModelProperty(name = "tableConfigId", value = "表配置id")
     private Long tableConfigId;
 }

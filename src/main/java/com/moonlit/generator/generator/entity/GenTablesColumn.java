@@ -2,32 +2,36 @@ package com.moonlit.generator.generator.entity;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.moonlit.generator.generator.entity.vo.TableFieldVO;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 库表生成_表字段明细实体
+ * 數據表字段詳情实体
  *
  * @author Joshua
  * @date 2021-09-30
  */
 @Data
+@NoArgsConstructor
 public class GenTablesColumn implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
-    //-------------------- 數據庫字段 --------------------/
+    /*---------------------------------------- 數據庫字段 ----------------------------------------*/
 
     /**
-     * 表id
+     * 數據表id
      */
-    private Integer tableId;
+    private Long tableId;
 
     /**
      * 字段名
@@ -50,21 +54,21 @@ public class GenTablesColumn implements Serializable {
     private String columnType;
 
     /**
-     * 是否主键
+     * 是否為主鍵（0否，1是）
      */
-    private Integer isPrimaryKey;
+    private Boolean isPrimaryKey;
 
     /**
      * 是否自增（0否，1是）
      */
-    private String isIncrement;
+    private Boolean isIncrement;
 
     /**
      * 是否為空（0否，1是）
      */
-    private String isRequired;
+    private Boolean isRequired;
 
-    //-------------------- 數據字段 --------------------/
+    /*---------------------------------------- 數據字段 ----------------------------------------*/
 
     /**
      * JAVA类型
@@ -79,35 +83,42 @@ public class GenTablesColumn implements Serializable {
     /**
      * 是否为插入字段（0否，1是）
      */
-    private String isInsert;
+    private Boolean isInsert;
 
     /**
      * 是否编辑字段（0否，1是）
+     * 用於在修改
+     * 0：id(主鍵) 、創建時間、更新時間等後端設置值
+     * 1：varchar、text（大部分String類型）、number類型
      */
-    private String isEdit;
+    private Boolean isEdit;
 
     /**
      * 是否列表字段（0否，1是）
+     * 與下拉菜單一起使用
      */
-    private String isList;
+    private Boolean isList;
 
     /**
      * 是否查询字段（0否，1是）
+     * 用於條件查詢
      */
-    private String isQuery;
+    private Boolean isQuery;
 
     /**
-     * 查询方式（等于、不等于、大于、小于、范围）
+     * 查询方式（等于-eq、不等于-neq、大于-gt、小于-lt、范围-like）
      */
     private String queryType;
 
+    /*---------------------------------------- 前端字段 ----------------------------------------*/
+
     /**
-     * 显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）
+     * 显示类型（文本框-input、文本域-text、下拉框-dropdown、复选框-checkbox、单选框-radio、日期控件-datetime）
      */
     private String htmlType;
 
     /**
-     * 字典类型
+     * 字典类型（前端字段字典）
      */
     private String dictType;
 
@@ -122,4 +133,22 @@ public class GenTablesColumn implements Serializable {
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateTime;
+
+    /**
+     * 初始化構造器
+     *
+     * @param tableId 數據表id
+     * @param vo      臨時實體
+     */
+    public GenTablesColumn(Long tableId, TableFieldVO vo) {
+        this.tableId = tableId;
+        this.columnName = vo.getColumnName();
+        this.columnComment = vo.getColumnComment();
+        this.sort = vo.getSort();
+        this.columnType = vo.getColumnType();
+        this.isPrimaryKey = vo.getColumnKey();
+        this.isIncrement = vo.getExtra();
+        this.isRequired = vo.getIsNullable();
+        this.createTime = LocalDateTime.now();
+    }
 }

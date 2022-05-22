@@ -42,19 +42,19 @@ public class MySqlUtils {
     /**
      * 連接數據庫
      *
-     * @param genDatabase 实体
-     * @param key         密鑰
+     * @param database 实体
+     * @param key      密鑰
      * @return 連接對象
      */
-    private static Connection connectMySql(GenDatabase genDatabase, String key) {
+    private static Connection connectMySql(GenDatabase database, String key) {
         Connection connection;
-        String address = genDatabase.getAddress();
-        String port = CharacterConstant.COLON + genDatabase.getPort();
-        String userName = AesUtils.decryptBase64(genDatabase.getUserName(), key);
-        String password = AesUtils.decryptBase64(genDatabase.getPassword(), key);
+        String address = database.getAddress();
+        String port = CharacterConstant.COLON + database.getPort();
+        String userName = AesUtils.decryptBase64(database.getUserName(), key);
+        String password = AesUtils.decryptBase64(database.getPassword(), key);
         String url = "jdbc:mysql://" + address + port;
         try {
-            Class.forName(genDatabase.getDriverClassName());
+            Class.forName(database.getDriverClassName());
             connection = DriverManager.getConnection(url, userName, password);
         } catch (ClassNotFoundException | SQLException e) {
             throw new BusinessException(e);
@@ -84,16 +84,16 @@ public class MySqlUtils {
     /**
      * 執行數據庫語句
      *
-     * @param genDatabase 連接數據庫實體
-     * @param key         密鑰
-     * @param sql         sql語句（）
-     * @param condition   條件
-     * @param t           返回類型
+     * @param database  連接數據庫實體
+     * @param key       密鑰
+     * @param sql       sql語句（）
+     * @param condition 條件
+     * @param t         返回類型
      * @return 結果集
      */
-    public static <T> ArrayList<T> executeSql(GenDatabase genDatabase, String key, String sql, ArrayList<String> condition, Class<T> t) {
+    public static <T> ArrayList<T> executeSql(GenDatabase database, String key, String sql, ArrayList<String> condition, Class<T> t) {
         ArrayList<T> listVo = new ArrayList<>();
-        Connection connection = connectMySql(genDatabase, key);
+        Connection connection = connectMySql(database, key);
         PreparedStatement statement = null;
         try {
             // 預裝載sql語句
@@ -129,28 +129,28 @@ public class MySqlUtils {
     /**
      * 獲取表詳情
      *
-     * @param genDatabase 实体
-     * @param key         密鑰
+     * @param database 实体
+     * @param key      密鑰
      * @return 結果集
      */
-    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase genDatabase, String key) {
+    public static ArrayList<DatabaseTablesVO> getTablesDetails(GenDatabase database, String key) {
         ArrayList<String> list = new ArrayList<>();
-        list.add(genDatabase.getName());
-        return executeSql(genDatabase, key, CONNECT_DATABASE, list, DatabaseTablesVO.class);
+        list.add(database.getName());
+        return executeSql(database, key, CONNECT_DATABASE, list, DatabaseTablesVO.class);
     }
 
     /**
      * 獲取字段詳情
      *
-     * @param genDatabase 实体
-     * @param key         密鑰
-     * @param tableName   表名
+     * @param database  实体
+     * @param key       密鑰
+     * @param tableName 表名
      * @return 結果集
      */
-    public static ArrayList<TableFieldVO> getFieldDetail(GenDatabase genDatabase, String key, String tableName) {
+    public static ArrayList<TableFieldVO> getFieldDetails(GenDatabase database, String key, String tableName) {
         ArrayList<String> list = new ArrayList<>(2);
-        list.add(genDatabase.getName());
+        list.add(database.getName());
         list.add(tableName);
-        return executeSql(genDatabase, key, SELECT_FIELDS, list, TableFieldVO.class);
+        return executeSql(database, key, SELECT_FIELDS, list, TableFieldVO.class);
     }
 }

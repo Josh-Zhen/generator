@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 數據表配置控制层
+ * 數據表詳情控制层
  *
  * @author Joshua
  * @version 1.0
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/genTables")
-@Api(value = "數據表配置", tags = {"數據表配置"})
+@Api(value = "數據表詳情", tags = {"數據表詳情"})
 public class GenTablesController {
 
     @Autowired

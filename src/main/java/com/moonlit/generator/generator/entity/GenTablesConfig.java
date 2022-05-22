@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenTablesConfig {
+public class GenTablesConfig implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * id

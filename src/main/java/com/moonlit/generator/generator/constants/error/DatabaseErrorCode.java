@@ -21,7 +21,7 @@ public enum DatabaseErrorCode implements AbstractBaseExceptionEnum {
     DATABASE_NOT_EXIST(11001, "数据库不存在"),
     DATA_IS_TRUE(11002, "数据已存在，请检查是否存在同名数据"),
     DRIVEN_IS_NOT_EXIST(11003, "数据库驱动不存在"),
-    SAVE_ERROR(11004, "添加表数据异常,请稍后重试！"),
+    SAVE_ERROR(11004, "添加数据异常,请稍后重试！"),
     ;
 
     private Integer code;

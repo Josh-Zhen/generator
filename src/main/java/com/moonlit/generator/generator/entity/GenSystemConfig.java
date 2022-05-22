@@ -4,6 +4,7 @@ import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,9 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenSystemConfig {
+public class GenSystemConfig implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * id

@@ -5,11 +5,11 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moonlit.generator.common.constant.DatabaseConstant;
 import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.generator.constants.DatabaseDriverConstant;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenSystemConfig;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
@@ -160,7 +160,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         Collection<DictVO> vos = dictTypeService.dropDown("database_type");
         for (DictVO vo : vos) {
             if (genDatabase.getType().equals(Integer.parseInt(vo.getKey()))) {
-                genDatabase.setDriverClassName(DatabaseConstant.getDriverClass(vo.getName()));
+                genDatabase.setDriverClassName(DatabaseDriverConstant.getDriverClass(vo.getName()));
             }
         }
     }

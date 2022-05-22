@@ -35,7 +35,7 @@ public class TableFieldVO {
     /**
      * 順序
      */
-    private Integer sort;
+    private Long sort;
 
     /**
      * 備注

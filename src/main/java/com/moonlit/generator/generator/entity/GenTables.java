@@ -11,13 +11,13 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 库表生成_表实体
+ * 數據表詳情实体
  *
  * @author Joshua
  * @date 2021-09-30
  */
 @Data
-@ApiModel(value = "GenTables", description = "库表生成_表实体")
+@ApiModel(value = "GenTables", description = "數據表詳情实体")
 @NoArgsConstructor
 public class GenTables implements Serializable {
 
@@ -26,7 +26,7 @@ public class GenTables implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 数据库id

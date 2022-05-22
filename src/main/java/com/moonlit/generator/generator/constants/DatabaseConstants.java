@@ -56,4 +56,9 @@ public class DatabaseConstants {
     public static final String[] DATABASE_NUMBER_TYPE = {"tinyint", "smallint", "mediumint", "int", "number", "integer",
             "bigint", "float", "float", "double", "decimal"};
 
+    /**
+     * 查詢條件
+     * 等于-eq、不等于-neq、大于-gt、小于-lt、范围-like
+     */
+    public static final String[] CONDITION_TYPE = {"eq", "neq", "gt", "lt", "like"};
 }

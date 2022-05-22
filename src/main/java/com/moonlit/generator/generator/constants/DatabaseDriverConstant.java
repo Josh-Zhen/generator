@@ -1,4 +1,4 @@
-package com.moonlit.generator.common.constant;
+package com.moonlit.generator.generator.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum DatabaseConstant {
+public enum DatabaseDriverConstant {
 
     // 驅動
     MySQL("com.mysql.cj.jdbc.Driver"),
@@ -33,9 +33,9 @@ public enum DatabaseConstant {
      */
     public static String getDriverClass(String databaseType) {
         String driven = "";
-        for (DatabaseConstant databaseConstant : DatabaseConstant.values()) {
-            if (databaseType.equals(databaseConstant.name())) {
-                driven = databaseConstant.getDriven();
+        for (DatabaseDriverConstant databaseDriverConstant : DatabaseDriverConstant.values()) {
+            if (databaseType.equals(databaseDriverConstant.name())) {
+                driven = databaseDriverConstant.getDriven();
             }
         }
         return driven;
