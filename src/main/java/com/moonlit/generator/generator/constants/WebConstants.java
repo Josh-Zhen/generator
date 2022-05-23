@@ -13,7 +13,7 @@ public class WebConstants {
     /**
      * 狀態常量
      */
-    public static final String[] DATA_TYPE = {"sex", "status", "type"};
+    public static final String[] STATE = {"sex", "status", "state", "type"};
 
     /**
      * 文本框

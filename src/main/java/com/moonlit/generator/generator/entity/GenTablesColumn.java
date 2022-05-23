@@ -107,6 +107,7 @@ public class GenTablesColumn implements Serializable {
 
     /**
      * 查询方式（等于-eq、不等于-neq、大于-gt、小于-lt、范围-like）
+     * 默認 eq
      */
     private String queryType;
 
@@ -114,6 +115,7 @@ public class GenTablesColumn implements Serializable {
 
     /**
      * 显示类型（文本框-input、文本域-text、下拉框-dropdown、复选框-checkbox、单选框-radio、日期控件-datetime）
+     * 默認 input
      */
     private String htmlType;
 

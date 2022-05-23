@@ -17,14 +17,6 @@ import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
 public interface GenTablesColumnService extends IService<GenTablesColumn> {
 
     /**
-     * 根据主键查询
-     *
-     * @param id 主键
-     * @return 对象
-     */
-    GenTablesColumn getGenTables(Integer id);
-
-    /**
      * 条件分页查询
      *
      * @param dto 查询实体

@@ -32,8 +32,15 @@ public class DatabaseConstants {
 
     /**
      * 時間類型
+     * 日期+时间（不含时区信息）
      */
     public static final String LOCAL_DATE_TIME_TYPE = "LocalDateTime";
+
+    /**
+     * 時間類型
+     * 日期（不含时区信息）
+     */
+    public static final String LOCAL_DATE_TYPE = "LocalDate";
 
     /**
      * 高精度計數型
@@ -46,6 +53,11 @@ public class DatabaseConstants {
     public static final String[] DATABASE_STRING_TYPE = {"char", "varchar", "tinytext", "text", "mediumtext", "longtext"};
 
     /**
+     * 文本類型
+     */
+    public static final String[] TEXT_TYPE = {"tinytext", "text", "mediumtext", "longtext"};
+
+    /**
      * 數據庫時間類型
      */
     public static final String[] DATABASE_DATE_TYPE = {"datetime", "time", "date", "timestamp"};
@@ -53,12 +65,27 @@ public class DatabaseConstants {
     /**
      * 數據庫數字類型
      */
-    public static final String[] DATABASE_NUMBER_TYPE = {"tinyint", "smallint", "mediumint", "int", "number", "integer",
-            "bigint", "float", "float", "double", "decimal"};
+    public static final String[] DATABASE_NUMBER_TYPE = {"number", "tinyint", "smallint", "mediumint", "int", "integer",
+            "bigint", "float", "double", "decimal"};
+
+    /**
+     * 浮點類型
+     */
+    public static final String[] FLOATING_POINT = {};
 
     /**
      * 查詢條件
      * 等于-eq、不等于-neq、大于-gt、小于-lt、范围-like
      */
     public static final String[] CONDITION_TYPE = {"eq", "neq", "gt", "lt", "like"};
+
+    /**
+     * 不查詢的字段
+     */
+    public static final String[] COLUMN_NOT_QUERY = {"id", "create_by", "update_by", "create_time", "update_time", "remark"};
+
+    /**
+     * 查詢的字段類型
+     */
+    public static final String[] COLUMN_TYPE_NOT_QUERY = {"tinytext", "text", "mediumtext", "longtext"};
 }
