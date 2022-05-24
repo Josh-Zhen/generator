@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/genTables")
+@RequestMapping("/genTablesColumn")
 @Api(value = "數據表字段詳情", tags = {"數據表字段詳情"})
 public class GenTablesColumnController {
 
