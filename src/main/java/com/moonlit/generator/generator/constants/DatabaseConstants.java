@@ -71,7 +71,7 @@ public class DatabaseConstants {
     /**
      * 浮點類型
      */
-    public static final String[] FLOATING_POINT = {};
+    public static final String[] FLOATING_POINT = {"float", "double", "decimal"};
 
     /**
      * 查詢條件

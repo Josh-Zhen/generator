@@ -160,18 +160,16 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                         column.setHtmlType(WebConstants.WEB_DATETIME);
                     } else if (isContains(DatabaseConstants.DATABASE_NUMBER_TYPE, columnType)) {
                         // 數字類型
-                        String type = "";
-                        // TODO
+                        String type = DatabaseConstants.INTEGER_TYPE;
                         if (isContains(DatabaseConstants.FLOATING_POINT, columnType)) {
                             // 浮點型
                             type = DatabaseConstants.BIG_DECIMAL_TYPE;
-                        } else if (StringUtils.endsWithIgnoreCase(columnType, "id")) {
+                        } else if ("bigint".equals(columnType) || StringUtils.endsWithIgnoreCase(columnType, "id")) {
                             // 主鍵或者包含id的字段
                             type = DatabaseConstants.LONG_TYPE;
                         }
                         column.setJavaType(type);
                     }
-
 
                     // 主鍵
                     Boolean columnKey = vo.getColumnKey();
