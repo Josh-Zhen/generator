@@ -111,7 +111,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      */
     @Override
     public Boolean updateTablesColumn(GenTablesColumn genTablesColumn) {
-        genTablesColumn.setUpdateTime(LocalDateTime.now());
+        genTablesColumn.setUpdateDate(LocalDateTime.now());
         return this.updateById(genTablesColumn);
     }
 

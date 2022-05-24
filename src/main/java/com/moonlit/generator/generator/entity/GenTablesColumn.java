@@ -39,7 +39,7 @@ public class GenTablesColumn implements Serializable {
     private String columnName;
 
     /**
-     * 字段描述
+     * 描述
      */
     private String columnComment;
 
@@ -128,13 +128,13 @@ public class GenTablesColumn implements Serializable {
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
-    private LocalDateTime createTime;
+    private LocalDateTime createDate;
 
     /**
      * 更新时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
-    private LocalDateTime updateTime;
+    private LocalDateTime updateDate;
 
     /**
      * 初始化構造器
@@ -151,6 +151,6 @@ public class GenTablesColumn implements Serializable {
         this.isPrimaryKey = vo.getColumnKey();
         this.isIncrement = vo.getExtra();
         this.isRequired = vo.getIsNullable();
-        this.createTime = LocalDateTime.now();
+        this.createDate = LocalDateTime.now();
     }
 }
