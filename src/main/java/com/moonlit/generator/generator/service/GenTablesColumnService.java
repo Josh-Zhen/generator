@@ -25,7 +25,7 @@ public interface GenTablesColumnService extends IService<GenTablesColumn> {
     PageResult<GenTablesColumn> pageList(GenColumnDTO dto);
 
     /**
-     * 新增
+     * 新增/刷新
      *
      * @param saveDTO 实体
      * @return 结果

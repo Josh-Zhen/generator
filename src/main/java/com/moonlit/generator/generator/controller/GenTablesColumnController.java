@@ -37,11 +37,11 @@ public class GenTablesColumnController {
     }
 
     /**
-     * 新增保存
+     * 刷新表字段
      */
-    @PostMapping("/save")
-    @ApiOperation("新增保存")
-    public Result<Boolean> addSave(@RequestBody SaveTablesColumnDTO saveDTO) {
+    @PostMapping("/refresh")
+    @ApiOperation("刷新表字段")
+    public Result<Boolean> refresh(@RequestBody SaveTablesColumnDTO saveDTO) {
         return Result.success(tablesColumnService.insertTablesColumn(saveDTO));
     }
 

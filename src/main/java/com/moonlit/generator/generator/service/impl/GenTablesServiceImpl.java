@@ -82,46 +82,6 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     }
 
     /**
-     * 获取业务名
-     * TODO 設計不合理
-     *
-     * @param tableName 表名
-     * @return 业务名
-     */
-    private static String getBusinessName(String tableName) {
-        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
-        return StringUtils.substring(tableName, lastIndex + 1, tableName.length());
-    }
-
-    /**
-     * 修改
-     *
-     * @param genTables 表实体
-     * @return 结果
-     */
-    @Override
-    public Boolean updateTables(GenTables genTables) {
-        GenTables tables = this.getById(genTables.getId());
-        // 表配置變動
-        if (!genTables.getConfigId().equals(tables.getConfigId())) {
-            genTables.setClassName(convertClassName(genTables.getTableName(), genTables.getConfigId()));
-        }
-        genTables.setUpdateDate(LocalDateTime.now());
-        return this.updateById(genTables);
-    }
-
-    /**
-     * 獲取業務描述
-     *
-     * @param tableComment 表描述
-     * @return 業務描述
-     */
-    private static String getBusinessComment(String tableComment) {
-        int index = tableComment.length() - 1;
-        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
-    }
-
-    /**
      * 新增
      *
      * @param saveDTO 表实体
@@ -148,23 +108,21 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         return true;
     }
 
-    /*---------------------------------------- 内部方法 ----------------------------------------*/
-
     /**
-     * 初始化表實體
+     * 修改
      *
-     * @param databaseId    數據庫id
-     * @param tableName     表名
-     * @param tableComment  表注釋
-     * @param tableConfigId 表配置id
-     * @return 表實體
+     * @param genTables 表实体
+     * @return 结果
      */
-    private GenTables initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
-        GenTables genTables = new GenTables(databaseId, tableName, tableComment, tableConfigId);
-        genTables.setClassName(convertClassName(tableName, tableConfigId));
-        genTables.setBusinessName(getBusinessName(tableName));
-        genTables.setFunctionName(tableName);
-        return genTables;
+    @Override
+    public Boolean updateTables(GenTables genTables) {
+        GenTables tables = this.getById(genTables.getId());
+        // 表配置變動
+        if (!genTables.getConfigId().equals(tables.getConfigId())) {
+            genTables.setClassName(convertClassName(genTables.getTableName(), genTables.getConfigId()));
+        }
+        genTables.setUpdateDate(LocalDateTime.now());
+        return this.updateById(genTables);
     }
 
     /**
@@ -194,7 +152,6 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
             throw new BusinessException(DatabaseErrorCode.DATABASE_NOT_EXIST);
         }
 
-        // TODO 該密鑰應該交給用戶存儲或者讓用戶選擇是否交給平臺
         // 獲取AES密鑰
         String rsaKey = configService.getRsaKey();
         // 獲取庫内所有的表
@@ -205,6 +162,48 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
             list.removeIf(databaseTablesVO -> tableNames.contains(databaseTablesVO.getTableName()));
         }
         return list;
+    }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
+
+    /**
+     * 初始化表實體
+     *
+     * @param databaseId    數據庫id
+     * @param tableName     表名
+     * @param tableComment  表注釋
+     * @param tableConfigId 表配置id
+     * @return 表實體
+     */
+    private GenTables initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
+        GenTables genTables = new GenTables(databaseId, tableName, tableComment, tableConfigId);
+        genTables.setClassName(convertClassName(tableName, tableConfigId));
+        genTables.setBusinessName(getBusinessName(tableName));
+        genTables.setFunctionName(tableName);
+        return genTables;
+    }
+
+    /**
+     * 获取业务名
+     * TODO 設計不合理
+     *
+     * @param tableName 表名
+     * @return 业务名
+     */
+    private static String getBusinessName(String tableName) {
+        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
+        return StringUtils.substring(tableName, lastIndex + 1, tableName.length());
+    }
+
+    /**
+     * 獲取業務描述
+     *
+     * @param tableComment 表描述
+     * @return 業務描述
+     */
+    private static String getBusinessComment(String tableComment) {
+        int index = tableComment.length() - 1;
+        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
     }
 
     /**
