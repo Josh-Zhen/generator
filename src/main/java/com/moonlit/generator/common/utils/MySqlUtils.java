@@ -8,6 +8,7 @@ import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.entity.vo.TableFieldVO;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,15 +49,14 @@ public class MySqlUtils {
      */
     private static Connection connectMySql(GenDatabase database, String key) {
         Connection connection;
-        String address = database.getAddress();
-        String port = CharacterConstant.COLON + database.getPort();
-        String userName = AesUtils.decryptBase64(database.getUserName(), key);
-        String password = AesUtils.decryptBase64(database.getPassword(), key);
-        String url = "jdbc:mysql://" + address + port;
+        HikariDataSource source = new HikariDataSource();
+        source.setJdbcUrl("jdbc:mysql://" + database.getAddress() + CharacterConstant.COLON + database.getPort());
+        source.setUsername(AesUtils.decryptBase64(database.getUserName(), key));
+        source.setPassword(AesUtils.decryptBase64(database.getPassword(), key));
+        source.setDriverClassName(database.getDriverClassName());
         try {
-            Class.forName(database.getDriverClassName());
-            connection = DriverManager.getConnection(url, userName, password);
-        } catch (ClassNotFoundException | SQLException e) {
+            connection = source.getConnection();
+        } catch (SQLException e) {
             throw new BusinessException(e);
         }
         return connection;

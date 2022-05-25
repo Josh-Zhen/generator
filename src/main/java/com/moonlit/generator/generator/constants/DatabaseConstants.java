@@ -31,6 +31,11 @@ public class DatabaseConstants {
     public static final String DOUBLE_TYPE = "Double";
 
     /**
+     * 布爾類型
+     */
+    public static final String BOOLEAN_TYPE = "Boolean";
+
+    /**
      * 時間類型
      * 日期+时间（不含时区信息）
      */
@@ -88,4 +93,5 @@ public class DatabaseConstants {
      * 查詢的字段類型
      */
     public static final String[] COLUMN_TYPE_NOT_QUERY = {"tinytext", "text", "mediumtext", "longtext"};
+
 }

@@ -72,10 +72,10 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
                 queryWrapper.eq(GenTables::getDatabaseId, genTablesDTO.getDatabaseId());
             }
             if (ObjectUtil.isNotEmpty(genTablesDTO.getTableName())) {
-                queryWrapper.eq(GenTables::getTableName, genTablesDTO.getTableName());
+                queryWrapper.like(GenTables::getTableName, genTablesDTO.getTableName());
             }
             if (ObjectUtil.isNotEmpty(genTablesDTO.getTableComment())) {
-                queryWrapper.eq(GenTables::getTableComment, genTablesDTO.getTableComment());
+                queryWrapper.like(GenTables::getTableComment, genTablesDTO.getTableComment());
             }
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));

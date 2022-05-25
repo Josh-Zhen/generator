@@ -93,17 +93,6 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
     }
 
     /**
-     * 數組是否包含關鍵字
-     *
-     * @param arr        數組
-     * @param columnType 字段類型
-     * @return 結果
-     */
-    private static Boolean isContains(String[] arr, String columnType) {
-        return Arrays.asList(arr).contains(columnType);
-    }
-
-    /**
      * 修改
      *
      * @param genTablesColumn 实体
@@ -115,8 +104,6 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
         return this.updateById(genTablesColumn);
     }
 
-    /*---------------------------------------- 内部方法 ----------------------------------------*/
-
     /**
      * 批量删除
      *
@@ -127,6 +114,8 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
     public Boolean deleteTablesColumnByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
      * 篩選數據是否已經儲存
@@ -210,5 +199,16 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
             }
         }
         return list;
+    }
+
+    /**
+     * 數組是否包含關鍵字
+     *
+     * @param arr        數組
+     * @param columnType 字段類型
+     * @return 結果
+     */
+    private static Boolean isContains(String[] arr, String columnType) {
+        return Arrays.asList(arr).contains(columnType);
     }
 }
