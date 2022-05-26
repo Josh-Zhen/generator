@@ -181,7 +181,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                 column.setIsInsert(false);
             }
             // 編輯字段
-            if (!columnKey && isContains(DatabaseConstants.DATABASE_STRING_TYPE, columnType)) {
+            if (!columnKey && StringUtils.endsWith(columnName, "id")) {
                 column.setIsEdit(false);
             }
             // 列表字段
@@ -189,7 +189,8 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                 column.setIsList(false);
             }
             // 查詢字段
-            if (!columnKey && !isContains(DatabaseConstants.COLUMN_TYPE_NOT_QUERY, columnType) && !isContains(DatabaseConstants.COLUMN_NOT_QUERY, columnName)) {
+            if (!columnKey && !isContains(DatabaseConstants.COLUMN_TYPE_NOT_QUERY, columnType)
+                    && !isContains(DatabaseConstants.COLUMN_NOT_QUERY, columnName)) {
                 column.setIsQuery(false);
             }
             // 查詢類型
