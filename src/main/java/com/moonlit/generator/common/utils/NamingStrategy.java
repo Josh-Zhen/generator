@@ -58,7 +58,7 @@ public class NamingStrategy {
      * @return 結果
      */
     public static String substringBefore(String str, String separator) {
-        if (str.indexOf(separator) > 0 || !StringUtils.isEmpty(str)) {
+        if (str.indexOf(separator) > 0 && !StringUtils.isEmpty(str)) {
             return str.substring(0, str.indexOf(separator));
         }
         return str;
