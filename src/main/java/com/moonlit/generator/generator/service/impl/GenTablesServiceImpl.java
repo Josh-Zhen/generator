@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -133,7 +134,10 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      */
     @Override
     public Boolean deleteTablesByIds(String ids) {
-        return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
+        Collection<String> list = Arrays.asList(Convert.toStrArray(ids));
+        // 刪除子表的數據
+        tablesColumnService.removeByIds(tablesColumnService.listColumnsByTablesId(list));
+        return this.removeByIds(list);
     }
 
     /**

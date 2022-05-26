@@ -9,4 +9,13 @@
         FROM gen_tables_column
         WHERE table_id = #{tableId}
     </select>
+
+    <select id="listColumnsByTablesId" resultType="java.lang.Long">
+        SELECT id
+        FROM gen_tables_column
+        WHERE table_id IN
+        <foreach collection="list" item="tableId" open="(" close=")" separator=",">
+            #{tableId}
+        </foreach>
+    </select>
 </mapper>

@@ -6,6 +6,9 @@ import com.moonlit.generator.generator.entity.GenTablesColumn;
 import com.moonlit.generator.generator.entity.dto.GenColumnDTO;
 import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * 數據表字段詳情业务层
  *
@@ -48,4 +51,11 @@ public interface GenTablesColumnService extends IService<GenTablesColumn> {
      */
     Boolean deleteTablesColumnByIds(String ids);
 
+    /**
+     * 根據id集合獲取所有相關數據
+     *
+     * @param tablesId 表id集合
+     * @return 字段id結果集
+     */
+    ArrayList<Long> listColumnsByTablesId(Collection<String> tablesId);
 }

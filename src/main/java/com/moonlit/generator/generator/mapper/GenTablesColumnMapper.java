@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.moonlit.generator.generator.entity.GenTablesColumn;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -24,4 +25,12 @@ public interface GenTablesColumnMapper extends BaseMapper<GenTablesColumn> {
      * @return 結果集
      */
     Collection<String> selectTablesName(Long tableId);
+
+    /**
+     * 根據id集合獲取所有相關數據
+     *
+     * @param tablesId 表id集合
+     * @return 字段id結果集
+     */
+    ArrayList<Long> listColumnsByTablesId(Collection<String> tablesId);
 }

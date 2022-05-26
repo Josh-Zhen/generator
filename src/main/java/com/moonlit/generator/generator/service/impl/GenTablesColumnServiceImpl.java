@@ -118,6 +118,17 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 
+    /**
+     * 根據id集合獲取所有相關數據
+     *
+     * @param tablesId 表id集合
+     * @return 字段id結果集
+     */
+    @Override
+    public ArrayList<Long> listColumnsByTablesId(Collection<String> tablesId) {
+        return baseMapper.listColumnsByTablesId(tablesId);
+    }
+
     /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
