@@ -9,10 +9,10 @@
  Target Server Version : 50734
  File Encoding         : 65001
 
- Date: 22/02/2022 23:34:37
+ Date: 26/05/2022 19:51:43
 */
 
-SET NAMES utf8;
+SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -20,176 +20,179 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `dict_data`;
 CREATE TABLE `dict_data`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type_id` bigint(20) NOT NULL COMMENT '字典类型id',
-  `name` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
-  `value` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
-  `sort` int(11) NOT NULL COMMENT '排序',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` tinyint(4) NOT NULL COMMENT '状态（0正常 1停用）',
-  `create_date` datetime NOT NULL COMMENT '创建时间',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统字典值表';
+                              `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+                              `type_id` int(6) NOT NULL COMMENT '字典类型id',
+                              `name` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字典名称',
+                              `value` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
+                              `sort` int(6) UNSIGNED NOT NULL COMMENT '排序',
+                              `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+                              `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态（0正常 1停用）',
+                              `create_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                              `update_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                              PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统字典值表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dict_data
 -- ----------------------------
-BEGIN;
-INSERT INTO `dict_data` VALUES (1, 1, '停用', '0', 1, NULL, 1, '2021-11-18 10:01:39', NULL), (2, 1, '正常', '1', 2, NULL, 1, '2021-11-18 10:01:52', NULL), (3, 2, '否', '0', 1, NULL, 1, '2021-11-22 19:36:00', NULL), (4, 2, '是', '1', 2, NULL, 1, '2021-11-22 19:36:07', NULL), (5, 3, 'MySQL', '0', 1, NULL, 1, '2021-11-22 20:03:32', '2021-11-22 20:20:46'), (6, 3, 'PostgreSQL', '1', 2, NULL, 1, '2021-11-22 20:20:39', NULL), (7, 3, 'Oracle', '2', 3, NULL, 1, '2021-11-22 20:20:57', NULL), (8, 3, 'SQLite', '3', 4, NULL, 1, '2021-11-22 20:21:10', NULL), (9, 3, 'SQL_Server', '4', 5, NULL, 1, '2021-11-22 20:21:27', NULL), (10, 3, 'MariaDB', '5', 6, NULL, 1, '2021-11-22 20:21:43', NULL), (11, 3, 'MongoDB', '6', 7, NULL, 1, '2021-11-22 20:22:01', NULL);
-COMMIT;
+INSERT INTO `dict_data` VALUES (1, 1, '停用', '0', 1, NULL, 1, '2021-11-18 10:01:39', NULL);
+INSERT INTO `dict_data` VALUES (2, 1, '正常', '1', 2, NULL, 1, '2021-11-18 10:01:52', NULL);
+INSERT INTO `dict_data` VALUES (3, 2, '否', '0', 1, NULL, 1, '2021-11-22 19:36:00', NULL);
+INSERT INTO `dict_data` VALUES (4, 2, '是', '1', 2, NULL, 1, '2021-11-22 19:36:07', NULL);
+INSERT INTO `dict_data` VALUES (5, 3, 'MySQL', '0', 1, NULL, 1, '2021-11-22 20:03:32', '2021-11-22 20:20:46');
+INSERT INTO `dict_data` VALUES (6, 3, 'PostgreSQL', '1', 2, NULL, 1, '2021-11-22 20:20:39', NULL);
+INSERT INTO `dict_data` VALUES (7, 3, 'Oracle', '2', 3, NULL, 1, '2021-11-22 20:20:57', NULL);
+INSERT INTO `dict_data` VALUES (8, 3, 'SQLite', '3', 4, NULL, 1, '2021-11-22 20:21:10', NULL);
+INSERT INTO `dict_data` VALUES (9, 3, 'MariaDB', '4', 5, NULL, 1, '2021-11-22 20:21:43', '2022-05-15 16:18:56');
+INSERT INTO `dict_data` VALUES (10, 4, 'String', 'String', 1, NULL, 1, '2022-05-25 11:35:21', NULL);
+INSERT INTO `dict_data` VALUES (11, 4, 'Integer', 'Integer', 2, NULL, 1, '2022-05-25 11:35:39', NULL);
+INSERT INTO `dict_data` VALUES (12, 4, 'Float', 'Float', 3, NULL, 1, '2022-05-25 11:35:46', NULL);
+INSERT INTO `dict_data` VALUES (13, 4, 'Double', 'Double', 4, NULL, 1, '2022-05-25 11:35:54', NULL);
+INSERT INTO `dict_data` VALUES (14, 4, 'Long', 'Long', 5, NULL, 1, '2022-05-25 11:36:03', NULL);
+INSERT INTO `dict_data` VALUES (15, 4, 'Boolean', 'Boolean', 6, NULL, 1, '2022-05-25 11:36:13', NULL);
+INSERT INTO `dict_data` VALUES (16, 4, 'LocalDateTime', 'LocalDateTime', 7, NULL, 1, '2022-05-25 11:37:11', '2022-05-25 11:39:24');
+INSERT INTO `dict_data` VALUES (17, 4, 'BigDecimal', 'BigDecimal', 8, NULL, 1, '2022-05-25 11:37:29', NULL);
+INSERT INTO `dict_data` VALUES (18, 5, '输入框', 'input', 1, NULL, 1, '2022-05-25 11:43:44', '2022-05-25 17:04:39');
+INSERT INTO `dict_data` VALUES (19, 5, '文本域', 'text', 2, NULL, 1, '2022-05-25 11:44:11', NULL);
+INSERT INTO `dict_data` VALUES (20, 5, '下拉框', 'dropdown', 3, NULL, 1, '2022-05-25 11:44:22', NULL);
+INSERT INTO `dict_data` VALUES (21, 5, '复选框', 'checkbox', 4, NULL, 1, '2022-05-25 11:44:38', NULL);
+INSERT INTO `dict_data` VALUES (22, 5, '单选框', 'radio', 5, NULL, 1, '2022-05-25 11:44:50', NULL);
+INSERT INTO `dict_data` VALUES (23, 5, '日期控件', 'datetime', 6, NULL, 1, '2022-05-25 11:45:01', NULL);
+INSERT INTO `dict_data` VALUES (24, 6, '等于', 'eq', 1, NULL, 1, '2022-05-25 11:48:18', NULL);
+INSERT INTO `dict_data` VALUES (25, 6, '不等于', 'neq', 2, NULL, 1, '2022-05-25 11:48:30', NULL);
+INSERT INTO `dict_data` VALUES (26, 6, '大于', 'gt', 3, NULL, 1, '2022-05-25 11:48:41', NULL);
+INSERT INTO `dict_data` VALUES (27, 6, '小于', 'lt', 4, NULL, 1, '2022-05-25 11:48:52', NULL);
+INSERT INTO `dict_data` VALUES (28, 6, '范围', 'like', 5, NULL, 1, '2022-05-25 11:49:08', NULL);
 
 -- ----------------------------
 -- Table structure for dict_type
 -- ----------------------------
 DROP TABLE IF EXISTS `dict_type`;
 CREATE TABLE `dict_type`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
-  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
-  `sort` int(11) NOT NULL COMMENT '排序',
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `status` tinyint(4) NOT NULL COMMENT '状态（0停用 1正常）',
-  `create_date` datetime NOT NULL COMMENT '创建时间',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `code_index`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统字典类型表';
+                              `id` int(6) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+                              `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+                              `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
+                              `sort` int(6) UNSIGNED NOT NULL COMMENT '排序',
+                              `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '备注',
+                              `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态（0停用 1正常）',
+                              `create_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                              `update_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                              PRIMARY KEY (`id`) USING BTREE,
+                              UNIQUE INDEX `code_index`(`code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统字典类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of dict_type
 -- ----------------------------
-BEGIN;
-INSERT INTO `dict_type` VALUES (1, '通用状态', 'common_status', 1, '', 1, '2021-11-18 16:22:21', '2021-11-18 11:28:10'), (2, '是否标识', 'status', 2, NULL, 1, '2021-11-22 19:14:16', '2021-11-22 19:39:06'), (3, '数据库类型', 'database_type', 3, NULL, 1, '2021-11-22 19:38:56', NULL);
-COMMIT;
+INSERT INTO `dict_type` VALUES (1, '通用状态', 'common_status', 1, '', 1, '2021-11-18 16:22:21', '2021-11-18 11:28:10');
+INSERT INTO `dict_type` VALUES (2, '是否标识', 'status', 2, NULL, 1, '2021-11-22 19:14:16', '2021-11-22 19:39:06');
+INSERT INTO `dict_type` VALUES (3, '数据库类型', 'database_type', 3, NULL, 1, '2021-11-22 19:38:56', NULL);
+INSERT INTO `dict_type` VALUES (4, 'java数据类型', 'java_data_type', 4, NULL, 1, '2022-05-25 11:34:52', '2022-05-25 17:05:09');
+INSERT INTO `dict_type` VALUES (5, '网页标签', 'web_label', 5, NULL, 1, '2022-05-25 11:43:03', '2022-05-25 17:05:02');
+INSERT INTO `dict_type` VALUES (6, '查询条件', 'query_type', 6, NULL, 1, '2022-05-25 11:47:23', '2022-05-25 17:04:55');
 
 -- ----------------------------
 -- Table structure for gen_database
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_database`;
 CREATE TABLE `gen_database`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据库地址',
-  `port` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '数据库端口',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库名称',
-  `type` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '数据库类型（0：mysql，1：mengoDb）',
-  `driver_class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据库连接类（mysql：com.mysql.cj.jdbc.Driver）',
-  `user_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
-  `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码（私钥加密）',
-  `status` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '状态(0：禁止，1默认)',
-  `create_date` datetime NOT NULL COMMENT '创建时间',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '數據库詳情表';
-
--- ----------------------------
--- Records of gen_database
--- ----------------------------
-BEGIN;
-INSERT INTO `gen_database` VALUES (1, '127.0.0.1', '3307', 'nors-pay-share', 0, 'com.mysql.cj.jdbc.Driver', 'IndbCqQijeHUxlqCm3zbr9P69wr9M/76yQUJf8oxTY/tYPJvutQ2MBnnKvFc+BhAbAQRfXwvQMUxNo/gldSnJe8MkY4E7L2zi/HHup0UyRiXQN5tEK38e1vuaQUYLHSRebMQ/6RjBap/aDu4K2MnnS/IayVETO4B18/9jojKDuw=', 'UMNvq+ZK5oo5/LRWWNR1aSDlcRkQnr8Kqgc4ZZ+n5fUsxaUC2dfnSEJaODPtHUfzCP0/UaiInibSVU2o3CDDACox/xzoUmr6RJBYi0THH6oy9cu0xBVNmTNPNTUhPI1TCCwx0O+EQtaigyEt9pvS30yOTWIg9rY7Z7f1BL6FTjQ=', 0, '2021-10-12 17:02:36', NULL), (2, '127.0.0.1', '3307', 'nors-admin', 0, 'com.mysql.cj.jdbc.Driver', 'IndbCqQijeHUxlqCm3zbr9P69wr9M/76yQUJf8oxTY/tYPJvutQ2MBnnKvFc+BhAbAQRfXwvQMUxNo/gldSnJe8MkY4E7L2zi/HHup0UyRiXQN5tEK38e1vuaQUYLHSRebMQ/6RjBap/aDu4K2MnnS/IayVETO4B18/9jojKDuw=', 'UMNvq+ZK5oo5/LRWWNR1aSDlcRkQnr8Kqgc4ZZ+n5fUsxaUC2dfnSEJaODPtHUfzCP0/UaiInibSVU2o3CDDACox/xzoUmr6RJBYi0THH6oy9cu0xBVNmTNPNTUhPI1TCCwx0O+EQtaigyEt9pvS30yOTWIg9rY7Z7f1BL6FTjQ=', 0, '2021-10-12 17:02:01', NULL), (3, '119.91.63.227', '3306', 'generator', 0, 'com.mysql.cj.jdbc.Driver', '13VAhEBepY0Q2_ccZHuyyLDk-1Qb0JpSTgG2FfYWyuFYvyjPzdY-JLy7sobjsBrEXzYmVZ-gIFSl2-lL8QG3Mmsr2I5_Nxd-SchmX2qPITrokcOKNEoe3FlW_jZj0yPdwCArUvK1CijorDY5OrvRSYTWEfSwlHeAV93YbArIftk', '13VAhEBepY0Q2_ccZHuyyLDk-1Qb0JpSTgG2FfYWyuFYvyjPzdY-JLy7sobjsBrEXzYmVZ-gIFSl2-lL8QG3Mmsr2I5_Nxd-SchmX2qPITrokcOKNEoe3FlW_jZj0yPdwCArUvK1CijorDY5OrvRSYTWEfSwlHeAV93YbArIftk', 0, '2021-12-09 10:01:30', '2021-12-09 10:03:01');
-COMMIT;
+                                 `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                 `address` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据库地址',
+                                 `port` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据库端口',
+                                 `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '库名称',
+                                 `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '数据库类型',
+                                 `driver_class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据库驱动',
+                                 `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名',
+                                 `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码（私钥加密）',
+                                 `create_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                                 `update_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据库详情表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for gen_system_config
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_system_config`;
 CREATE TABLE `gen_system_config`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `private_key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '私钥',
-  `public_key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '公钥',
-  `salt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '鹽',
-  `create_date` datetime NOT NULL COMMENT '创建时间',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系統配置表';
+                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+                                      `private_key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '私钥',
+                                      `public_key` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '公钥',
+                                      `salt` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '鹽',
+                                      `create_date` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                                      `update_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+                                      PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_system_config
 -- ----------------------------
-BEGIN;
-INSERT INTO `gen_system_config` VALUES (1, 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAODhdyp8gFaqimgSoBnTZihI0ABhZkKA2j+1ysG+NB7INZwalQ6A96PVtKZPGLituqolHEmPEYwLoggsPcciUNE9mTHPYf3oDPEDtxDmYtazq8XxskFvT8h14O3GwHtVTExYIZwyEyczyWEvnHPTiVwYZzvKIBdLaSj4+x5yW3kDAgMBAAECgYAlBHg9QilOGtyVrRs1pRrX3sR+i4ntwJAslJw/sDOcLZDFlYqbzJb3HSKTjcmf/NkRUPKLGUXmK7QMbFvu/7MVr2/MrdtzhDp6FrytPEnK0k3CCBlaRCQJYElZ6pfN7Gj0Rgb2Tz/1u0Eaavl5PiydZDQudZAKK1e7SvwHIkN3YQJBAPTcT9wAffo54pPbkrDeSRfYs1iCfNtP1ETuw9PsdUCtodw6D5X/d2eEH1SWb4De7NOXberk7kefbpsFUivQHycCQQDrHHbvrQYPGBp2h/a8I0fvVzGX31B0hsyyWj03+/kSRf6DO0LN2y+US5PFGXhrNL5psspRjPzkOrcrktc7YIDFAkEAjcZKTv3R82I0uJu38cSi2bXVEfhrxqgQJeGBbWFJ+qsOPu83Owhx4HP1mAqKgTmSMmlJcWogNUQwzH1mOIwGnQJAOzUX3pO8CuEPCPqEcCySWPukSZK7OB0aP2/qKscRmkB2L6Yk1KJ2AOpndCNN5/GIYiXcPV078l228wovmYxb4QJAH/ajs+ADYG4vaOtL9qQfNYhmVf1UCSJrXX7+jBS8SbAot78uyC7w0N8KW00BXaHcNRg84AzSKZYSBfa8XWZdwg==', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDg4XcqfIBWqopoEqAZ02YoSNAAYWZCgNo/tcrBvjQeyDWcGpUOgPej1bSmTxi4rbqqJRxJjxGMC6IILD3HIlDRPZkxz2H96AzxA7cQ5mLWs6vF8bJBb0/IdeDtxsB7VUxMWCGcMhMnM8lhL5xz04lcGGc7yiAXS2ko+Pseclt5AwIDAQAB', '', '2021-10-14 08:33:45', '2022-02-14 18:42:28');
-COMMIT;
+INSERT INTO `gen_system_config` VALUES (1, 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAI3O2gb7swUJYsywTDH60t83geie6DLf69V+UPHyh0cNjTFRbt4HH6Ak3akgw9XLuqI5XaDZWFF84tibgXzZ1qEqUnXdzRa7nYOdORNZ+Q51ODgyR6/zXZ3Id+q2D+fS3lQo9U3e7HZFGnomcpCoTArpnsx2xIeqnjkTDkEuUfifAgMBAAECgYEAgEaUPOrkJnM2FziGxFNC+z5H2jgcjSC3QVlROXuM2T4t8WXbZyaEeiW/CSWlYLk4q1Q/GKhi1tukjBInENww5BrL9cCNqO1KlHNTk7vmYpEsSg8p2DFh0BK5r1cv+WsRraQ51AQ0YHNYxaSsgU3d77Px3o3ctfxi+3XG0jg7JckCQQDqHLfEdOFKILJE41gem5HB0+Zb7bbRWYQgsLz3zuZwZQBR5U9rncd9vi3/I6ieSc0oUI8ZP/rldJ+p9qY3RZvdAkEAmxDo4L0owaZVr/7i6iwsvcK6oHbUpHvfxV4s44K2wq0KP6CaZnjFI9OiBlVRsmlfPDN8YgrMAsRe/EDZYY6MqwJAOjZ523fUrUIEEe0V9EZqr++o0CMD2nqPyDEqS9Q+qKP0uGh0nyXUfQfVGCQdwX5IbUXaz0SBdpzRNsoF+qhsYQJANIvGXmG7LePvpXP58OCHSMZz92xNIm/XpEoFbBMfW1jH4EfMCm1iYIGWpg7DYHHUk9HelFqUR1vD1DclcqmbgQJBAL95lDR8LatbwHTQBiOv5u+qqW41jVdNhf16n/qrQlYUryT8nfF75lQVAl22EcZWZqiW1ShOQuomiLygolOykmI=', 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCNztoG+7MFCWLMsEwx+tLfN4Honugy3+vVflDx8odHDY0xUW7eBx+gJN2pIMPVy7qiOV2g2VhRfOLYm4F82dahKlJ13c0Wu52DnTkTWfkOdTg4Mkev812dyHfqtg/n0t5UKPVN3ux2RRp6JnKQqEwK6Z7MdsSHqp45Ew5BLlH4nwIDAQAB', 'QqM2zXsO-WqkjcuVqPOPo2hMf-z6RE0q3i0XtKyxtKUoN6tzuq7wYWX8X5wqMmLi1hvFDEvoqaQqBkxslCf8g_J2grRglsW5q1ZMa9BZeYNDrfrgD7Jd3SRp96Kvo9F_WtUg8SDaGRabdNrkPocLjTH5n6lq1GXAHMhFkjWuEXU', '2021-10-14 08:33:45', '2022-05-10 15:22:11');
 
 -- ----------------------------
 -- Table structure for gen_tables
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_tables`;
 CREATE TABLE `gen_tables`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `database_id` int(10) NOT NULL COMMENT '数据库id',
-  `table_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
-  `table_comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表描述',
-  `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '类名',
-  `business_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '业务名',
-  `function_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '功能名',
-  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表詳情表';
-
--- ----------------------------
--- Records of gen_tables
--- ----------------------------
-BEGIN;
-COMMIT;
+                               `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+                               `database_id` int(10) UNSIGNED NOT NULL COMMENT '数据库id',
+                               `table_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '表名称',
+                               `table_comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表描述',
+                               `class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '类名',
+                               `business_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '业务名',
+                               `function_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '功能名',
+                               `config_id` int(10) UNSIGNED NOT NULL COMMENT '配置表id',
+                               `create_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                               `update_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                               PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表详情表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for gen_tables_column
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_tables_column`;
 CREATE TABLE `gen_tables_column`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `table_id` int(10) NOT NULL COMMENT '关联键',
-  `column_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段名',
-  `column_comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段描述',
-  `column_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '列类型',
-  `java_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
-  `java_field` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
-  `is_pk` mediumint(1) NULL DEFAULT NULL COMMENT '是否主键',
-  `is_increment` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否自增（1是）',
-  `is_required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否必填（1是）',
-  `is_insert` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否为插入字段（1是）',
-  `is_edit` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否编辑字段（1是）',
-  `is_list` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否列表字段（1是）',
-  `is_query` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '是否查询字段（1是）',
-  `query_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '=' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
-  `html_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
-  `dict_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
-  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字段詳情表';
-
--- ----------------------------
--- Records of gen_tables_column
--- ----------------------------
-BEGIN;
-COMMIT;
+                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                      `table_id` int(10) UNSIGNED NOT NULL COMMENT '表id',
+                                      `column_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字段名',
+                                      `column_comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '字段描述',
+                                      `sort` int(6) NULL DEFAULT NULL COMMENT '排序',
+                                      `column_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '列类型',
+                                      `is_primary_key` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否主键（0否，1是）',
+                                      `is_increment` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否自增（0否，1是）',
+                                      `is_required` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否为空（0否，1是）',
+                                      `java_type` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'String' COMMENT 'JAVA类型',
+                                      `java_field` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
+                                      `is_insert` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否为插入字段（0否，1是）',
+                                      `is_edit` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否编辑字段（0否，1是）',
+                                      `is_list` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否列表字段（0否，1是）',
+                                      `is_query` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否查询字段（0否，1是）',
+                                      `query_type` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'eq' COMMENT '查询方式（等于-eq、不等于-neq、大于-gt、小于-lt、范围-lk）',
+                                      `html_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'input' COMMENT '显示类型（文本框-input、文本域-text、下拉框-dropdown、复选框-checkbox、单选框-radio、日期控件-datetime）',
+                                      `dict_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '字典类型',
+                                      `create_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                                      `update_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                      PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '字段详情表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for gen_tables_config
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_tables_config`;
 CREATE TABLE `gen_tables_config`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '配置名稱',
-  `author` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者',
-  `package_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '包名',
-  `module_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '模块名',
-  `table_prefix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表前綴',
-  `remove_prefix` tinyint(1) NOT NULL DEFAULT 0 COMMENT '移除表前綴(0 否 1 是)',
-  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '配置表';
+                                      `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+                                      `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名稱',
+                                      `author` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者',
+                                      `package_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '包名',
+                                      `module_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '模块名',
+                                      `table_prefix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '表前綴',
+                                      `remove_prefix` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '移除表前綴(0 否 1 是)',
+                                      `create_date` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+                                      PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_tables_config
 -- ----------------------------
-BEGIN;
-INSERT INTO `gen_tables_config` VALUES (1, '默認', 'Joshua', 'com.moonlit', 'generator', 'gen_', 1, '2022-02-11 00:04:59'), (2, '測試', 'Kings', 'com.test', 'demo', NULL, 0, '2022-02-14 18:06:04');
-COMMIT;
+INSERT INTO `gen_tables_config` VALUES (1, '默認', 'Joshua', 'com.moonlit', 'generator', 'gen_', 1, '2022-02-11 00:04:59');
 
 SET FOREIGN_KEY_CHECKS = 1;
