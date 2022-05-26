@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * 表字段實體
  *
@@ -15,7 +17,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableFieldVO {
+public class TableFieldVO implements Serializable {
+
+    private static final long serialVersionUID = -1L;
 
     /**
      * 列名
@@ -35,7 +39,7 @@ public class TableFieldVO {
     /**
      * 順序
      */
-    private Long sort;
+    private Long ordinalPosition;
 
     /**
      * 備注

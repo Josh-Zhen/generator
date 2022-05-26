@@ -146,7 +146,7 @@ public class GenTablesColumn implements Serializable {
         this.tableId = tableId;
         this.columnName = vo.getColumnName();
         this.columnComment = vo.getColumnComment();
-        this.sort = vo.getSort();
+        this.sort = vo.getOrdinalPosition();
         this.columnType = vo.getColumnType();
         this.isPrimaryKey = vo.getColumnKey();
         this.isIncrement = vo.getExtra();

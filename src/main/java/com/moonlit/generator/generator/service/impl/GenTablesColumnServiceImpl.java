@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
@@ -25,7 +26,6 @@ import com.moonlit.generator.generator.service.GenTablesColumnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -149,8 +149,9 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
 
             // 填充字段
             GenTablesColumn column = new GenTablesColumn(tableId, vo);
-            column.setJavaField(NamingStrategy.underlineToCamel(columnName));
-            String columnType = vo.getColumnType();
+            column.setJavaField(StringUtils.underlineToCamel(columnName));
+            // 移除末尾的參數
+            String columnType = NamingStrategy.substringBefore(vo.getColumnType(), "(");
 
             // 設置java類型
             if (isContains(DatabaseConstants.DATABASE_STRING_TYPE, columnType)) {
@@ -166,7 +167,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                 if (isContains(DatabaseConstants.FLOATING_POINT, columnType)) {
                     // 浮點型
                     type = DatabaseConstants.BIG_DECIMAL_TYPE;
-                } else if ("bigint".equals(columnType) || StringUtils.endsWithIgnoreCase(columnType, "id")) {
+                } else if ("bigint".equals(columnType) || StringUtils.endsWith(columnName, "id")) {
                     // 主鍵或者包含id的字段
                     type = DatabaseConstants.LONG_TYPE;
                 }
@@ -192,15 +193,15 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                 column.setIsQuery(false);
             }
             // 查詢類型
-            if (StringUtils.endsWithIgnoreCase(columnName, "name")) {
+            if (StringUtils.endsWith(columnName, "name")) {
                 column.setQueryType("like");
             }
             // 前端標簽
             if (ObjectUtil.isNull(column.getHtmlType())) {
-                if (StringUtils.endsWithIgnoreCase(columnName, "status")) {
+                if (StringUtils.endsWith(columnName, "status")) {
                     // 單選框
                     column.setHtmlType(WebConstants.WEB_RADIO);
-                } else if (StringUtils.endsWithIgnoreCase(columnName, "type") || StringUtils.endsWithIgnoreCase(columnName, "sex")) {
+                } else if (StringUtils.endsWith(columnName, "type") || StringUtils.endsWith(columnName, "sex")) {
                     // 下拉框
                     column.setHtmlType(WebConstants.WEB_SELECT);
                 } else if (isContains(DatabaseConstants.TEXT_TYPE, columnType)) {

@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.constant.CharacterConstant;
@@ -25,7 +26,6 @@ import com.moonlit.generator.generator.mapper.GenTablesMapper;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
 import com.moonlit.generator.generator.service.GenTablesColumnService;
 import com.moonlit.generator.generator.service.GenTablesService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -192,7 +192,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      */
     private static String getBusinessName(String tableName) {
         int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
-        return StringUtils.substring(tableName, lastIndex + 1, tableName.length());
+        return tableName.substring(lastIndex + 1);
     }
 
     /**
@@ -218,6 +218,6 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         if (tablesConfig.getRemovePrefix()) {
             return NamingStrategy.firstToUpperCase(NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix()));
         }
-        return NamingStrategy.firstToUpperCase(NamingStrategy.underlineToCamel(tableName));
+        return NamingStrategy.firstToUpperCase(StringUtils.underlineToCamel(tableName));
     }
 }

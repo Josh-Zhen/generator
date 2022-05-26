@@ -2,13 +2,16 @@ package com.moonlit.generator.common.utils;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.exception.BusinessException;
+import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.entity.vo.TableFieldVO;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
  * @date 2021/9/30 9:59
  * @email by.Moonlit@hotmail.com
  */
+@Slf4j
 public class MySqlUtils {
 
     /**
@@ -35,9 +39,8 @@ public class MySqlUtils {
      * table_schema 數據庫名
      * table_name   表名
      */
-    private static final String SELECT_FIELDS = "SELECT column_name, column_key = 'PRI' AS isPrimaryKey, " +
-            "is_nullable = 'YES' AS is_null, ordinal_position AS sort, " +
-            "column_comment, extra = 'auto_increment', column_type " +
+    private static final String SELECT_FIELDS = "SELECT column_name, column_key = 'PRI' AS column_key, is_nullable = 'YES' AS is_nullable, " +
+            "ordinal_position, column_comment, extra = 'auto_increment' AS extra, column_type " +
             "FROM information_schema.columns WHERE table_schema = ? AND table_name = ? ORDER BY ordinal_position";
 
     /**
@@ -57,7 +60,8 @@ public class MySqlUtils {
         try {
             connection = source.getConnection();
         } catch (SQLException e) {
-            throw new BusinessException(e);
+            log.error(e.getMessage());
+            throw new BusinessException(DatabaseErrorCode.UNABLE_CONNECT_DATABASE);
         }
         return connection;
     }
@@ -112,7 +116,7 @@ public class MySqlUtils {
                 ResultSetMetaData metaData = resultSet.getMetaData();
 
                 for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                    String keys = NamingStrategy.underlineToCamel(metaData.getColumnName(i));
+                    String keys = StringUtils.underlineToCamel(metaData.getColumnName(i));
                     jsonObject.set(keys, resultSet.getObject(i));
                 }
                 listVo.add(jsonObject.toBean(t));
