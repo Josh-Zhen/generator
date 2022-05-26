@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.controller;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
+import com.moonlit.generator.generator.entity.dto.GenTablesConfigDTO;
 import com.moonlit.generator.generator.entity.vo.GenTablesConfigVO;
 import com.moonlit.generator.generator.service.GenTablesConfigService;
 import io.swagger.annotations.Api;
@@ -31,13 +32,13 @@ public class GenTablesConfigController {
     /**
      * 条件分页查询
      *
-     * @param genTablesConfig 表实体
+     * @param tablesConfigDTO 表实体
      * @return 结果集
      */
     @GetMapping("/pageList")
     @ApiOperation("分页查询")
-    public Result<PageResult<GenTablesConfig>> page(GenTablesConfig genTablesConfig) {
-        return Result.success(genTablesConfigService.pageList(genTablesConfig));
+    public Result<PageResult<GenTablesConfig>> page(GenTablesConfigDTO tablesConfigDTO) {
+        return Result.success(genTablesConfigService.pageList(tablesConfigDTO));
     }
 
     /**

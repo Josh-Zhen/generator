@@ -1,12 +1,14 @@
 package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
+import com.moonlit.generator.generator.entity.dto.GenTablesConfigDTO;
 import com.moonlit.generator.generator.mapper.GenTablesConfigMapper;
 import com.moonlit.generator.generator.service.GenTablesConfigService;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,20 @@ public class GenTablesConfigServiceImpl extends ServiceImpl<GenTablesConfigMappe
     /**
      * 条件分页查询
      *
-     * @param genTablesConfig 表实体
+     * @param tablesConfigDTO 表实体
      * @return 结果集
      */
     @Override
-    public PageResult<GenTablesConfig> pageList(GenTablesConfig genTablesConfig) {
+    public PageResult<GenTablesConfig> pageList(GenTablesConfigDTO tablesConfigDTO) {
         LambdaQueryWrapper<GenTablesConfig> queryWrapper = Wrappers.lambdaQuery();
+        if (ObjectUtil.isNotNull(tablesConfigDTO)) {
+            if (ObjectUtil.isNotEmpty(tablesConfigDTO.getName())) {
+                queryWrapper.like(GenTablesConfig::getName, tablesConfigDTO.getName());
+            }
+            if (ObjectUtil.isNotEmpty(tablesConfigDTO.getAuthor())) {
+                queryWrapper.like(GenTablesConfig::getAuthor, tablesConfigDTO.getAuthor());
+            }
+        }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
 

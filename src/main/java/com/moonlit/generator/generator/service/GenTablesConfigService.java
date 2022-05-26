@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
+import com.moonlit.generator.generator.entity.dto.GenTablesConfigDTO;
 
 /**
  * 表配置业务层
@@ -17,10 +18,10 @@ public interface GenTablesConfigService extends IService<GenTablesConfig> {
     /**
      * 条件分页查询
      *
-     * @param genTablesConfig 表实体
+     * @param tablesConfigDTO 表实体
      * @return 结果集
      */
-    PageResult<GenTablesConfig> pageList(GenTablesConfig genTablesConfig);
+    PageResult<GenTablesConfig> pageList(GenTablesConfigDTO tablesConfigDTO);
 
     /**
      * 新增
