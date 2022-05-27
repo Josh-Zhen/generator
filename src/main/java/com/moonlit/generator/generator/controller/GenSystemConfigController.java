@@ -4,14 +4,13 @@ import cn.hutool.core.util.RandomUtil;
 import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenSystemConfig;
+import com.moonlit.generator.generator.entity.dto.SetSaltDTO;
 import com.moonlit.generator.generator.service.GenDatabaseService;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -56,4 +55,15 @@ public class GenSystemConfigController {
         return Result.success(genSystemConfigService.updateById(systemConfig));
     }
 
+    /**
+     * 設置密鑰
+     *
+     * @param salt 密鑰
+     * @return 密鑰
+     */
+    @PostMapping("/setSalt")
+    public Result<String> setSalt(@RequestBody SetSaltDTO salt) {
+
+        return Result.success();
+    }
 }

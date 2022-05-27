@@ -66,7 +66,7 @@ CREATE TABLE `gen_database`  (
                                  `update_date`       datetime                                                      NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 6
+  AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '数据库详情表'
   ROW_FORMAT = DYNAMIC;
@@ -162,7 +162,7 @@ CREATE TABLE `gen_tables_config`
     `create_date`   datetime                                                      NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 4
+  AUTO_INCREMENT = 2
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '配置表'
   ROW_FORMAT = Dynamic;

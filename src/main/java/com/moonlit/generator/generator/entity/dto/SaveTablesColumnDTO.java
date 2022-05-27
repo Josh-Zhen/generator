@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * 插入數據
@@ -18,7 +19,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SaveTablesColumnDTO {
+public class SaveTablesColumnDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 数据库id

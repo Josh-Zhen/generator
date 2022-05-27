@@ -20,4 +20,6 @@ public interface GenSystemConfigService extends IService<GenSystemConfig> {
      * @return 密鑰
      */
     String getRsaKey();
+
+
 }

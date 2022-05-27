@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.encrypt.RsaUtils;
+import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.constants.DatabaseDriverConstant;
+import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenSystemConfig;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
@@ -125,15 +127,17 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         String originalKey = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
 
         List<GenDatabase> list = this.list();
-        for (GenDatabase genDatabase : list) {
-            String userName = AesUtils.decryptBase64(genDatabase.getUserName(), originalKey);
-            String password = AesUtils.decryptBase64(genDatabase.getPassword(), originalKey);
-            // 重新加密用戶名稱與密碼
-            genDatabase.setUserName(AesUtils.encryptBase64(userName, key));
-            genDatabase.setPassword(AesUtils.encryptBase64(password, key));
-            genDatabase.setUpdateDate(LocalDateTime.now());
+        if (list.size() > 0) {
+            for (GenDatabase genDatabase : list) {
+                String userName = AesUtils.decryptBase64(genDatabase.getUserName(), originalKey);
+                String password = AesUtils.decryptBase64(genDatabase.getPassword(), originalKey);
+                // 重新加密用戶名稱與密碼
+                genDatabase.setUserName(AesUtils.encryptBase64(userName, key));
+                genDatabase.setPassword(AesUtils.encryptBase64(password, key));
+                genDatabase.setUpdateDate(LocalDateTime.now());
+            }
+            this.updateBatchById(list);
         }
-        this.updateBatchById(list);
     }
 
     /**
@@ -166,13 +170,17 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     }
 
     /**
-     * RSA数据加密
+     * 数据加密
+     * AES加密數據，RSA加密AES的密鑰
      *
      * @param data 数据
      * @return 结果
      */
     private String encrypt(String data) {
         GenSystemConfig genSystemConfig = genSystemConfigMapper.selectById(1);
+        if (ObjectUtil.isNull(genSystemConfig.getSalt())) {
+            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
+        }
         String key = RsaUtils.publicDecrypt(genSystemConfig.getSalt(), genSystemConfig.getPublicKey());
         return AesUtils.encryptBase64(data, key);
     }
