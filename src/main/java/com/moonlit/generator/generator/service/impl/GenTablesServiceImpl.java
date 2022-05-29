@@ -51,7 +51,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     private GenDatabaseMapper databaseMapper;
 
     @Autowired
-    private GenSystemConfigService configService;
+    private GenSystemConfigService systemConfigService;
 
     @Autowired
     private GenTablesConfigMapper tablesConfigMapper;
@@ -157,7 +157,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
         }
 
         // 獲取AES密鑰
-        String rsaKey = configService.getRsaKey();
+        String rsaKey = systemConfigService.getRsaKey();
         // 獲取庫内所有的表
         ArrayList<DatabaseTablesVO> list = MySqlUtils.getTablesDetails(genDatabase, rsaKey);
         List<String> tableNames = this.baseMapper.selectTableNames(databaseId);

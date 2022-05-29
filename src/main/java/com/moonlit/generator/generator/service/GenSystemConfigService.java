@@ -36,11 +36,9 @@ public interface GenSystemConfigService extends IService<GenSystemConfig> {
     String refreshKey();
 
     /**
-     * 刪除數據密鑰
-     *
-     * @return 結果
+     * 判斷持久化狀態，數據密鑰不存儲則設定為空
      */
-    Boolean removeSalt();
+    void ifStatusRemoveSalt();
 
     /**
      * 更新

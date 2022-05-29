@@ -48,7 +48,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
     private GenDatabaseService databaseService;
 
     @Autowired
-    private GenSystemConfigService configService;
+    private GenSystemConfigService systemConfigService;
 
     /**
      * 条件分页查询
@@ -80,20 +80,23 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
     @Override
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     public Boolean insertTablesColumn(@Validated SaveTablesColumnDTO saveDTO) {
+        GenDatabase database = databaseService.getById(saveDTO.getDatabaseId());
+        String rsaKey = systemConfigService.getRsaKey();
         try {
-            GenDatabase database = databaseService.getById(saveDTO.getDatabaseId());
-            ArrayList<TableFieldVO> vos = MySqlUtils.getFieldDetails(database, configService.getRsaKey(), saveDTO.getTableName());
+            ArrayList<TableFieldVO> vos = MySqlUtils.getFieldDetails(database, rsaKey, saveDTO.getTableName());
             // 移除以添加過的列
             removeExistingColumns(saveDTO.getTableId(), vos);
+
             if (vos.size() > 0) {
                 // 初始化數據
                 ArrayList<GenTablesColumn> list = initializeColumns(saveDTO.getTableId(), vos);
                 return this.saveBatch(list);
             }
         } catch (Exception e) {
-            System.out.println("新增字段異常");
             throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
         }
+        // 移除密鑰
+        systemConfigService.ifStatusRemoveSalt();
         return true;
     }
 

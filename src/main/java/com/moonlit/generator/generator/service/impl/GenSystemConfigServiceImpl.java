@@ -86,15 +86,15 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
     }
 
     /**
-     * 刪除數據密鑰
-     *
-     * @return 結果
+     * 判斷持久化狀態，數據密鑰不存儲則設定為空
      */
     @Override
-    public Boolean removeSalt() {
+    public void ifStatusRemoveSalt() {
         GenSystemConfig systemConfig = this.getById(1L);
-        systemConfig.setSalt("");
-        return this.updateById(systemConfig);
+        if (!systemConfig.getState()) {
+            systemConfig.setSalt("");
+            this.updateById(systemConfig);
+        }
     }
 
     /**
