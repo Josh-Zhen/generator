@@ -41,6 +41,11 @@ public class GenSystemConfig implements Serializable {
     private String salt;
 
     /**
+     * 鹽是否持久化(0:否 1:是)
+     */
+    private Boolean state;
+
+    /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)

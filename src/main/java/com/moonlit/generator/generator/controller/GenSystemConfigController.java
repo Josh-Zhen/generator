@@ -1,19 +1,10 @@
 package com.moonlit.generator.generator.controller;
 
-import cn.hutool.core.util.RandomUtil;
-import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenSystemConfig;
-import com.moonlit.generator.generator.entity.dto.SetSaltDTO;
-import com.moonlit.generator.generator.service.GenDatabaseService;
+import com.moonlit.generator.generator.entity.dto.SystemConfigDTO;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
 
 /**
  * 系統配置控制层
@@ -25,45 +16,37 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/genSystemConfig")
-@Api(value = "系統配置", tags = {"系統配置"})
 public class GenSystemConfigController {
 
     @Autowired
-    private GenSystemConfigService genSystemConfigService;
+    private GenSystemConfigService systemConfigService;
 
-    @Autowired
-    private GenDatabaseService genDatabaseService;
+    /**
+     * 獲取系統配置
+     *
+     * @return 系統配置
+     */
+    @GetMapping("/getSystemConfig")
+    public Result<SystemConfigDTO> getSystemConfig() {
+        return Result.success(systemConfigService.getSystemConfig());
+    }
 
     /**
      * 刷新密鑰
      */
-    @ApiOperation("刷新密鑰")
     @GetMapping("/refreshKey")
-    public Result<Boolean> refreshKey() {
-        GenSystemConfig systemConfig = genSystemConfigService.getById(1);
-        // 获取新密钥
-        HashMap<String, String> keys = RsaUtils.genKeyPair();
-        systemConfig.setPublicKey(keys.get("publicKey"));
-        String privateKey = keys.get("privateKey");
-        systemConfig.setPrivateKey(privateKey);
-        String salt = RandomUtil.randomString(10);
-        systemConfig.setSalt(RsaUtils.privateEncrypt(salt, privateKey));
-        systemConfig.setUpdateDate(LocalDateTime.now());
-
-        // 更新數據庫連接的用戶名與密碼
-        genDatabaseService.updateDatabasesInData(salt);
-        return Result.success(genSystemConfigService.updateById(systemConfig));
+    public Result<String> refreshKey() {
+        return Result.success(systemConfigService.refreshKey());
     }
 
     /**
      * 設置密鑰
      *
-     * @param salt 密鑰
-     * @return 密鑰
+     * @param dto 數據實體
+     * @return 結果
      */
     @PostMapping("/setSalt")
-    public Result<String> setSalt(@RequestBody SetSaltDTO salt) {
-
-        return Result.success();
+    public Result<Boolean> setSalt(@RequestBody SystemConfigDTO dto) {
+        return Result.success(systemConfigService.updateSystemConfig(dto));
     }
 }

@@ -51,7 +51,7 @@ public class MySqlUtils {
      * @return 連接對象
      */
     private static Connection connectMySql(GenDatabase database, String key) {
-        Connection connection;
+        Connection connection = null;
         HikariDataSource source = new HikariDataSource();
         source.setJdbcUrl("jdbc:mysql://" + database.getAddress() + CharacterConstant.COLON + database.getPort());
         source.setUsername(AesUtils.decryptBase64(database.getUserName(), key));
@@ -61,6 +61,7 @@ public class MySqlUtils {
             connection = source.getConnection();
         } catch (SQLException e) {
             log.error(e.getMessage());
+            close(connection, null);
             throw new BusinessException(DatabaseErrorCode.UNABLE_CONNECT_DATABASE);
         }
         return connection;

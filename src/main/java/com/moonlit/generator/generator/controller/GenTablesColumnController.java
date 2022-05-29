@@ -6,9 +6,8 @@ import com.moonlit.generator.generator.entity.GenTablesColumn;
 import com.moonlit.generator.generator.entity.dto.GenColumnDTO;
 import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
 import com.moonlit.generator.generator.service.GenTablesColumnService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/genTablesColumn")
-@Api(value = "數據表字段詳情", tags = {"數據表字段詳情"})
 public class GenTablesColumnController {
 
     @Autowired
@@ -31,8 +29,7 @@ public class GenTablesColumnController {
      * 条件分页查询
      */
     @GetMapping("/pageList")
-    @ApiOperation("条件分页查询")
-    public Result<PageResult<GenTablesColumn>> page(GenColumnDTO dto) {
+    public Result<PageResult<GenTablesColumn>> page(@Validated GenColumnDTO dto) {
         return Result.success(tablesColumnService.pageList(dto));
     }
 
@@ -40,8 +37,7 @@ public class GenTablesColumnController {
      * 刷新表字段
      */
     @PostMapping("/refresh")
-    @ApiOperation("刷新表字段")
-    public Result<Boolean> refresh(@RequestBody SaveTablesColumnDTO saveDTO) {
+    public Result<Boolean> refresh(@RequestBody @Validated SaveTablesColumnDTO saveDTO) {
         return Result.success(tablesColumnService.insertTablesColumn(saveDTO));
     }
 
@@ -49,7 +45,6 @@ public class GenTablesColumnController {
      * 修改保存
      */
     @PostMapping("/update")
-    @ApiOperation("修改保存")
     public Result<Boolean> editSave(@RequestBody GenTablesColumn tablesColumn) {
         return Result.success(tablesColumnService.updateTablesColumn(tablesColumn));
     }
@@ -58,7 +53,6 @@ public class GenTablesColumnController {
      * 批量删除
      */
     @PostMapping("/delete")
-    @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(tablesColumnService.deleteTablesColumnByIds(ids));
     }

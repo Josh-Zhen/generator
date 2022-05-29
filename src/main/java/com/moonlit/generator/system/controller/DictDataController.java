@@ -4,7 +4,6 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.system.entity.DictData;
 import com.moonlit.generator.system.service.DictDataService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/dict/data")
-@Api(value = "数据字典值配置", tags = {"数据字典值配置"})
 public class DictDataController {
 
     @Autowired

@@ -3,7 +3,6 @@ package com.moonlit.generator.generator.entity.vo;
 import cn.hutool.core.util.ObjectUtil;
 import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.generator.entity.GenTablesConfig;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,19 +21,16 @@ public class GenTablesConfigVO {
     /**
      * id
      */
-    @ApiModelProperty(name = "id", value = "id")
     private Long id;
 
     /**
      * 配置名稱
      */
-    @ApiModelProperty(name = "name", value = "配置名稱")
     private String name;
 
     /**
      * 備注
      */
-    @ApiModelProperty(name = "remark", value = "備注")
     private String remark;
 
     /**
@@ -47,8 +43,8 @@ public class GenTablesConfigVO {
         this.name = tablesConfig.getName();
         String author = "作者：" + tablesConfig.getAuthor();
         String packageName = " | 包名：" + tablesConfig.getPackageName();
-        String moduleName = ObjectUtil.isNotNull(tablesConfig.getModuleName()) ? " | 模块名：" + tablesConfig.getModuleName() : CharacterConstant.EMPTY;
-        String tablePrefix = ObjectUtil.isNotNull(tablesConfig.getTablePrefix()) ? " | 表前綴：" + tablesConfig.getTablePrefix() : CharacterConstant.EMPTY;
+        String moduleName = ObjectUtil.isNotEmpty(tablesConfig.getModuleName()) ? " | 模块名：" + tablesConfig.getModuleName() : CharacterConstant.EMPTY;
+        String tablePrefix = ObjectUtil.isNotEmpty(tablesConfig.getTablePrefix()) ? " | 表前綴：" + tablesConfig.getTablePrefix() : CharacterConstant.EMPTY;
         String removePrefix = tablesConfig.getRemovePrefix() ? "是" : "否";
         this.remark = author + packageName + moduleName + tablePrefix + " | 是否移除表前綴：" + removePrefix;
     }

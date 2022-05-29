@@ -16,8 +16,7 @@ public class GeneratorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GeneratorApplication.class, args);
-        log.info("代码生成工具服务启动成功！");
-        log.info("Swagger测试接口：http://127.0.0.1:8011/swagger-ui/");
+        log.info("月光生成器——启动成功！");
     }
 
 }

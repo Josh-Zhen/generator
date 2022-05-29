@@ -7,9 +7,8 @@ import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.service.GenTablesService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/genTables")
-@Api(value = "數據表詳情", tags = {"數據表詳情"})
 public class GenTablesController {
 
     @Autowired
@@ -34,7 +32,6 @@ public class GenTablesController {
      * 条件分页查询
      */
     @GetMapping("/pageList")
-    @ApiOperation("条件分页查询")
     public Result<PageResult<GenTables>> page(GenTablesDTO genTablesDTO) {
         return Result.success(genTablesService.pageList(genTablesDTO));
     }
@@ -43,8 +40,7 @@ public class GenTablesController {
      * 新增保存
      */
     @PostMapping("/save")
-    @ApiOperation("新增保存")
-    public Result<Boolean> addSave(@RequestBody SaveGenTablesDTO genTables) {
+    public Result<Boolean> addSave(@RequestBody @Validated SaveGenTablesDTO genTables) {
         return Result.success(genTablesService.insertTables(genTables));
     }
 
@@ -52,7 +48,6 @@ public class GenTablesController {
      * 修改保存
      */
     @PostMapping("/update")
-    @ApiOperation("修改保存")
     public Result<Boolean> editSave(@RequestBody GenTables genTables) {
         return Result.success(genTablesService.updateTables(genTables));
     }
@@ -61,7 +56,6 @@ public class GenTablesController {
      * 批量删除
      */
     @PostMapping("/delete")
-    @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(genTablesService.deleteTablesByIds(ids));
     }

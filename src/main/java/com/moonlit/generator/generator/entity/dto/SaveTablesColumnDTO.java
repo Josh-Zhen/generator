@@ -1,6 +1,5 @@
 package com.moonlit.generator.generator.entity.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,20 +26,17 @@ public class SaveTablesColumnDTO implements Serializable {
      * 数据库id
      */
     @NotNull(message = "数据库id不能为空")
-    @ApiModelProperty(name = "databaseId", value = "数据库id")
     private Long databaseId;
 
     /**
      * 數據表名
      */
     @NotNull(message = "数据表名不能为空")
-    @ApiModelProperty(name = "tableName", value = "数据表名")
     private String tableName;
 
     /**
      * 数据表id
      */
     @NotNull(message = "数据表id不能为空")
-    @ApiModelProperty(name = "tableId", value = "数据表id")
     private Long tableId;
 }

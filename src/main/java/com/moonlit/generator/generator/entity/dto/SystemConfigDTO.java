@@ -7,17 +7,22 @@ import java.io.Serializable;
 /**
  * @author Joshua
  * @version 1.0
- * @date 27/5/2022 12:47
+ * @date 29/5/2022 0:11
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class SetSaltDTO implements Serializable {
+public class SystemConfigDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -1L;
 
     /**
-     * 密鑰
+     * 鹽
      */
     private String salt;
+
+    /**
+     * 鹽是否持久化(0:否 1:是)
+     */
+    private Boolean state;
 
 }

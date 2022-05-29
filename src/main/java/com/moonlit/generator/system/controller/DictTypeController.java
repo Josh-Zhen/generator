@@ -5,8 +5,6 @@ import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.system.entity.DictType;
 import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.service.DictTypeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dict")
-@Api(value = "数据字典配置", tags = {"数据字典配置"})
 public class DictTypeController {
 
     @Autowired
@@ -35,7 +32,6 @@ public class DictTypeController {
      * @return 结果集
      */
     @GetMapping("/dropDown")
-    @ApiOperation("根据code查询对应的字段")
     public Result<List<DictVO>> dropDown(String code) {
         return Result.success(dictTypeService.dropDown(code));
     }

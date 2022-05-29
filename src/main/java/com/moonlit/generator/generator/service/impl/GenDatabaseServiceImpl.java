@@ -22,6 +22,7 @@ import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -121,14 +122,19 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
      * @param key 鹽
      */
     @Override
+    @Transactional(rollbackFor = Exception.class, timeout = 30)
     public void updateDatabasesInData(String key) {
         // 獲取原來的
         GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
+        if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
+            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
+        }
         String originalKey = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
 
         List<GenDatabase> list = this.list();
         if (list.size() > 0) {
             for (GenDatabase genDatabase : list) {
+                // 獲取原始數據
                 String userName = AesUtils.decryptBase64(genDatabase.getUserName(), originalKey);
                 String password = AesUtils.decryptBase64(genDatabase.getPassword(), originalKey);
                 // 重新加密用戶名稱與密碼
@@ -177,11 +183,11 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
      * @return 结果
      */
     private String encrypt(String data) {
-        GenSystemConfig genSystemConfig = genSystemConfigMapper.selectById(1);
-        if (ObjectUtil.isNull(genSystemConfig.getSalt())) {
+        GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
+        if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
             throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
         }
-        String key = RsaUtils.publicDecrypt(genSystemConfig.getSalt(), genSystemConfig.getPublicKey());
+        String key = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
         return AesUtils.encryptBase64(data, key);
     }
 }

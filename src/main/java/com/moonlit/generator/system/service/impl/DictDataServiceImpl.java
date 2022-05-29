@@ -69,7 +69,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     public PageResult<DictData> pageList(DictData dictData) {
         LambdaQueryWrapper<DictData> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(dictData)) {
+        if (ObjectUtil.isNotEmpty(dictData)) {
             if (ObjectUtil.isNotEmpty(dictData.getTypeId())) {
                 queryWrapper.eq(DictData::getTypeId, dictData.getTypeId());
             }

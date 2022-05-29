@@ -59,7 +59,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Override
     public PageResult<DictType> pageList(DictType dictType) {
         LambdaQueryWrapper<DictType> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(dictType)) {
+        if (ObjectUtil.isNotEmpty(dictType)) {
             if (ObjectUtil.isNotEmpty(dictType.getName())) {
                 queryWrapper.like(DictType::getName, dictType.getName());
             }

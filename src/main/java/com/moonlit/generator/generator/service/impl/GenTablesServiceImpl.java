@@ -68,7 +68,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     @Override
     public PageResult<GenTables> pageList(GenTablesDTO genTablesDTO) {
         LambdaQueryWrapper<GenTables> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(genTablesDTO)) {
+        if (ObjectUtil.isNotEmpty(genTablesDTO)) {
             if (ObjectUtil.isNotEmpty(genTablesDTO.getDatabaseId())) {
                 queryWrapper.eq(GenTables::getDatabaseId, genTablesDTO.getDatabaseId());
             }

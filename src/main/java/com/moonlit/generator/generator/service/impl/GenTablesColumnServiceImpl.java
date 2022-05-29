@@ -26,6 +26,7 @@ import com.moonlit.generator.generator.service.GenTablesColumnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
     public PageResult<GenTablesColumn> pageList(GenColumnDTO dto) {
         LambdaQueryWrapper<GenTablesColumn> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(GenTablesColumn::getTableId, dto.getTableId());
-        if (ObjectUtil.isNotNull(dto)) {
+        if (ObjectUtil.isNotEmpty(dto)) {
             if (ObjectUtil.isNotEmpty(dto.getColumnName())) {
                 queryWrapper.like(GenTablesColumn::getColumnName, dto.getColumnName());
             }
@@ -78,7 +79,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      */
     @Override
     @Transactional(rollbackFor = Exception.class, timeout = 30)
-    public Boolean insertTablesColumn(SaveTablesColumnDTO saveDTO) {
+    public Boolean insertTablesColumn(@Validated SaveTablesColumnDTO saveDTO) {
         try {
             GenDatabase database = databaseService.getById(saveDTO.getDatabaseId());
             ArrayList<TableFieldVO> vos = MySqlUtils.getFieldDetails(database, configService.getRsaKey(), saveDTO.getTableName());
@@ -90,6 +91,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                 return this.saveBatch(list);
             }
         } catch (Exception e) {
+            System.out.println("新增字段異常");
             throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
         }
         return true;
@@ -209,7 +211,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
                 column.setQueryType("like");
             }
             // 前端標簽
-            if (ObjectUtil.isNull(column.getHtmlType())) {
+            if (ObjectUtil.isEmpty(column.getHtmlType())) {
                 if (StringUtils.endsWith(columnName, "status")) {
                     // 單選框
                     column.setHtmlType(WebConstants.WEB_RADIO);

@@ -6,8 +6,6 @@ import com.moonlit.generator.generator.entity.GenTablesConfig;
 import com.moonlit.generator.generator.entity.dto.GenTablesConfigDTO;
 import com.moonlit.generator.generator.entity.vo.GenTablesConfigVO;
 import com.moonlit.generator.generator.service.GenTablesConfigService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,6 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/genTablesConfig")
-@Api(value = "數據表", tags = {"數據表"})
 public class GenTablesConfigController {
 
     @Autowired
@@ -36,7 +33,6 @@ public class GenTablesConfigController {
      * @return 结果集
      */
     @GetMapping("/pageList")
-    @ApiOperation("分页查询")
     public Result<PageResult<GenTablesConfig>> page(GenTablesConfigDTO tablesConfigDTO) {
         return Result.success(genTablesConfigService.pageList(tablesConfigDTO));
     }
@@ -48,7 +44,6 @@ public class GenTablesConfigController {
      * @return 结果
      */
     @PostMapping("/save")
-    @ApiOperation("新增保存")
     public Result<Boolean> addSave(@RequestBody GenTablesConfig genTablesConfig) {
         return Result.success(genTablesConfigService.insertDbDetail(genTablesConfig));
     }
@@ -60,7 +55,6 @@ public class GenTablesConfigController {
      * @return 结果
      */
     @PostMapping("/update")
-    @ApiOperation("修改保存")
     public Result<Boolean> editSave(@RequestBody GenTablesConfig genTablesConfig) {
         return Result.success(genTablesConfigService.updateDbDetail(genTablesConfig));
     }
@@ -72,7 +66,6 @@ public class GenTablesConfigController {
      * @return 结果
      */
     @PostMapping("/delete")
-    @ApiOperation("批量删除")
     public Result<Boolean> delete(String ids) {
         return Result.success(genTablesConfigService.deleteDbDetailByIds(ids));
     }
@@ -83,7 +76,6 @@ public class GenTablesConfigController {
      * @return 數據集合
      */
     @GetMapping("/getTablesConfig")
-    @ApiOperation("獲取表配置")
     public Result<ArrayList<GenTablesConfigVO>> getTablesConfig() {
         ArrayList<GenTablesConfigVO> list = new ArrayList<>();
         for (GenTablesConfig genTablesConfig : genTablesConfigService.list()) {

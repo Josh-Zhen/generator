@@ -36,7 +36,7 @@ public class GenTablesConfigServiceImpl extends ServiceImpl<GenTablesConfigMappe
     @Override
     public PageResult<GenTablesConfig> pageList(GenTablesConfigDTO tablesConfigDTO) {
         LambdaQueryWrapper<GenTablesConfig> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(tablesConfigDTO)) {
+        if (ObjectUtil.isNotEmpty(tablesConfigDTO)) {
             if (ObjectUtil.isNotEmpty(tablesConfigDTO.getName())) {
                 queryWrapper.like(GenTablesConfig::getName, tablesConfigDTO.getName());
             }

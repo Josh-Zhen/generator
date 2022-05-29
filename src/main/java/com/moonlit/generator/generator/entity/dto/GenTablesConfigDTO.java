@@ -1,6 +1,5 @@
 package com.moonlit.generator.generator.entity.dto;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,12 +18,10 @@ public class GenTablesConfigDTO implements Serializable {
     /**
      * 配置名稱
      */
-    @ApiModelProperty(name = "name", value = "配置名稱")
     private String name;
 
     /**
      * 作者
      */
-    @ApiModelProperty(name = "author", value = "作者")
     private String author;
 }

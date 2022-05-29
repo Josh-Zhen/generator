@@ -6,8 +6,6 @@ import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
 import com.moonlit.generator.generator.service.GenDatabaseService;
 import com.moonlit.generator.system.entity.vo.DictVO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/genDatabase")
-@Api(value = "数据库配置", tags = {"数据库配置"})
 public class GenDatabaseController {
 
     @Autowired
@@ -36,7 +33,6 @@ public class GenDatabaseController {
      * @return 结果集
      */
     @GetMapping("/pageList")
-    @ApiOperation("分页查询数据库明细")
     public Result<PageResult<GenDatabase>> page(GenDatabaseDTO genDatabaseDTO) {
         return Result.success(genDatabaseService.pageList(genDatabaseDTO));
     }
@@ -45,7 +41,6 @@ public class GenDatabaseController {
      * 新增连接库
      */
     @PostMapping("/save")
-    @ApiOperation("新增保存连接库")
     public Result<Boolean> addSave(@RequestBody GenDatabase genDatabase) {
         return Result.success(genDatabaseService.insertDatabase(genDatabase));
     }
@@ -54,7 +49,6 @@ public class GenDatabaseController {
      * 修改连接库
      */
     @PostMapping("/update")
-    @ApiOperation("修改保存连接库")
     public Result<Boolean> editSave(@RequestBody GenDatabase genDatabase) {
         return Result.success(genDatabaseService.updateDatabase(genDatabase));
     }
@@ -63,17 +57,16 @@ public class GenDatabaseController {
      * 批量删除连接库
      */
     @PostMapping("/delete")
-    @ApiOperation("批量删除连接库")
     public Result<Boolean> delete(String ids) {
         return Result.success(genDatabaseService.deleteDatabaseByIds(ids));
     }
 
     /**
      * 獲取數據庫名
+     *
      * @return 结果集
      */
     @GetMapping("/dropDown")
-    @ApiOperation("數據庫字典")
     public Result<List<DictVO>> dropDown() {
         return Result.success(genDatabaseService.dropDown());
     }

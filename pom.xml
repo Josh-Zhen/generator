@@ -50,13 +50,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Swagger-3.0 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
         <!-- 工具类 -->
         <dependency>
             <groupId>cn.hutool</groupId>
