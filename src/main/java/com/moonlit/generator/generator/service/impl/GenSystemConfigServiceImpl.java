@@ -2,8 +2,9 @@ package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenSystemConfig;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 
 /**
  * 系統配置业务实现层
@@ -54,33 +54,42 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
         if (ObjectUtil.isEmpty(salt)) {
             throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
         }
-        return RsaUtils.publicDecrypt(salt, systemConfig.getPublicKey());
+        RSA rsa = new RSA(null, systemConfig.getPublicKey());
+        return rsa.decryptStr(salt, KeyType.PublicKey);
     }
 
     /**
      * 刷新密鑰
      *
-     * @return 新的數據密鑰（以加密）
+     * @return 新的數據密鑰（已加密）
      */
     @Override
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     public String refreshKey() {
-        GenSystemConfig systemConfig = this.getById(1);
-        // 获取新密钥
-        HashMap<String, String> keys = RsaUtils.genKeyPair();
-        systemConfig.setPublicKey(keys.get("publicKey"));
-        String privateKey = keys.get("privateKey");
+        GenSystemConfig systemConfig = this.getById(1L);
+        if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
+            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
+        }
+        // 獲取原始密鑰
+        RSA rsa = new RSA(null, systemConfig.getPublicKey());
+        String originalKey = rsa.decryptStr(systemConfig.getSalt(), KeyType.PublicKey);
+
+        // 获取新加密密钥
+        rsa = new RSA();
+        systemConfig.setPublicKey(rsa.getPublicKeyBase64());
+        String privateKey = rsa.getPrivateKeyBase64();
         systemConfig.setPrivateKey(privateKey);
+
         // 新的數據密鑰
-        String salt = RandomUtil.randomString(10);
-        String dataKey = RsaUtils.privateEncrypt(salt, privateKey);
+        String salt = RandomUtil.randomString(16);
+        String dataKey = rsa.encryptBase64(salt, KeyType.PrivateKey);
         if (systemConfig.getState()) {
             systemConfig.setSalt(dataKey);
         }
         systemConfig.setUpdateDate(LocalDateTime.now());
 
         // 更新數據庫連接的用戶名與密碼
-        databaseService.updateDatabasesInData(salt);
+        databaseService.updateDatabasesInData(originalKey, salt);
         this.updateById(systemConfig);
         return dataKey;
     }

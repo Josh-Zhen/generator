@@ -2,11 +2,12 @@ package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.symmetric.AES;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moonlit.generator.common.encrypt.AesUtils;
-import com.moonlit.generator.common.encrypt.RsaUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +47,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     private DictTypeService dictTypeService;
 
     @Autowired
-    private GenSystemConfigMapper genSystemConfigMapper;
+    private GenSystemConfigMapper systemConfigMapper;
 
     /**
      * 条件分页查询
@@ -119,28 +121,24 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     /**
      * 更新用戶名與密碼
      *
-     * @param key 鹽
+     * @param originalKey 原始密鑰
+     * @param newKey      新密鑰
      */
     @Override
     @Transactional(rollbackFor = Exception.class, timeout = 30)
-    public void updateDatabasesInData(String key) {
-        // 獲取原來的
-        GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
-        if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
-            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
-        }
-        String originalKey = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
-
+    public void updateDatabasesInData(String originalKey, String newKey) {
         List<GenDatabase> list = this.list();
         if (list.size() > 0) {
-            for (GenDatabase genDatabase : list) {
+            for (GenDatabase database : list) {
                 // 獲取原始數據
-                String userName = AesUtils.decryptBase64(genDatabase.getUserName(), originalKey);
-                String password = AesUtils.decryptBase64(genDatabase.getPassword(), originalKey);
+                AES aes = new AES(originalKey.getBytes(StandardCharsets.UTF_8));
+                String userName = aes.decryptStr(database.getUserName());
+                String password = aes.decryptStr(database.getPassword());
                 // 重新加密用戶名稱與密碼
-                genDatabase.setUserName(AesUtils.encryptBase64(userName, key));
-                genDatabase.setPassword(AesUtils.encryptBase64(password, key));
-                genDatabase.setUpdateDate(LocalDateTime.now());
+                aes = new AES(newKey.getBytes(StandardCharsets.UTF_8));
+                database.setUserName(aes.encryptBase64(userName));
+                database.setPassword(aes.encryptBase64(password));
+                database.setUpdateDate(LocalDateTime.now());
             }
             this.updateBatchById(list);
         }
@@ -182,12 +180,15 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
      * @param data 数据
      * @return 结果
      */
-    private String encrypt(String data) {
-        GenSystemConfig systemConfig = genSystemConfigMapper.selectById(1);
+    @Override
+    public String encrypt(String data) {
+        GenSystemConfig systemConfig = systemConfigMapper.selectById(1);
         if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
             throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
         }
-        String key = RsaUtils.publicDecrypt(systemConfig.getSalt(), systemConfig.getPublicKey());
-        return AesUtils.encryptBase64(data, key);
+        RSA rsa = new RSA(systemConfig.getPrivateKey(), systemConfig.getPublicKey());
+        String key = rsa.decryptStr(systemConfig.getSalt(), KeyType.PublicKey);
+        AES aes = new AES(key.getBytes(StandardCharsets.UTF_8));
+        return aes.encryptBase64(data);
     }
 }

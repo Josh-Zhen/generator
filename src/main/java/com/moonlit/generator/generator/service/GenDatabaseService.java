@@ -53,9 +53,10 @@ public interface GenDatabaseService extends IService<GenDatabase> {
     /**
      * 更新用戶名與密碼
      *
-     * @param key 鹽
+     * @param originalKey 原始密鑰
+     * @param newKey      新密鑰
      */
-    void updateDatabasesInData(String key);
+    void updateDatabasesInData(String originalKey, String newKey);
 
     /**
      * 獲取數據庫名
@@ -64,4 +65,5 @@ public interface GenDatabaseService extends IService<GenDatabase> {
      */
     List<DictVO> dropDown();
 
+    String encrypt(String data);
 }

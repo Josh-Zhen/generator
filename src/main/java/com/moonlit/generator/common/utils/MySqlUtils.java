@@ -1,10 +1,10 @@
 package com.moonlit.generator.common.utils;
 
+import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.moonlit.generator.common.constant.CharacterConstant;
-import com.moonlit.generator.common.encrypt.AesUtils;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
@@ -13,6 +13,7 @@ import com.moonlit.generator.generator.entity.vo.TableFieldVO;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -54,8 +55,9 @@ public class MySqlUtils {
         Connection connection = null;
         HikariDataSource source = new HikariDataSource();
         source.setJdbcUrl("jdbc:mysql://" + database.getAddress() + CharacterConstant.COLON + database.getPort());
-        source.setUsername(AesUtils.decryptBase64(database.getUserName(), key));
-        source.setPassword(AesUtils.decryptBase64(database.getPassword(), key));
+        AES aes = new AES(key.getBytes(StandardCharsets.UTF_8));
+        source.setUsername(aes.decryptStr(database.getUserName()));
+        source.setPassword(aes.decryptStr(database.getPassword()));
         source.setDriverClassName(database.getDriverClassName());
         try {
             connection = source.getConnection();
