@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
@@ -167,7 +168,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
             GenTablesColumn column = new GenTablesColumn(tableId, vo);
             column.setJavaField(StringUtils.underlineToCamel(columnName));
             // 移除末尾的參數
-            String columnType = NamingStrategy.substringBefore(vo.getColumnType(), "(");
+            String columnType = NamingStrategy.substringBefore(vo.getColumnType(), CharacterConstant.LEFT_ROUND_BRACKETS);
 
             // 設置java類型
             if (isContains(DatabaseConstants.DATABASE_STRING_TYPE, columnType)) {
