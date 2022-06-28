@@ -29,7 +29,7 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
      * @param templateConfig 模板配置實體
      * @return 結果
      */
-    Boolean insertTemplateConfigs(GenTemplateConfig templateConfig);
+    Boolean insertTemplateConfig(GenTemplateConfig templateConfig);
 
     /**
      * 修改模板配置
@@ -37,7 +37,7 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
      * @param templateConfig 模板配置實體
      * @return 結果
      */
-    Boolean updateTemplateConfigs(GenTemplateConfig templateConfig);
+    Boolean updateTemplateConfig(GenTemplateConfig templateConfig);
 
     /**
      * 批量删除

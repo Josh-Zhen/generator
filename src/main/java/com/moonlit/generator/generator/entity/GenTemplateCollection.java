@@ -4,21 +4,18 @@ import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 模板配置實體
+ * 模板组實體
  *
  * @author Joshua
  * @version 1.0
- * @date 31/5/2022 16:36
+ * @date 28/6/2022 16:15
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenTemplateConfig implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class GenTemplateCollection {
 
     /**
      * id
@@ -26,27 +23,12 @@ public class GenTemplateConfig implements Serializable {
     private Long id;
 
     /**
-     * 模板組id
-     */
-    private Long collectionId;
-
-    /**
-     * 名称
+     * 模板組名稱
      */
     private String name;
 
     /**
-     * 模板
-     */
-    private String template;
-
-    /**
-     * 模板后缀名
-     */
-    private String suffixName;
-
-    /**
-     * 状态（0:否 1:是）
+     * 状态（0否、1是）
      */
     private Boolean state;
 

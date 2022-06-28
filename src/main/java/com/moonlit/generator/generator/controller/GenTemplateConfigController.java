@@ -6,7 +6,6 @@ import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -36,8 +35,8 @@ public class GenTemplateConfigController {
      * 新增保存
      */
     @PostMapping("/save")
-    public Result<Boolean> addSave(@RequestBody @Validated GenTemplateConfig templateConfig) {
-        return Result.success(templateConfigService.insertTemplateConfigs(templateConfig));
+    public Result<Boolean> addSave(@RequestBody GenTemplateConfig templateConfig) {
+        return Result.success(templateConfigService.insertTemplateConfig(templateConfig));
     }
 
     /**
@@ -45,7 +44,7 @@ public class GenTemplateConfigController {
      */
     @PostMapping("/update")
     public Result<Boolean> editSave(@RequestBody GenTemplateConfig templateConfig) {
-        return Result.success(templateConfigService.updateTemplateConfigs(templateConfig));
+        return Result.success(templateConfigService.updateTemplateConfig(templateConfig));
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.io.file.PathUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -13,14 +12,7 @@ import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.mapper.GenTemplateConfigMapper;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -62,7 +54,7 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
      * @return 結果
      */
     @Override
-    public Boolean insertTemplateConfigs(GenTemplateConfig templateConfig) {
+    public Boolean insertTemplateConfig(GenTemplateConfig templateConfig) {
         templateConfig.setCreateDate(LocalDateTime.now());
         return this.save(templateConfig);
     }
@@ -74,7 +66,7 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
      * @return 結果
      */
     @Override
-    public Boolean updateTemplateConfigs(GenTemplateConfig templateConfig) {
+    public Boolean updateTemplateConfig(GenTemplateConfig templateConfig) {
         return this.updateById(templateConfig);
     }
 
@@ -89,25 +81,5 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 
-
-    /**
-     * 生成模板文件
-     *
-     * @return 文件名称
-     */
-    public String generateTemplateFile() {
-        try {
-            // 模板文件夹路径
-            String templatePath = ResourceUtils.getFile("classpath:").getPath() + "\\template";
-            Path path = Paths.get(templatePath);
-            // 模板文件夹不存在时创建
-            if (!PathUtil.isDirectory(path)) {
-                Files.createDirectory(path);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 }
