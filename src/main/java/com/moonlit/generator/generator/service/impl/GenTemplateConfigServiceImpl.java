@@ -37,6 +37,9 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     public PageResult<GenTemplateConfig> pageList(GenTemplateConfigDTO templateConfigDTO) {
         LambdaQueryWrapper<GenTemplateConfig> queryWrapper = Wrappers.lambdaQuery();
         if (ObjectUtil.isNotEmpty(templateConfigDTO)) {
+            if (ObjectUtil.isNotEmpty(templateConfigDTO.getCollectionId())) {
+                queryWrapper.like(GenTemplateConfig::getCollectionId, templateConfigDTO.getCollectionId());
+            }
             if (ObjectUtil.isNotEmpty(templateConfigDTO.getName())) {
                 queryWrapper.like(GenTemplateConfig::getName, templateConfigDTO.getName());
             }

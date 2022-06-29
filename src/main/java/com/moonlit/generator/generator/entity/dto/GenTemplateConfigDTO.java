@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 public class GenTemplateConfigDTO {
 
+    private Long collectionId;
+
     /**
      * 名称
      */
