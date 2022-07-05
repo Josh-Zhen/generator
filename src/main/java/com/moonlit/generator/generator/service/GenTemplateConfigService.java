@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
+import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 
 /**
  * 模板配置业务层
@@ -46,4 +47,12 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
      * @return 結果
      */
     Boolean deleteTemplateConfigByIds(String ids);
+
+    /**
+     * 根據id預覽代碼
+     *
+     * @param tableId 表id
+     * @return 結果
+     */
+    PreviewTemplateDTO previewTemplateByTableId(Long tableId);
 }

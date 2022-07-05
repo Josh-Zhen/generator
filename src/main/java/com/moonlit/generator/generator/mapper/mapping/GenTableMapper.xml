@@ -2,9 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.moonlit.generator.generator.mapper.GenTablesMapper">
+<mapper namespace="com.moonlit.generator.generator.mapper.GenTableMapper">
 
     <select id="selectTableNames" resultType="java.lang.String">
-        select table_name from gen_tables where database_id = #{databaseId}
+        select table_name
+        from gen_table
+        where database_id = #{databaseId}
     </select>
 </mapper>

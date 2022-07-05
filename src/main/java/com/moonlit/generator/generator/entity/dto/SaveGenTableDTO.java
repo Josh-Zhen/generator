@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class SaveGenTablesDTO implements Serializable {
+public class SaveGenTableDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

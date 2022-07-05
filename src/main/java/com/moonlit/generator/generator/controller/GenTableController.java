@@ -2,11 +2,11 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenTables;
-import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
-import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
+import com.moonlit.generator.generator.entity.GenTable;
+import com.moonlit.generator.generator.entity.dto.GenTableDTO;
+import com.moonlit.generator.generator.entity.dto.SaveGenTableDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
-import com.moonlit.generator.generator.service.GenTablesService;
+import com.moonlit.generator.generator.service.GenTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,34 +22,34 @@ import java.util.List;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/genTables")
-public class GenTablesController {
+@RequestMapping("/genTable")
+public class GenTableController {
 
     @Autowired
-    private GenTablesService genTablesService;
+    private GenTableService genTableService;
 
     /**
      * 条件分页查询
      */
     @GetMapping("/pageList")
-    public Result<PageResult<GenTables>> page(GenTablesDTO genTablesDTO) {
-        return Result.success(genTablesService.pageList(genTablesDTO));
+    public Result<PageResult<GenTable>> page(GenTableDTO genTableDTO) {
+        return Result.success(genTableService.pageList(genTableDTO));
     }
 
     /**
      * 新增保存
      */
     @PostMapping("/save")
-    public Result<Boolean> addSave(@RequestBody @Validated SaveGenTablesDTO genTables) {
-        return Result.success(genTablesService.insertTables(genTables));
+    public Result<Boolean> addSave(@RequestBody @Validated SaveGenTableDTO genTable) {
+        return Result.success(genTableService.insertTable(genTable));
     }
 
     /**
      * 修改保存
      */
     @PostMapping("/update")
-    public Result<Boolean> editSave(@RequestBody GenTables genTables) {
-        return Result.success(genTablesService.updateTables(genTables));
+    public Result<Boolean> editSave(@RequestBody GenTable genTable) {
+        return Result.success(genTableService.updateTable(genTable));
     }
 
     /**
@@ -57,7 +57,7 @@ public class GenTablesController {
      */
     @PostMapping("/delete")
     public Result<Boolean> delete(String ids) {
-        return Result.success(genTablesService.deleteTablesByIds(ids));
+        return Result.success(genTableService.deleteTableByIds(ids));
     }
 
     /**
@@ -68,7 +68,7 @@ public class GenTablesController {
      */
     @GetMapping("/list")
     public Result<List<DatabaseTablesVO>> list(Long databaseId) {
-        return Result.success(genTablesService.list(databaseId));
+        return Result.success(genTableService.list(databaseId));
     }
 
 }

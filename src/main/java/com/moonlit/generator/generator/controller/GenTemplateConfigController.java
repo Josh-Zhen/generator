@@ -2,8 +2,11 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
+import com.moonlit.generator.generator.entity.GenTable;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
+import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
+import com.moonlit.generator.generator.service.GenTableService;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,8 @@ public class GenTemplateConfigController {
 
     @Autowired
     private GenTemplateConfigService templateConfigService;
+    @Autowired
+    private GenTableService tablesService;
 
     /**
      * 条件分页查询
@@ -55,5 +60,18 @@ public class GenTemplateConfigController {
         return Result.success(templateConfigService.deleteTemplateConfigByIds(ids));
     }
 
+    /**
+     * 預覽代碼
+     *
+     * @param tableId 表id
+     * @return 結果
+     */
+    @GetMapping("/preview")
+    public Result<PreviewTemplateDTO> preview(@RequestParam Long tableId) {
+        GenTable table = tablesService.getById(tableId);
+
+
+        return Result.success(templateConfigService.previewTemplateByTableId(tableId));
+    }
 
 }

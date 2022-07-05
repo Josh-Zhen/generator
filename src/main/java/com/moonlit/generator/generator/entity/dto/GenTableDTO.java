@@ -5,23 +5,30 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+ * 数据表查询实体
+ *
  * @author Joshua
  * @version 1.0
- * @date 27/5/2022 0:24
+ * @date 2022/2/9 17:29
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenTablesConfigDTO implements Serializable {
+public class GenTableDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 配置名稱
+     * 数据库id
      */
-    private String name;
+    private Long databaseId;
 
     /**
-     * 作者
+     * 表名称
      */
-    private String author;
+    private String tableName;
+
+    /**
+     * 表描述
+     */
+    private String tableComment;
 }

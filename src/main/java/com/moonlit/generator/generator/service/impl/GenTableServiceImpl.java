@@ -14,18 +14,18 @@ import com.moonlit.generator.common.utils.MySqlUtils;
 import com.moonlit.generator.common.utils.NamingStrategy;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
-import com.moonlit.generator.generator.entity.GenTables;
-import com.moonlit.generator.generator.entity.GenTablesConfig;
-import com.moonlit.generator.generator.entity.dto.GenTablesDTO;
-import com.moonlit.generator.generator.entity.dto.SaveGenTablesDTO;
-import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
+import com.moonlit.generator.generator.entity.GenTable;
+import com.moonlit.generator.generator.entity.GenTableConfig;
+import com.moonlit.generator.generator.entity.dto.GenTableDTO;
+import com.moonlit.generator.generator.entity.dto.SaveGenTableDTO;
+import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
-import com.moonlit.generator.generator.mapper.GenTablesConfigMapper;
-import com.moonlit.generator.generator.mapper.GenTablesMapper;
+import com.moonlit.generator.generator.mapper.GenTableConfigMapper;
+import com.moonlit.generator.generator.mapper.GenTableMapper;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
-import com.moonlit.generator.generator.service.GenTablesColumnService;
-import com.moonlit.generator.generator.service.GenTablesService;
+import com.moonlit.generator.generator.service.GenTableColumnService;
+import com.moonlit.generator.generator.service.GenTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ import java.util.List;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables> implements GenTablesService {
+public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> implements GenTableService {
 
     @Autowired
     private GenDatabaseMapper databaseMapper;
@@ -54,29 +54,29 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     private GenSystemConfigService systemConfigService;
 
     @Autowired
-    private GenTablesConfigMapper tablesConfigMapper;
+    private GenTableConfigMapper tableConfigMapper;
 
     @Autowired
-    private GenTablesColumnService tablesColumnService;
+    private GenTableColumnService tableColumnService;
 
     /**
      * 条件分页查询
      *
-     * @param genTablesDTO 查询实体
+     * @param genTableDTO 查询实体
      * @return 结果集
      */
     @Override
-    public PageResult<GenTables> pageList(GenTablesDTO genTablesDTO) {
-        LambdaQueryWrapper<GenTables> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotEmpty(genTablesDTO)) {
-            if (ObjectUtil.isNotEmpty(genTablesDTO.getDatabaseId())) {
-                queryWrapper.eq(GenTables::getDatabaseId, genTablesDTO.getDatabaseId());
+    public PageResult<GenTable> pageList(GenTableDTO genTableDTO) {
+        LambdaQueryWrapper<GenTable> queryWrapper = Wrappers.lambdaQuery();
+        if (ObjectUtil.isNotEmpty(genTableDTO)) {
+            if (ObjectUtil.isNotEmpty(genTableDTO.getDatabaseId())) {
+                queryWrapper.eq(GenTable::getDatabaseId, genTableDTO.getDatabaseId());
             }
-            if (ObjectUtil.isNotEmpty(genTablesDTO.getTableName())) {
-                queryWrapper.like(GenTables::getTableName, genTablesDTO.getTableName());
+            if (ObjectUtil.isNotEmpty(genTableDTO.getTableName())) {
+                queryWrapper.like(GenTable::getTableName, genTableDTO.getTableName());
             }
-            if (ObjectUtil.isNotEmpty(genTablesDTO.getTableComment())) {
-                queryWrapper.like(GenTables::getTableComment, genTablesDTO.getTableComment());
+            if (ObjectUtil.isNotEmpty(genTableDTO.getTableComment())) {
+                queryWrapper.like(GenTable::getTableComment, genTableDTO.getTableComment());
             }
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
@@ -90,17 +90,17 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      */
     @Override
     @Transactional(rollbackFor = Exception.class, timeout = 30)
-    public Boolean insertTables(SaveGenTablesDTO saveDTO) {
+    public Boolean insertTable(SaveGenTableDTO saveDTO) {
         for (DatabaseTablesVO tablesVO : saveDTO.getList()) {
             try {
-                GenTables tables = initializeTable(saveDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), saveDTO.getTableConfigId());
+                GenTable tables = initializeTable(saveDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), saveDTO.getTableConfigId());
                 baseMapper.insert(tables);
                 // 插入數據後的主鍵
                 Long row = tables.getId();
                 if (row > 0) {
                     // 插入表字段信息
-                    SaveTablesColumnDTO columnDTO = new SaveTablesColumnDTO(saveDTO.getDatabaseId(), tablesVO.getTableName(), row);
-                    tablesColumnService.insertTablesColumn(columnDTO);
+                    SaveTableColumnDTO columnDTO = new SaveTableColumnDTO(saveDTO.getDatabaseId(), tablesVO.getTableName(), row);
+                    tableColumnService.insertTableColumn(columnDTO);
                 }
             } catch (Exception e) {
                 throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
@@ -112,18 +112,18 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
     /**
      * 修改
      *
-     * @param genTables 表实体
+     * @param genTable 表实体
      * @return 结果
      */
     @Override
-    public Boolean updateTables(GenTables genTables) {
-        GenTables tables = this.getById(genTables.getId());
+    public Boolean updateTable(GenTable genTable) {
+        GenTable table = this.getById(genTable.getId());
         // 表配置變動
-        if (!genTables.getConfigId().equals(tables.getConfigId())) {
-            genTables.setClassName(convertClassName(genTables.getTableName(), genTables.getConfigId()));
+        if (!genTable.getConfigId().equals(table.getConfigId())) {
+            genTable.setClassName(convertClassName(genTable.getTableName(), genTable.getConfigId()));
         }
-        genTables.setUpdateDate(LocalDateTime.now());
-        return this.updateById(genTables);
+        genTable.setUpdateDate(LocalDateTime.now());
+        return this.updateById(genTable);
     }
 
     /**
@@ -133,10 +133,10 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @return 结果
      */
     @Override
-    public Boolean deleteTablesByIds(String ids) {
+    public Boolean deleteTableByIds(String ids) {
         Collection<String> list = Arrays.asList(Convert.toStrArray(ids));
         // 刪除子表的數據
-        tablesColumnService.removeByIds(tablesColumnService.listColumnsByTablesId(list));
+        tableColumnService.removeByIds(tableColumnService.listColumnsByTableId(list));
         return this.removeByIds(list);
     }
 
@@ -179,12 +179,12 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @param tableConfigId 表配置id
      * @return 表實體
      */
-    private GenTables initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
-        GenTables genTables = new GenTables(databaseId, tableName, tableComment, tableConfigId);
-        genTables.setClassName(convertClassName(tableName, tableConfigId));
-        genTables.setBusinessName(getBusinessName(tableName));
-        genTables.setFunctionName(tableName);
-        return genTables;
+    private GenTable initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
+        GenTable genTable = new GenTable(databaseId, tableName, tableComment, tableConfigId);
+        genTable.setClassName(convertClassName(tableName, tableConfigId));
+        genTable.setBusinessName(getBusinessName(tableName));
+        genTable.setFunctionName(tableName);
+        return genTable;
     }
 
     /**
@@ -218,7 +218,7 @@ public class GenTablesServiceImpl extends ServiceImpl<GenTablesMapper, GenTables
      * @return 類名稱
      */
     private String convertClassName(String tableName, Long tableConfigId) {
-        GenTablesConfig tablesConfig = tablesConfigMapper.selectById(tableConfigId);
+        GenTableConfig tablesConfig = tableConfigMapper.selectById(tableConfigId);
         if (tablesConfig.getRemovePrefix()) {
             return NamingStrategy.firstToUpperCase(NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix()));
         }

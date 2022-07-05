@@ -2,9 +2,9 @@ package com.moonlit.generator.generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenTablesColumn;
+import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.dto.GenColumnDTO;
-import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
+import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import java.util.Collection;
  * @date 2021/9/30 8:52
  * @email by.Moonlit@hotmail.com
  */
-public interface GenTablesColumnService extends IService<GenTablesColumn> {
+public interface GenTableColumnService extends IService<GenTableColumn> {
 
     /**
      * 条件分页查询
@@ -25,7 +25,7 @@ public interface GenTablesColumnService extends IService<GenTablesColumn> {
      * @param dto 查询实体
      * @return 结果集
      */
-    PageResult<GenTablesColumn> pageList(GenColumnDTO dto);
+    PageResult<GenTableColumn> pageList(GenColumnDTO dto);
 
     /**
      * 新增/刷新
@@ -33,15 +33,15 @@ public interface GenTablesColumnService extends IService<GenTablesColumn> {
      * @param saveDTO 实体
      * @return 结果
      */
-    Boolean insertTablesColumn(SaveTablesColumnDTO saveDTO);
+    Boolean insertTableColumn(SaveTableColumnDTO saveDTO);
 
     /**
      * 修改
      *
-     * @param genTablesColumn 实体
+     * @param genTableColumn 实体
      * @return 结果
      */
-    Boolean updateTablesColumn(GenTablesColumn genTablesColumn);
+    Boolean updateTableColumn(GenTableColumn genTableColumn);
 
     /**
      * 批量删除
@@ -49,7 +49,7 @@ public interface GenTablesColumnService extends IService<GenTablesColumn> {
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-    Boolean deleteTablesColumnByIds(String ids);
+    Boolean deleteTableColumnByIds(String ids);
 
     /**
      * 根據id集合獲取所有相關數據
@@ -57,5 +57,5 @@ public interface GenTablesColumnService extends IService<GenTablesColumn> {
      * @param tablesId 表id集合
      * @return 字段id結果集
      */
-    ArrayList<Long> listColumnsByTablesId(Collection<String> tablesId);
+    ArrayList<Long> listColumnsByTableId(Collection<String> tablesId);
 }

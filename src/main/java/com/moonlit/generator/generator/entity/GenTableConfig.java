@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * @email by.Moonlit@hotmail.com
  */
 @Data
-public class GenTablesConfig implements Serializable {
+public class GenTableConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

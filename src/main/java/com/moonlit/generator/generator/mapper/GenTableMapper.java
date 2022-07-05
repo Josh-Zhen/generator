@@ -1,7 +1,7 @@
 package com.moonlit.generator.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.moonlit.generator.generator.entity.GenTables;
+import com.moonlit.generator.generator.entity.GenTable;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @email by.Moonlit@hotmail.com
  */
 @Mapper
-public interface GenTablesMapper extends BaseMapper<GenTables> {
+public interface GenTableMapper extends BaseMapper<GenTable> {
 
     /**
      * 根據庫id獲取表明

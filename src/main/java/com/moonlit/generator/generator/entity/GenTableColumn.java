@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-public class GenTablesColumn implements Serializable {
+public class GenTableColumn implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -142,7 +142,7 @@ public class GenTablesColumn implements Serializable {
      * @param tableId 數據表id
      * @param vo      臨時實體
      */
-    public GenTablesColumn(Long tableId, TableFieldVO vo) {
+    public GenTableColumn(Long tableId, TableFieldVO vo) {
         this.tableId = tableId;
         this.columnName = vo.getColumnName();
         this.columnComment = vo.getColumnComment();

@@ -2,17 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.moonlit.generator.generator.mapper.GenTablesColumnMapper">
+<mapper namespace="com.moonlit.generator.generator.mapper.GenTableColumnMapper">
 
     <select id="selectTablesName" resultType="java.lang.String">
         SELECT column_name
-        FROM gen_tables_column
+        FROM gen_table_column
         WHERE table_id = #{tableId}
     </select>
 
     <select id="listColumnsByTablesId" resultType="java.lang.Long">
         SELECT id
-        FROM gen_tables_column
+        FROM gen_table_column
         WHERE table_id IN
         <foreach collection="list" item="tableId" open="(" close=")" separator=",">
             #{tableId}

@@ -2,10 +2,10 @@ package com.moonlit.generator.generator.controller;
 
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenTablesColumn;
+import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.dto.GenColumnDTO;
-import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
-import com.moonlit.generator.generator.service.GenTablesColumnService;
+import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
+import com.moonlit.generator.generator.service.GenTableColumnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,34 +19,34 @@ import org.springframework.web.bind.annotation.*;
  * @email by.Moonlit@hotmail.com
  */
 @RestController
-@RequestMapping("/genTablesColumn")
-public class GenTablesColumnController {
+@RequestMapping("/genTableColumn")
+public class GenTableColumnController {
 
     @Autowired
-    private GenTablesColumnService tablesColumnService;
+    private GenTableColumnService tableColumnService;
 
     /**
      * 条件分页查询
      */
     @GetMapping("/pageList")
-    public Result<PageResult<GenTablesColumn>> page(@Validated GenColumnDTO dto) {
-        return Result.success(tablesColumnService.pageList(dto));
+    public Result<PageResult<GenTableColumn>> page(@Validated GenColumnDTO dto) {
+        return Result.success(tableColumnService.pageList(dto));
     }
 
     /**
      * 刷新表字段
      */
     @PostMapping("/refresh")
-    public Result<Boolean> refresh(@RequestBody @Validated SaveTablesColumnDTO saveDTO) {
-        return Result.success(tablesColumnService.insertTablesColumn(saveDTO));
+    public Result<Boolean> refresh(@RequestBody @Validated SaveTableColumnDTO saveDTO) {
+        return Result.success(tableColumnService.insertTableColumn(saveDTO));
     }
 
     /**
      * 修改保存
      */
     @PostMapping("/update")
-    public Result<Boolean> editSave(@RequestBody GenTablesColumn tablesColumn) {
-        return Result.success(tablesColumnService.updateTablesColumn(tablesColumn));
+    public Result<Boolean> editSave(@RequestBody GenTableColumn tableColumn) {
+        return Result.success(tableColumnService.updateTableColumn(tableColumn));
     }
 
     /**
@@ -54,7 +54,7 @@ public class GenTablesColumnController {
      */
     @PostMapping("/delete")
     public Result<Boolean> delete(String ids) {
-        return Result.success(tablesColumnService.deleteTablesColumnByIds(ids));
+        return Result.success(tableColumnService.deleteTableColumnByIds(ids));
     }
 
 }

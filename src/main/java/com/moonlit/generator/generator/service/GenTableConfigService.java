@@ -2,8 +2,8 @@ package com.moonlit.generator.generator.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
-import com.moonlit.generator.generator.entity.GenTablesConfig;
-import com.moonlit.generator.generator.entity.dto.GenTablesConfigDTO;
+import com.moonlit.generator.generator.entity.GenTableConfig;
+import com.moonlit.generator.generator.entity.dto.GenTableConfigDTO;
 
 /**
  * 表配置业务层
@@ -13,7 +13,7 @@ import com.moonlit.generator.generator.entity.dto.GenTablesConfigDTO;
  * @date 2021/10/14 9:06
  * @email by.Moonlit@hotmail.com
  */
-public interface GenTablesConfigService extends IService<GenTablesConfig> {
+public interface GenTableConfigService extends IService<GenTableConfig> {
 
     /**
      * 条件分页查询
@@ -21,23 +21,23 @@ public interface GenTablesConfigService extends IService<GenTablesConfig> {
      * @param tablesConfigDTO 表实体
      * @return 结果集
      */
-    PageResult<GenTablesConfig> pageList(GenTablesConfigDTO tablesConfigDTO);
+    PageResult<GenTableConfig> pageList(GenTableConfigDTO tablesConfigDTO);
 
     /**
      * 新增
      *
-     * @param genTablesConfig 表实体
+     * @param genTableConfig 表实体
      * @return 结果
      */
-    Boolean insertDbDetail(GenTablesConfig genTablesConfig);
+    Boolean insertDbDetail(GenTableConfig genTableConfig);
 
     /**
      * 修改
      *
-     * @param genTablesConfig 表实体
+     * @param genTableConfig 表实体
      * @return 结果
      */
-    Boolean updateDbDetail(GenTablesConfig genTablesConfig);
+    Boolean updateDbDetail(GenTableConfig genTableConfig);
 
     /**
      * 批量删除

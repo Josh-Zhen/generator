@@ -16,14 +16,14 @@ import com.moonlit.generator.generator.constants.DatabaseConstants;
 import com.moonlit.generator.generator.constants.WebConstants;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
-import com.moonlit.generator.generator.entity.GenTablesColumn;
+import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.dto.GenColumnDTO;
-import com.moonlit.generator.generator.entity.dto.SaveTablesColumnDTO;
+import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
 import com.moonlit.generator.generator.entity.vo.TableFieldVO;
-import com.moonlit.generator.generator.mapper.GenTablesColumnMapper;
+import com.moonlit.generator.generator.mapper.GenTableColumnMapper;
 import com.moonlit.generator.generator.service.GenDatabaseService;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
-import com.moonlit.generator.generator.service.GenTablesColumnService;
+import com.moonlit.generator.generator.service.GenTableColumnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +43,7 @@ import java.util.Collection;
  * @email by.Moonlit@hotmail.com
  */
 @Service
-public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMapper, GenTablesColumn> implements GenTablesColumnService {
+public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper, GenTableColumn> implements GenTableColumnService {
 
     @Autowired
     private GenDatabaseService databaseService;
@@ -58,15 +58,15 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      * @return 结果集
      */
     @Override
-    public PageResult<GenTablesColumn> pageList(GenColumnDTO dto) {
-        LambdaQueryWrapper<GenTablesColumn> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(GenTablesColumn::getTableId, dto.getTableId());
+    public PageResult<GenTableColumn> pageList(GenColumnDTO dto) {
+        LambdaQueryWrapper<GenTableColumn> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenTableColumn::getTableId, dto.getTableId());
         if (ObjectUtil.isNotEmpty(dto)) {
             if (ObjectUtil.isNotEmpty(dto.getColumnName())) {
-                queryWrapper.like(GenTablesColumn::getColumnName, dto.getColumnName());
+                queryWrapper.like(GenTableColumn::getColumnName, dto.getColumnName());
             }
             if (ObjectUtil.isNotEmpty(dto.getColumnComment())) {
-                queryWrapper.like(GenTablesColumn::getColumnComment, dto.getColumnComment());
+                queryWrapper.like(GenTableColumn::getColumnComment, dto.getColumnComment());
             }
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
@@ -80,20 +80,20 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      */
     @Override
     @Transactional(rollbackFor = Exception.class, timeout = 30)
-    public Boolean insertTablesColumn(@Validated SaveTablesColumnDTO saveDTO) {
+    public Boolean insertTableColumn(@Validated SaveTableColumnDTO saveDTO) {
         GenDatabase database = databaseService.getById(saveDTO.getDatabaseId());
         String rsaKey = systemConfigService.getRsaKey();
         try {
             ArrayList<TableFieldVO> vos = MySqlUtils.getFieldDetails(database, rsaKey, saveDTO.getTableName());
             // 移除以添加過的列
             removeExistingColumns(saveDTO.getTableId(), vos);
-
             if (vos.size() > 0) {
                 // 初始化數據
-                ArrayList<GenTablesColumn> list = initializeColumns(saveDTO.getTableId(), vos);
+                ArrayList<GenTableColumn> list = initializeColumns(saveDTO.getTableId(), vos);
                 return this.saveBatch(list);
             }
         } catch (Exception e) {
+            System.out.println("異常信息：" + e);
             throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
         }
         // 移除密鑰
@@ -104,13 +104,13 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
     /**
      * 修改
      *
-     * @param genTablesColumn 实体
+     * @param genTableColumn 实体
      * @return 结果
      */
     @Override
-    public Boolean updateTablesColumn(GenTablesColumn genTablesColumn) {
-        genTablesColumn.setUpdateDate(LocalDateTime.now());
-        return this.updateById(genTablesColumn);
+    public Boolean updateTableColumn(GenTableColumn genTableColumn) {
+        genTableColumn.setUpdateDate(LocalDateTime.now());
+        return this.updateById(genTableColumn);
     }
 
     /**
@@ -120,7 +120,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      * @return 结果
      */
     @Override
-    public Boolean deleteTablesColumnByIds(String ids) {
+    public Boolean deleteTableColumnByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 
@@ -131,7 +131,7 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      * @return 字段id結果集
      */
     @Override
-    public ArrayList<Long> listColumnsByTablesId(Collection<String> tablesId) {
+    public ArrayList<Long> listColumnsByTableId(Collection<String> tablesId) {
         return baseMapper.listColumnsByTablesId(tablesId);
     }
 
@@ -157,15 +157,15 @@ public class GenTablesColumnServiceImpl extends ServiceImpl<GenTablesColumnMappe
      * @param vos     字段信息
      * @return 篩選後的數據
      */
-    private ArrayList<GenTablesColumn> initializeColumns(Long tableId, ArrayList<TableFieldVO> vos) {
-        ArrayList<GenTablesColumn> list = new ArrayList<>();
+    private ArrayList<GenTableColumn> initializeColumns(Long tableId, ArrayList<TableFieldVO> vos) {
+        ArrayList<GenTableColumn> list = new ArrayList<>();
 
         for (TableFieldVO vo : vos) {
             // 列名
             String columnName = vo.getColumnName();
 
             // 填充字段
-            GenTablesColumn column = new GenTablesColumn(tableId, vo);
+            GenTableColumn column = new GenTableColumn(tableId, vo);
             column.setJavaField(StringUtils.underlineToCamel(columnName));
             // 移除末尾的參數
             String columnType = NamingStrategy.substringBefore(vo.getColumnType(), CharacterConstant.LEFT_ROUND_BRACKETS);

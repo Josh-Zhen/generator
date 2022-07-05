@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @NoArgsConstructor
-public class GenTables implements Serializable {
+public class GenTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -80,7 +80,7 @@ public class GenTables implements Serializable {
      * @param tableComment 表描述
      * @param configId     配置表id
      */
-    public GenTables(Long databaseId, String tableName, String tableComment, Long configId) {
+    public GenTable(Long databaseId, String tableName, String tableComment, Long configId) {
         this.databaseId = databaseId;
         this.tableName = tableName;
         this.tableComment = tableComment;
