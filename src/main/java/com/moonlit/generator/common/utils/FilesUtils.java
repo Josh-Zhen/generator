@@ -1,8 +1,12 @@
 package com.moonlit.generator.common.utils;
 
 import cn.hutool.core.io.file.PathUtil;
+import com.moonlit.generator.common.constant.CharacterConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ResourceUtils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +20,7 @@ import java.nio.file.Paths;
  * @date 1/6/2022 15:29
  * @email by.Moonlit@hotmail.com
  */
+@Slf4j
 public class FilesUtils {
 
     /**
@@ -23,7 +28,7 @@ public class FilesUtils {
      *
      * @return 返回路径
      */
-    public static String generateTemplateFolder() {
+    public static String createTemplateFolder() {
         String templatePath = "";
         try {
             // 模板文件夹路径
@@ -39,5 +44,24 @@ public class FilesUtils {
         return templatePath;
     }
 
+    /**
+     * 將模板寫入文件内
+     *
+     * @param content    模板内容
+     * @param fileName   文件名稱
+     * @param suffixName 文件後綴名稱
+     */
+    public static void createTemplateFile(String content, String fileName, String suffixName) {
+        fileName = createTemplateFolder() + CharacterConstant.RIGHT_DIVIDE + fileName + CharacterConstant.PERIOD + suffixName + ".vm";
+
+        try {
+            BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+            out.write(content);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+    }
 
 }

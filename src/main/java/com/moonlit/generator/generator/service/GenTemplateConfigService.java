@@ -55,4 +55,6 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
      * @return 結果
      */
     PreviewTemplateDTO previewTemplateByTableId(Long tableId);
+
+
 }

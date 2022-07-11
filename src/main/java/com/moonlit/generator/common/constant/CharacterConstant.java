@@ -12,6 +12,8 @@ public final class CharacterConstant {
 
     public static String EMPTY = "";
 
+    public static String SPACE = " ";
+
     public static String PERIOD = ".";
 
     public static String COMMA = ",";
