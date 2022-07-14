@@ -48,7 +48,7 @@ public class DictType implements Serializable {
     /**
      * 状态（0停用 1正常）
      */
-    private Integer status;
+    private Boolean status;
 
     /**
      * 创建时间

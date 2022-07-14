@@ -45,7 +45,7 @@ public class GenTableConfigController {
      */
     @PostMapping("/save")
     public Result<Boolean> addSave(@RequestBody GenTableConfig genTableConfig) {
-        return Result.success(genTableConfigService.insertDbDetail(genTableConfig));
+        return Result.success(genTableConfigService.insertTableConfig(genTableConfig));
     }
 
     /**
@@ -56,7 +56,7 @@ public class GenTableConfigController {
      */
     @PostMapping("/update")
     public Result<Boolean> editSave(@RequestBody GenTableConfig genTableConfig) {
-        return Result.success(genTableConfigService.updateDbDetail(genTableConfig));
+        return Result.success(genTableConfigService.updateTableConfig(genTableConfig));
     }
 
     /**
@@ -67,7 +67,7 @@ public class GenTableConfigController {
      */
     @PostMapping("/delete")
     public Result<Boolean> delete(String ids) {
-        return Result.success(genTableConfigService.deleteDbDetailByIds(ids));
+        return Result.success(genTableConfigService.deleteTableConfigByIds(ids));
     }
 
     /**

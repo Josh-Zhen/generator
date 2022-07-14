@@ -1,6 +1,8 @@
 package com.moonlit.generator.generator.entity.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 預覽模板文件
@@ -11,6 +13,8 @@ import lombok.Data;
  * @email by.Moonlit@hotmail.com
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PreviewTemplateDTO {
 
     private String name;

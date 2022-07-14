@@ -29,7 +29,7 @@ public interface GenTableConfigService extends IService<GenTableConfig> {
      * @param genTableConfig 表实体
      * @return 结果
      */
-    Boolean insertDbDetail(GenTableConfig genTableConfig);
+    Boolean insertTableConfig(GenTableConfig genTableConfig);
 
     /**
      * 修改
@@ -37,7 +37,7 @@ public interface GenTableConfigService extends IService<GenTableConfig> {
      * @param genTableConfig 表实体
      * @return 结果
      */
-    Boolean updateDbDetail(GenTableConfig genTableConfig);
+    Boolean updateTableConfig(GenTableConfig genTableConfig);
 
     /**
      * 批量删除
@@ -45,5 +45,6 @@ public interface GenTableConfigService extends IService<GenTableConfig> {
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-    Boolean deleteDbDetailByIds(String ids);
+    Boolean deleteTableConfigByIds(String ids);
+
 }

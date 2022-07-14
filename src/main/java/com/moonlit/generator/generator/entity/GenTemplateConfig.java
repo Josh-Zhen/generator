@@ -46,6 +46,11 @@ public class GenTemplateConfig implements Serializable {
     private String suffixName;
 
     /**
+     * 展示（0:否 1:是）
+     */
+    private Boolean display;
+
+    /**
      * 状态（0:否 1:是）
      */
     private Boolean state;

@@ -54,7 +54,7 @@ public class GenTableConfigServiceImpl extends ServiceImpl<GenTableConfigMapper,
      * @return 结果
      */
     @Override
-    public Boolean insertDbDetail(GenTableConfig genTableConfig) {
+    public Boolean insertTableConfig(GenTableConfig genTableConfig) {
         genTableConfig.setCreateDate(LocalDateTime.now());
         return this.save(genTableConfig);
     }
@@ -66,7 +66,7 @@ public class GenTableConfigServiceImpl extends ServiceImpl<GenTableConfigMapper,
      * @return 结果
      */
     @Override
-    public Boolean updateDbDetail(GenTableConfig genTableConfig) {
+    public Boolean updateTableConfig(GenTableConfig genTableConfig) {
         return this.updateById(genTableConfig);
     }
 
@@ -77,7 +77,7 @@ public class GenTableConfigServiceImpl extends ServiceImpl<GenTableConfigMapper,
      * @return 结果
      */
     @Override
-    public Boolean deleteDbDetailByIds(String ids) {
+    public Boolean deleteTableConfigByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 

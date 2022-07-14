@@ -28,13 +28,11 @@ public final class CharacterConstant {
 
     public static String HYPHEN = "-";
 
+    public static String PLUS = "+";
+
     public static String ASTERISK = "*";
 
     public static String APOSTROPHE = "`";
-
-    public static String DASH = "-";
-
-    public static String PLUS = "+";
 
     public static String UNDER_LINE = "_";
 

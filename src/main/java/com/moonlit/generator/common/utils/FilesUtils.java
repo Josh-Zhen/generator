@@ -1,16 +1,16 @@
 package com.moonlit.generator.common.utils;
 
-import cn.hutool.core.io.file.PathUtil;
 import com.moonlit.generator.common.constant.CharacterConstant;
+import com.moonlit.generator.common.exception.BusinessException;
+import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ResourceUtils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * 文件操作類
@@ -24,42 +24,59 @@ import java.nio.file.Paths;
 public class FilesUtils {
 
     /**
-     * 判斷模板文件夾是否存在，不存在則創建
+     * 獲取模板路徑
      *
      * @return 返回路径
+     * @throws FileNotFoundException 找不到文件異常
      */
-    public static String createTemplateFolder() {
-        String templatePath = "";
+    public static String getPath() throws FileNotFoundException {
+        return ResourceUtils.getFile("classpath:").getPath() + "\\template";
+    }
+
+    /**
+     * 初始化模板文件夾
+     */
+    public static void initializationFolder() {
         try {
             // 模板文件夹路径
-            templatePath = ResourceUtils.getFile("classpath:").getPath() + "\\template";
+            String templatePath = getPath();
+            // 模板文件夹存在时刪除
+            deleteFile(templatePath);
             Path path = Paths.get(templatePath);
-            // 模板文件夹不存在时创建
-            if (!PathUtil.isDirectory(path)) {
-                Files.createDirectory(path);
-            }
+            // 重新創建文件夾
+            Files.createDirectory(path);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BusinessException(TemplateErrorCode.CREATE_TEMPLATE_FOLDER_ERROR);
         }
-        return templatePath;
+    }
+
+    /**
+     * 刪除文件夾
+     *
+     * @param path 文件路徑
+     */
+    private static void deleteFile(String path) {
+        File directory = new File(path);
+        for (File file : Objects.requireNonNull(directory.listFiles())) {
+            file.delete();
+        }
+        directory.delete();
     }
 
     /**
      * 將模板寫入文件内
      *
-     * @param content    模板内容
-     * @param fileName   文件名稱
-     * @param suffixName 文件後綴名稱
+     * @param content  模板内容
+     * @param fileName 文件名稱
      */
-    public static void createTemplateFile(String content, String fileName, String suffixName) {
-        fileName = createTemplateFolder() + CharacterConstant.RIGHT_DIVIDE + fileName + CharacterConstant.PERIOD + suffixName + ".vm";
-
+    public static void createTemplateFile(String content, String fileName) {
+        initializationFolder();
         try {
+            fileName = getPath() + CharacterConstant.RIGHT_DIVIDE + fileName + ".ftl";
             BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
             out.write(content);
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
             log.error(e.getMessage());
         }
     }

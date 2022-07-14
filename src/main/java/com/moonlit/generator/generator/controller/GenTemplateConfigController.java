@@ -11,6 +11,8 @@ import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 /**
  * 模板配置控制层
  *
@@ -67,7 +69,7 @@ public class GenTemplateConfigController {
      * @return 結果
      */
     @GetMapping("/preview")
-    public Result<PreviewTemplateDTO> preview(@RequestParam Long tableId) {
+    public Result<ArrayList<PreviewTemplateDTO>> preview(@RequestParam Long tableId) {
         GenTable table = tablesService.getById(tableId);
 
 

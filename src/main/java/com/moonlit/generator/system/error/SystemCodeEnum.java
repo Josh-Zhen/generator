@@ -1,4 +1,4 @@
-package com.moonlit.generator.common.exception.enums;
+package com.moonlit.generator.system.error;
 
 import com.moonlit.generator.common.exception.base.AbstractBaseExceptionEnum;
 import lombok.AllArgsConstructor;
