@@ -13,6 +13,7 @@ import com.moonlit.generator.common.utils.FilesUtils;
 import com.moonlit.generator.common.utils.FreemarkerUtils;
 import com.moonlit.generator.common.utils.TemplateUtils;
 import com.moonlit.generator.generator.constants.error.TableConfigErrorCode;
+import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTable;
 import com.moonlit.generator.generator.entity.GenTableConfig;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
@@ -22,16 +23,14 @@ import com.moonlit.generator.generator.mapper.GenTemplateConfigMapper;
 import com.moonlit.generator.generator.service.GenTableConfigService;
 import com.moonlit.generator.generator.service.GenTableService;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -42,6 +41,7 @@ import java.util.HashMap;
  * @date 31/5/2022 16:44
  * @email by.Moonlit@hotmail.com
  */
+@Slf4j
 @Service
 public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigMapper, GenTemplateConfig> implements GenTemplateConfigService {
 
@@ -123,20 +123,22 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
         }
 
         GenTable table = tableService.getById(tableId);
-        HashMap<String, String> condition = FreemarkerUtils.fillingCondition(table, tableConfig);
-
-        for (String templateName : createTemplateFile()) {
-            try {
-                Template template = FreemarkerUtils.load(templateName);
-                StringWriter stringWriter = new StringWriter();
-                // 寫模板
-                template.process(condition, stringWriter);
-                // 將生成的模板存放進集合中
-                list.add(new PreviewTemplateDTO(templateName, stringWriter.toString()));
-            } catch (IOException | TemplateException e) {
-                e.printStackTrace();
-            }
-        }
+        // 構建模板填充字段
+        HashMap<String, String> condition = FreemarkerUtils.buildCondition(table, tableConfig);
+        log.info("--------- 模板生成中！ ---------");
+        ArrayList<String> templateFile = createTemplateFile();
+//        for (String templateName : templateFile) {
+//            try {
+//                Template template = FreemarkerUtils.load(templateName);
+//                StringWriter stringWriter = new StringWriter();
+//                // 寫模板
+//                template.process(condition, stringWriter);
+//                // 將生成的模板存放進集合中
+//                list.add(new PreviewTemplateDTO(templateName, stringWriter.toString()));
+//            } catch (IOException | TemplateException e) {
+//                e.printStackTrace();
+//            }
+//        }
         return list;
     }
 
@@ -148,11 +150,19 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     private ArrayList<String> createTemplateFile() {
         // 模板文件名稱
         ArrayList<String> fileNames = new ArrayList<>();
+        // 初始化文件夾
+        FilesUtils.initializationFolder();
 
         //獲取需要展示的模板
         LambdaQueryWrapper<GenTemplateConfig> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(GenTemplateConfig::getDisplay, true);
-        for (GenTemplateConfig templateConfig : this.list(queryWrapper)) {
+        Collection<GenTemplateConfig> list = this.list(queryWrapper);
+        // 模板不存在
+        if (list.size() == 0) {
+            throw new BusinessException(TemplateErrorCode.TEMPLATE_DOES_NOT_EXIST);
+        }
+        // 循環生成模板
+        for (GenTemplateConfig templateConfig : list) {
             // 處理富文本數據
             String templateData = TemplateUtils.formatText(templateConfig.getTemplate());
             // 文件名稱 (格式：模板組編號-模板名稱.模板後綴名)

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
@@ -120,7 +119,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         GenTable table = this.getById(genTable.getId());
         // 表配置變動
         if (!genTable.getConfigId().equals(table.getConfigId())) {
-            genTable.setClassName(convertClassName(genTable.getTableName(), genTable.getConfigId()));
+            genTable.setObjectName(convertClassName(genTable.getTableName(), genTable.getConfigId()));
         }
         genTable.setUpdateDate(LocalDateTime.now());
         return this.updateById(genTable);
@@ -181,33 +180,10 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
      */
     private GenTable initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
         GenTable genTable = new GenTable(databaseId, tableName, tableComment, tableConfigId);
-        genTable.setClassName(convertClassName(tableName, tableConfigId));
-        genTable.setBusinessName(getBusinessName(tableName));
+        genTable.setObjectName(convertClassName(tableName, tableConfigId));
+        genTable.setModuleName(NamingStrategy.getBusinessComment(tableComment));
         genTable.setFunctionName(tableName);
         return genTable;
-    }
-
-    /**
-     * 获取业务名
-     * TODO 設計不合理
-     *
-     * @param tableName 表名
-     * @return 业务名
-     */
-    private static String getBusinessName(String tableName) {
-        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
-        return tableName.substring(lastIndex + 1);
-    }
-
-    /**
-     * 獲取業務描述
-     *
-     * @param tableComment 表描述
-     * @return 業務描述
-     */
-    private static String getBusinessComment(String tableComment) {
-        int index = tableComment.length() - 1;
-        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
     }
 
     /**
@@ -219,9 +195,10 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
      */
     private String convertClassName(String tableName, Long tableConfigId) {
         GenTableConfig tablesConfig = tableConfigMapper.selectById(tableConfigId);
+        // 是否移除表前綴
         if (tablesConfig.getRemovePrefix()) {
-            return NamingStrategy.firstToUpperCase(NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix()));
+            return NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix());
         }
-        return NamingStrategy.firstToUpperCase(StringUtils.underlineToCamel(tableName));
+        return StringUtils.underlineToCamel(tableName);
     }
 }
