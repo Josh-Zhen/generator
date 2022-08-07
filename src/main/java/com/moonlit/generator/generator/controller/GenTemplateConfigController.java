@@ -68,10 +68,9 @@ public class GenTemplateConfigController {
      * @param tableId 表id
      * @return 結果
      */
-    @GetMapping("/preview")
-    public Result<ArrayList<PreviewTemplateDTO>> preview(@RequestParam Long tableId) {
+    @GetMapping("/preview/{tableId}")
+    public Result<ArrayList<PreviewTemplateDTO>> preview(@PathVariable Long tableId) {
         GenTable table = tablesService.getById(tableId);
-
 
         return Result.success(templateConfigService.previewTemplateByTableId(tableId));
     }

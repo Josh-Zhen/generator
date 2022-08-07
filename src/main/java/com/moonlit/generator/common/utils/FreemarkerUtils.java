@@ -8,6 +8,8 @@ import freemarker.template.Template;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 /**
@@ -42,9 +44,21 @@ public class FreemarkerUtils {
      * @param tableConfig 作者配置
      * @return 條件
      */
-    public static HashMap<String, String> fillingCondition(GenTable table, GenTableConfig tableConfig) {
+    public static HashMap<String, String> buildCondition(GenTable table, GenTableConfig tableConfig) {
         HashMap<String, String> condition = new HashMap<>(10);
-        condition.put("", "");
+
+        // TODO 表動態控制Key
+        condition.put("packageName", tableConfig.getPackageName());
+        condition.put("businessName", tableConfig.getModuleName());
+        // java模板配置
+        condition.put("author", tableConfig.getAuthor());
+        // 時間格式動態獲取
+        condition.put("datetime", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format(LocalDateTime.now()));
+
+        condition.put("className", NamingStrategy.firstToUpperCase(table.getObjectName()));
+        condition.put("objectName", table.getObjectName());
+        condition.put("tableComment", table.getModuleName());
+
 
         return condition;
     }

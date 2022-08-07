@@ -41,14 +41,14 @@ public class GenTable implements Serializable {
     private String tableComment;
 
     /**
-     * 类名
+     * 对象名
      */
-    private String className;
+    private String objectName;
 
     /**
-     * 业务名
+     * 模块名
      */
-    private String businessName;
+    private String moduleName;
 
     /**
      * 功能名

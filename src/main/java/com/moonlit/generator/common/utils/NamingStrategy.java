@@ -63,4 +63,27 @@ public class NamingStrategy {
         }
         return str;
     }
+
+    /**
+     * 获取业务名
+     *
+     * @param tableName 表名
+     * @return 业务名
+     */
+    public static String getBusinessName(String tableName) {
+        int lastIndex = tableName.lastIndexOf(CharacterConstant.UNDER_LINE);
+        return tableName.substring(lastIndex + 1);
+    }
+
+    /**
+     * 獲取業務描述
+     *
+     * @param tableComment 表描述
+     * @return 業務描述
+     */
+    public static String getBusinessComment(String tableComment) {
+        int index = tableComment.length() - 1;
+        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
+    }
+
 }

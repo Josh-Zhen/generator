@@ -8,7 +8,6 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -41,10 +40,12 @@ public class FilesUtils {
             // 模板文件夹路径
             String templatePath = getPath();
             // 模板文件夹存在时刪除
-            deleteFile(templatePath);
-            Path path = Paths.get(templatePath);
+            File directory = new File(templatePath);
+            if (directory.exists() && directory.isDirectory()) {
+                deleteFile(directory);
+            }
             // 重新創建文件夾
-            Files.createDirectory(path);
+            Files.createDirectory(Paths.get(templatePath));
         } catch (IOException e) {
             throw new BusinessException(TemplateErrorCode.CREATE_TEMPLATE_FOLDER_ERROR);
         }
@@ -53,10 +54,10 @@ public class FilesUtils {
     /**
      * 刪除文件夾
      *
-     * @param path 文件路徑
+     * @param directory 文件夾路徑
      */
-    private static void deleteFile(String path) {
-        File directory = new File(path);
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private static void deleteFile(File directory) {
         for (File file : Objects.requireNonNull(directory.listFiles())) {
             file.delete();
         }
@@ -70,7 +71,6 @@ public class FilesUtils {
      * @param fileName 文件名稱
      */
     public static void createTemplateFile(String content, String fileName) {
-        initializationFolder();
         try {
             fileName = getPath() + CharacterConstant.RIGHT_DIVIDE + fileName + ".ftl";
             BufferedWriter out = new BufferedWriter(new FileWriter(fileName));

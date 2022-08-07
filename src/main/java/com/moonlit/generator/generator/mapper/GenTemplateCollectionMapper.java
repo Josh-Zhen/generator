@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.ArrayList;
 
 /**
- * 模板组Mapper层
+ * 模板组映射层
  *
  * @author Joshua
  * @version 1.0

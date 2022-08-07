@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * 數據表配置Mapper层
+ * 數據表配置映射层
  *
  * @author Joshua
  * @version 1.0

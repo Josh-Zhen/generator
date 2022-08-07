@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * 數據表字段詳情Mapper层
+ * 數據表字段詳情映射层
  *
  * @author Joshua
  * @version 1.0

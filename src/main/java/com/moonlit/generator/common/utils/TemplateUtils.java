@@ -36,5 +36,4 @@ public class TemplateUtils {
         return template;
     }
 
-
 }

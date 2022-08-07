@@ -6,7 +6,7 @@ import com.moonlit.generator.generator.entity.dto.SystemConfigDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 系統配置Mapper层
+ * 系統配置映射层
  *
  * @author Joshua
  * @version 1.0

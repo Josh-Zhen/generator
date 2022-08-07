@@ -5,7 +5,7 @@ import com.moonlit.generator.generator.entity.GenDatabase;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 数据库配置Mapper层
+ * 数据库配置映射层
  *
  * @author Joshua
  * @version 1.0

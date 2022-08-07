@@ -18,7 +18,7 @@ public enum DatabaseErrorCode implements AbstractBaseExceptionEnum {
     /**
      * 枚举
      */
-    UNABLE_CONNECT_DATABASE(11000, "无法连接数据库"),
+    UNABLE_CONNECT_DATABASE(11000, "无法连接数据库,请检查连接用户名与密码（本地数据库请检查是否启动）"),
     DATABASE_NOT_EXIST(11001, "数据库不存在"),
     DATA_IS_TRUE(11002, "数据已存在，请检查是否存在同名数据"),
     DRIVEN_IS_NOT_EXIST(11003, "数据库驱动不存在"),

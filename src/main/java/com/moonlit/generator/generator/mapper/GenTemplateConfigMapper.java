@@ -5,7 +5,7 @@ import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 模板配置Mapper层
+ * 模板配置映射层
  *
  * @author Joshua
  * @version 1.0
