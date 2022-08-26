@@ -12,9 +12,11 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.utils.MySqlUtils;
 import com.moonlit.generator.common.utils.NamingStrategy;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
+import com.moonlit.generator.generator.constants.error.TableConfigErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTable;
 import com.moonlit.generator.generator.entity.GenTableConfig;
+import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import com.moonlit.generator.generator.entity.dto.GenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
@@ -167,6 +169,25 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         return list;
     }
 
+    /**
+     * 獲取模板所需要的數據
+     *
+     * @param tableId       表id
+     * @param tableConfigId 表配置id
+     * @return 數據
+     */
+    @Override
+    public TableConfigAndDataAndColumnsBO getTableData(Long tableId, Long tableConfigId) {
+        TableConfigAndDataAndColumnsBO tableData = baseMapper.getTableData(tableId, tableConfigId);
+
+        // 查詢不到作者配置
+        if (ObjectUtil.isEmpty(tableData.getTableConfigId())) {
+            throw new BusinessException(TableConfigErrorCode.DEFAULT_AUTHOR_CONFIGURATION_NOT_FOUND);
+        }
+
+        return tableData;
+    }
+
     /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
@@ -181,7 +202,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     private GenTable initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
         GenTable genTable = new GenTable(databaseId, tableName, tableComment, tableConfigId);
         genTable.setObjectName(convertClassName(tableName, tableConfigId));
-        genTable.setModuleName(NamingStrategy.getBusinessComment(tableComment));
+        genTable.setBusinessName(NamingStrategy.getBusinessComment(tableComment));
         genTable.setFunctionName(tableName);
         return genTable;
     }

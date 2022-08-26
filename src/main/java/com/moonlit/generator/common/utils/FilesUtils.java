@@ -72,7 +72,7 @@ public class FilesUtils {
      */
     public static void createTemplateFile(String content, String fileName) {
         try {
-            fileName = getPath() + CharacterConstant.RIGHT_DIVIDE + fileName + ".ftl";
+            fileName = getPath() + CharacterConstant.RIGHT_DIVIDE + fileName + FreemarkerUtils.SUFFIX;
             BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
             out.write(content);
             out.close();

@@ -2,6 +2,7 @@ package com.moonlit.generator.generator.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.moonlit.generator.generator.entity.GenTable;
+import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -24,4 +25,13 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
      * @return 表名集合
      */
     List<String> selectTableNames(Long databaseId);
+
+    /**
+     * 獲取模板所需要的數據
+     *
+     * @param tableId       表id
+     * @param tableConfigId 表配置id
+     * @return 數據
+     */
+    TableConfigAndDataAndColumnsBO getTableData(Long tableId, Long tableConfigId);
 }

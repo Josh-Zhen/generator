@@ -33,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 數據表字段詳情业务实现层
@@ -133,6 +134,13 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
     @Override
     public ArrayList<Long> listColumnsByTableId(Collection<String> tablesId) {
         return baseMapper.listColumnsByTablesId(tablesId);
+    }
+
+    @Override
+    public List<GenTableColumn> getTableColumnByTableId(Long tableId) {
+        LambdaQueryWrapper<GenTableColumn> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenTableColumn::getTableId, tableId);
+        return baseMapper.selectList(queryWrapper);
     }
 
     /*---------------------------------------- 内部方法 ----------------------------------------*/

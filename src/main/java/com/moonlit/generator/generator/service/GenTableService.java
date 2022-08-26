@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTable;
+import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import com.moonlit.generator.generator.entity.dto.GenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTableDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
@@ -58,4 +59,13 @@ public interface GenTableService extends IService<GenTable> {
      * @return 结果
      */
     List<DatabaseTablesVO> list(Long databaseId);
+
+    /**
+     * 獲取模板所需要的數據
+     *
+     * @param tableId       表id
+     * @param tableConfigId 表配置id
+     * @return 數據
+     */
+    TableConfigAndDataAndColumnsBO getTableData(Long tableId, Long tableConfigId);
 }

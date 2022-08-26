@@ -46,9 +46,9 @@ public class GenTable implements Serializable {
     private String objectName;
 
     /**
-     * 模块名
+     * 业务名
      */
-    private String moduleName;
+    private String businessName;
 
     /**
      * 功能名

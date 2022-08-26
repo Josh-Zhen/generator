@@ -9,4 +9,19 @@
         from gen_table
         where database_id = #{databaseId}
     </select>
+
+    <select id="getTableData" resultType="com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO">
+        SELECT gtc.id           AS tableConfigId,
+               gtc.author       AS author,
+               gtc.package_name AS packageName,
+               gtc.module_name  AS moduleName,
+               gt.table_comment AS tableComment,
+               gt.object_name   AS objectName,
+               gt.business_name AS businessName,
+               gt.function_name AS functionName
+        FROM `gen_table` gt
+                 INNER JOIN `gen_table_config` gtc
+        WHERE gt.id = 1
+          AND gtc.id = 1
+    </select>
 </mapper>

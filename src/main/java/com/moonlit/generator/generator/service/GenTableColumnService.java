@@ -8,6 +8,7 @@ import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 數據表字段詳情业务层
@@ -58,4 +59,12 @@ public interface GenTableColumnService extends IService<GenTableColumn> {
      * @return 字段id結果集
      */
     ArrayList<Long> listColumnsByTableId(Collection<String> tablesId);
+
+    /**
+     * 根據表配置id獲取字段相關信息
+     *
+     * @param tableId 表配置id
+     * @return 字段信息
+     */
+    List<GenTableColumn> getTableColumnByTableId(Long tableId);
 }
