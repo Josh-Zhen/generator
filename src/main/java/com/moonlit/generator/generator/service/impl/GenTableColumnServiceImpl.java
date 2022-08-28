@@ -136,6 +136,12 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
         return baseMapper.listColumnsByTablesId(tablesId);
     }
 
+    /**
+     * 根據表配置id獲取字段相關信息
+     *
+     * @param tableId 表配置id
+     * @return 字段信息
+     */
     @Override
     public List<GenTableColumn> getTableColumnByTableId(Long tableId) {
         LambdaQueryWrapper<GenTableColumn> queryWrapper = Wrappers.lambdaQuery();

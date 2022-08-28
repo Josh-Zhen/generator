@@ -185,6 +185,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
             throw new BusinessException(TableConfigErrorCode.DEFAULT_AUTHOR_CONFIGURATION_NOT_FOUND);
         }
 
+        tableData.setTableColumns(tableColumnService.getTableColumnByTableId(tableId));
         return tableData;
     }
 

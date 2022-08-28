@@ -17,8 +17,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PreviewTemplateDTO {
 
+    /**
+     * 模板名稱
+     */
     private String name;
 
+    /**
+     * 内容
+     */
     private String template;
 
 }

@@ -67,4 +67,5 @@ public interface GenTableColumnService extends IService<GenTableColumn> {
      * @return 字段信息
      */
     List<GenTableColumn> getTableColumnByTableId(Long tableId);
+
 }

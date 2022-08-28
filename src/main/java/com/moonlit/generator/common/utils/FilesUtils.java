@@ -67,10 +67,10 @@ public class FilesUtils {
     /**
      * 將模板寫入文件内
      *
-     * @param content  模板内容
      * @param fileName 文件名稱
+     * @param content  模板内容
      */
-    public static void createTemplateFile(String content, String fileName) {
+    public static void createTemplateFile(String fileName, String content) {
         try {
             fileName = getPath() + CharacterConstant.RIGHT_DIVIDE + fileName + FreemarkerUtils.SUFFIX;
             BufferedWriter out = new BufferedWriter(new FileWriter(fileName));

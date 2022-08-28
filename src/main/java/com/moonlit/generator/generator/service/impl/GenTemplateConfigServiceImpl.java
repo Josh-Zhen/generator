@@ -12,17 +12,13 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.utils.FilesUtils;
 import com.moonlit.generator.common.utils.FreemarkerUtils;
 import com.moonlit.generator.common.utils.TemplateUtils;
-import com.moonlit.generator.generator.constants.error.TableConfigErrorCode;
 import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
-import com.moonlit.generator.generator.entity.GenTable;
-import com.moonlit.generator.generator.entity.GenTableColumn;
-import com.moonlit.generator.generator.entity.GenTableConfig;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
+import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
+import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 import com.moonlit.generator.generator.mapper.GenTemplateConfigMapper;
-import com.moonlit.generator.generator.service.GenTableColumnService;
-import com.moonlit.generator.generator.service.GenTableConfigService;
 import com.moonlit.generator.generator.service.GenTableService;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import freemarker.template.Template;
@@ -34,7 +30,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * 模板配置业务实现层
@@ -50,10 +48,6 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
 
     @Autowired
     private GenTableService tableService;
-    @Autowired
-    private GenTableColumnService tableColumnService;
-    @Autowired
-    private GenTableConfigService configService;
 
     /**
      * 分頁條件查詢模板配置
@@ -121,33 +115,28 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     @Override
     public ArrayList<PreviewTemplateDTO> previewTemplateByTableId(Long tableId) {
         ArrayList<PreviewTemplateDTO> list = new ArrayList<>();
-        // 使用默認作者配置
-        GenTableConfig tableConfig = configService.getById(1L);
-        if (ObjectUtil.isEmpty(tableConfig)) {
-            throw new BusinessException(TableConfigErrorCode.DEFAULT_AUTHOR_CONFIGURATION_NOT_FOUND);
-        }
+        TableConfigAndDataAndColumnsBO tableData = tableService.getTableData(tableId, 1L);
 
-        GenTable table = tableService.getById(tableId);
-        // 字段信息
-        List<GenTableColumn> tableColumns = tableColumnService.getTableColumnByTableId(tableId);
         // 構建模板填充字段
-        HashMap<String, String> condition = FreemarkerUtils.buildCondition(table, tableConfig);
-        log.info("--------- 模板生成中！ ---------");
-        ArrayList<String> templateFile = createTemplateFile();
-        for (String templateName : templateFile) {
+        FreemarkerConditionBO condition = FreemarkerUtils.buildCondition(tableData);
+
+        log.info("------------------ 模板生成中！ ------------------");
+        for (String templateName : createTemplateFile()) {
             try {
                 Template template = FreemarkerUtils.load(templateName);
                 StringWriter stringWriter = new StringWriter();
                 // 寫模板
                 template.process(condition, stringWriter);
                 // 將生成的模板存放進集合中
-                list.add(new PreviewTemplateDTO(templateName, stringWriter.toString()));
+                list.add(new PreviewTemplateDTO(templateName.split(CharacterConstant.HYPHEN)[1], stringWriter.toString()));
             } catch (IOException | TemplateException e) {
                 e.printStackTrace();
             }
         }
         return list;
     }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
      * 創建模板文件
@@ -176,12 +165,11 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
             String fileName = templateConfig.getCollectionId() + CharacterConstant.HYPHEN + templateConfig.getName()
                     + CharacterConstant.PERIOD + templateConfig.getSuffixName();
             // 生成模板
-            FilesUtils.createTemplateFile(templateData, fileName);
+            FilesUtils.createTemplateFile(fileName, templateData);
             // 保存模板文件名
             fileNames.add(fileName);
         }
         return fileNames;
     }
-
 
 }

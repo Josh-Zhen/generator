@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 預覽和生成代碼需要的信息内容
@@ -79,7 +79,7 @@ public class TableConfigAndDataAndColumnsBO {
     /**
      * 字段信息集合
      */
-    ArrayList<GenTableColumn> tableColumns;
+    List<GenTableColumn> tableColumns;
 
     /*--------------------------- 構造器 ---------------------------*/
 

@@ -34,4 +34,5 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
      * @return 數據
      */
     TableConfigAndDataAndColumnsBO getTableData(Long tableId, Long tableConfigId);
+
 }

@@ -46,6 +46,11 @@ public class GenTableConfig implements Serializable {
     private String moduleName;
 
     /**
+     * 日期格式
+     */
+    private String dateFormat;
+
+    /**
      * 表前綴
      */
     private String tablePrefix;

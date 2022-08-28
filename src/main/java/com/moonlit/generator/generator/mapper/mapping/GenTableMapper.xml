@@ -21,7 +21,7 @@
                gt.function_name AS functionName
         FROM `gen_table` gt
                  INNER JOIN `gen_table_config` gtc
-        WHERE gt.id = 1
-          AND gtc.id = 1
+        WHERE gt.id = #{tableId}
+          AND gtc.id = #{tableConfigId}
     </select>
 </mapper>
