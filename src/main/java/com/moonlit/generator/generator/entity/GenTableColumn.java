@@ -106,7 +106,7 @@ public class GenTableColumn implements Serializable {
     private Boolean isQuery;
 
     /**
-     * 查询方式（等于-eq、不等于-neq、大于-gt、小于-lt、范围-like）
+     * 查询方式（等于-eq、不等于-ne、大于-gt、小于-lt、范围-like）
      * 默認 eq
      */
     private String queryType;

@@ -1,5 +1,7 @@
 package com.moonlit.generator.common.utils;
 
+import com.moonlit.generator.generator.constants.DatabaseConstants;
+import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
@@ -8,6 +10,8 @@ import freemarker.template.Template;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * freemarker工具類
@@ -47,17 +51,31 @@ public class FreemarkerUtils {
      */
     public static FreemarkerConditionBO buildCondition(TableConfigAndDataAndColumnsBO dataBo) {
         FreemarkerConditionBO conditionBO = new FreemarkerConditionBO(dataBo);
-
-//        Collection<GenTableColumn> tableColumns = dataBo.getTableColumns();
-//        ArrayList<String> columnsName = new ArrayList<>();
-//        for (GenTableColumn tableColumn : tableColumns) {
-//            // 獲取每列名稱
-//            columnsName.add(tableColumn.getColumnName());
-//            // 獲取每列數據類型
-//        }
-//        conditionBO.setColumnsName(columnsName);
+        // 處理特殊數據類型導包
+        conditionBO.setImportList(handleImportList(dataBo.getTableColumns()));
 
         return conditionBO;
+    }
+
+    /**
+     * 處理特殊數據類型導包
+     *
+     * @param columns 字段信息
+     * @return 返回需要导入的包列表
+     */
+    private static HashSet<String> handleImportList(List<GenTableColumn> columns) {
+        HashSet<String> importList = new HashSet<>();
+        for (GenTableColumn column : columns) {
+            // 判斷數據類型
+            if (DatabaseConstants.LOCAL_DATE_TIME_TYPE.equals(column.getJavaType())) {
+                importList.add("java.time.LocalDateTime");
+                importList.add("cn.hutool.core.date.DatePattern");
+                importList.add("com.fasterxml.jackson.annotation.JsonFormat");
+            } else if (DatabaseConstants.BIG_DECIMAL_TYPE.equals(column.getJavaType())) {
+                importList.add("java.math.BigDecimal");
+            }
+        }
+        return importList;
     }
 
 }
