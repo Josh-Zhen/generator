@@ -1,5 +1,6 @@
 package com.moonlit.generator.common.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.moonlit.generator.generator.constants.DatabaseConstants;
 import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
@@ -51,31 +52,61 @@ public class FreemarkerUtils {
      */
     public static FreemarkerConditionBO buildCondition(TableConfigAndDataAndColumnsBO dataBo) {
         FreemarkerConditionBO conditionBO = new FreemarkerConditionBO(dataBo);
-        // 處理特殊數據類型導包
-        conditionBO.setImportList(handleImportList(dataBo.getTableColumns()));
+        // 處理列信息
+        handleColumns(conditionBO, dataBo.getTableColumns());
 
+        // TODO 後續需要補上用戶自定義的類型
         return conditionBO;
+    }
+
+    /**
+     * 處理列信息
+     *
+     * @param conditionBO 数据内容
+     * @param columns     字段信息集合
+     */
+    private static void handleColumns(FreemarkerConditionBO conditionBO, List<GenTableColumn> columns) {
+        for (GenTableColumn column : columns) {
+            // 處理特殊數據類型導包
+            conditionBO.setImportList(handleImportList(column));
+            // 設置主鍵列
+            conditionBO.setPrimaryKeyColumn(filterPrimaryKeyColumn(column));
+        }
+        // 如果沒有主鍵則使用第一列作爲默認主鍵列
+        if (ObjectUtil.isEmpty(conditionBO.getPrimaryKeyColumn())) {
+            conditionBO.setPrimaryKeyColumn(columns.get(0));
+        }
     }
 
     /**
      * 處理特殊數據類型導包
      *
-     * @param columns 字段信息
+     * @param column 字段信息
      * @return 返回需要导入的包列表
      */
-    private static HashSet<String> handleImportList(List<GenTableColumn> columns) {
+    private static HashSet<String> handleImportList(GenTableColumn column) {
         HashSet<String> importList = new HashSet<>();
-        for (GenTableColumn column : columns) {
-            // 判斷數據類型
-            if (DatabaseConstants.LOCAL_DATE_TIME_TYPE.equals(column.getJavaType())) {
-                importList.add("java.time.LocalDateTime");
-                importList.add("cn.hutool.core.date.DatePattern");
-                importList.add("com.fasterxml.jackson.annotation.JsonFormat");
-            } else if (DatabaseConstants.BIG_DECIMAL_TYPE.equals(column.getJavaType())) {
-                importList.add("java.math.BigDecimal");
-            }
+        // 判斷數據類型
+        if (DatabaseConstants.LOCAL_DATE_TIME_TYPE.equals(column.getJavaType())) {
+            importList.add("java.time.LocalDateTime");
+            importList.add("cn.hutool.core.date.DatePattern");
+            importList.add("com.fasterxml.jackson.annotation.JsonFormat");
+        } else if (DatabaseConstants.BIG_DECIMAL_TYPE.equals(column.getJavaType())) {
+            importList.add("java.math.BigDecimal");
         }
         return importList;
     }
 
+    /**
+     * 篩選主鍵列
+     *
+     * @param column 字段信息
+     * @return 主鍵列
+     */
+    private static GenTableColumn filterPrimaryKeyColumn(GenTableColumn column) {
+        if (column.getIsPrimaryKey()) {
+            return column;
+        }
+        return null;
+    }
 }

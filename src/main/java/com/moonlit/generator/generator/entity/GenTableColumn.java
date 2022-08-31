@@ -82,6 +82,7 @@ public class GenTableColumn implements Serializable {
 
     /**
      * 是否为插入字段（0否，1是）
+     * 該字段是否可寫
      */
     private Boolean isInsert;
 
@@ -95,7 +96,6 @@ public class GenTableColumn implements Serializable {
 
     /**
      * 是否列表字段（0否，1是）
-     * 與下拉菜單一起使用
      */
     private Boolean isList;
 

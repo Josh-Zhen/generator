@@ -203,8 +203,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     private GenTable initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
         GenTable genTable = new GenTable(databaseId, tableName, tableComment, tableConfigId);
         genTable.setObjectName(convertClassName(tableName, tableConfigId));
-        genTable.setBusinessName(NamingStrategy.getBusinessComment(tableComment));
-        genTable.setFunctionName(tableName);
+        genTable.setBusinessName(NamingStrategy.getBusinessName(tableName));
+        genTable.setFunctionName(NamingStrategy.getBusinessComment(tableComment));
         return genTable;
     }
 

@@ -130,7 +130,9 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
                 // 將生成的模板存放進集合中
                 list.add(new PreviewTemplateDTO(templateName.split(CharacterConstant.HYPHEN)[1], stringWriter.toString()));
             } catch (IOException | TemplateException e) {
+                // TODO 補異常
                 e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
         return list;

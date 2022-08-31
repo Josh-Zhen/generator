@@ -69,11 +69,16 @@ public class FreemarkerConditionBO {
      * 字段信息集合
      */
     List<GenTableColumn> tableColumns;
-    
+
     /**
      * 字段數據類型集合
      */
     private HashSet<String> importList;
+
+    /**
+     * 主鍵列信息
+     */
+    private GenTableColumn primaryKeyColumn;
 
     /**
      * 構造器
