@@ -37,6 +37,7 @@ public class HljsConstants {
             "<span class=\"hljs-number\">", "<span class=\"hljs-type\">", "<span class=\"hljs-variable\">",
             "<span class=\"hljs-function\">", "<span class=\"hljs-title\">", "<span class=\"hljs-string\">",
             "<span class=\"hljs-built_in\">", "<span class=\"hljs-params\">", "<span class=\"hljs-symbol\">",
-            "<span class=\"hljs-name\">", "<span class=\"hljs-attr\">", "<span class=\"hljs-tag\">", "</span>"
+            "<span class=\"hljs-name\">", "<span class=\"hljs-attr\">", "<span class=\"hljs-tag\">",
+            "<span class=\"hljs-literal\">", "<span class=\"hljs-regexp\">", "<span class=\"hljs-subst\">", "</span>"
     };
 }

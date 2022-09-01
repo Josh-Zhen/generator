@@ -94,7 +94,7 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
                 return this.saveBatch(list);
             }
         } catch (Exception e) {
-            System.out.println("異常信息：" + e);
+            System.out.println("异常信息：" + e.getMessage());
             throw new BusinessException(DatabaseErrorCode.SAVE_ERROR);
         }
         // 移除密鑰
