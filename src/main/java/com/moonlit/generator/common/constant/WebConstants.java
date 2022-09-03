@@ -1,4 +1,4 @@
-package com.moonlit.generator.generator.constants;
+package com.moonlit.generator.common.constant;
 
 /**
  * 數據類型常量
@@ -9,11 +9,6 @@ package com.moonlit.generator.generator.constants;
  * @email by.Moonlit@hotmail.com
  */
 public class WebConstants {
-
-    /**
-     * 狀態常量
-     */
-    public static final String[] STATE = {"sex", "status", "state", "type"};
 
     /**
      * 文本框
@@ -50,4 +45,9 @@ public class WebConstants {
      * 文本框-input、文本域-text、下拉框-dropdown、复选框-checkbox、单选框-radio、日期控件-datetime
      */
     public static final String[] WEB_LABEL = {"input", "text", "dropdown", "checkbox", "radio", "datetime"};
+
+    /**
+     * 狀態常量
+     */
+    public static final String[] STATE = {"sex", "status", "state", "type"};
 }

@@ -5,6 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenSystemConfig;
@@ -101,7 +102,7 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
     public void ifStatusRemoveSalt() {
         GenSystemConfig systemConfig = this.getById(1L);
         if (!systemConfig.getState()) {
-            systemConfig.setSalt("");
+            systemConfig.setSalt(CharacterConstant.EMPTY);
             this.updateById(systemConfig);
         }
     }

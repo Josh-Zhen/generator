@@ -1,6 +1,6 @@
 package com.moonlit.generator.generator.entity.bo;
 
-import com.moonlit.generator.common.utils.NamingStrategy;
+import com.moonlit.generator.common.utils.NamingStrategyUtils;
 import com.moonlit.generator.generator.entity.GenTableColumn;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -92,7 +92,7 @@ public class FreemarkerConditionBO {
         this.datetime = dataBo.getDatetime();
         this.comment = dataBo.getFunctionName();
         this.businessName = dataBo.getBusinessName();
-        this.className = NamingStrategy.firstToUpperCase(dataBo.getObjectName());
+        this.className = NamingStrategyUtils.firstToUpperCase(dataBo.getObjectName());
         this.objectName = dataBo.getObjectName();
         this.functionName = dataBo.getBusinessName();
         this.tableColumns = dataBo.getTableColumns();

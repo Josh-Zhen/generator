@@ -1,5 +1,6 @@
 package com.moonlit.generator.generator.constants;
 
+import com.moonlit.generator.common.constant.CharacterConstant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -32,7 +33,7 @@ public enum DatabaseDriverConstant {
      * @return 數據庫驅動
      */
     public static String getDriverClass(String databaseType) {
-        String driven = "";
+        String driven = CharacterConstant.EMPTY;
         for (DatabaseDriverConstant databaseDriverConstant : DatabaseDriverConstant.values()) {
             if (databaseType.equals(databaseDriverConstant.name())) {
                 driven = databaseDriverConstant.getDriven();

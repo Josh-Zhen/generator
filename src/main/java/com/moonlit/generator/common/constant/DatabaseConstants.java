@@ -1,4 +1,4 @@
-package com.moonlit.generator.generator.constants;
+package com.moonlit.generator.common.constant;
 
 /**
  * 數據庫數據類型通用常量
@@ -80,18 +80,13 @@ public class DatabaseConstants {
 
     /**
      * 查詢條件
-     * 等于-eq、不等于-neq、大于-gt、小于-lt、范围-like
+     * 等于-eq、不等于-ne、大于-gt、小于-lt、范围-like
      */
-    public static final String[] CONDITION_TYPE = {"eq", "neq", "gt", "lt", "like"};
+    public static final String[] CONDITION_TYPE = {"eq", "ne", "gt", "lt", "like"};
 
     /**
      * 不查詢的字段
      */
-    public static final String[] COLUMN_NOT_QUERY = {"id", "create_by", "update_by", "create_time", "update_time", "remark"};
-
-    /**
-     * 查詢的字段類型
-     */
-    public static final String[] COLUMN_TYPE_NOT_QUERY = {"tinytext", "text", "mediumtext", "longtext"};
+    public static final String[] COLUMN_NOT_QUERY = {"id", "remark"};
 
 }

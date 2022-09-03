@@ -10,7 +10,7 @@ import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.utils.MySqlUtils;
-import com.moonlit.generator.common.utils.NamingStrategy;
+import com.moonlit.generator.common.utils.NamingStrategyUtils;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.constants.error.TableConfigErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
@@ -203,8 +203,8 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     private GenTable initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
         GenTable genTable = new GenTable(databaseId, tableName, tableComment, tableConfigId);
         genTable.setObjectName(convertClassName(tableName, tableConfigId));
-        genTable.setBusinessName(NamingStrategy.getBusinessName(tableName));
-        genTable.setFunctionName(NamingStrategy.getBusinessComment(tableComment));
+        genTable.setBusinessName(NamingStrategyUtils.getBusinessName(tableName));
+        genTable.setFunctionName(NamingStrategyUtils.getBusinessComment(tableComment));
         return genTable;
     }
 
@@ -219,7 +219,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         GenTableConfig tablesConfig = tableConfigMapper.selectById(tableConfigId);
         // 是否移除表前綴
         if (tablesConfig.getRemovePrefix()) {
-            return NamingStrategy.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix());
+            return NamingStrategyUtils.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix());
         }
         return StringUtils.underlineToCamel(tableName);
     }

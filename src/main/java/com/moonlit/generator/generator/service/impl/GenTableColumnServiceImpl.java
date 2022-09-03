@@ -3,17 +3,13 @@ package com.moonlit.generator.generator.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.common.utils.HandleColumnUtils;
 import com.moonlit.generator.common.utils.MySqlUtils;
-import com.moonlit.generator.common.utils.NamingStrategy;
-import com.moonlit.generator.generator.constants.DatabaseConstants;
-import com.moonlit.generator.generator.constants.WebConstants;
 import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTableColumn;
@@ -90,7 +86,7 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
             removeExistingColumns(saveDTO.getTableId(), vos);
             if (vos.size() > 0) {
                 // 初始化數據
-                ArrayList<GenTableColumn> list = initializeColumns(saveDTO.getTableId(), vos);
+                ArrayList<GenTableColumn> list = HandleColumnUtils.initializeColumns(saveDTO.getTableId(), vos);
                 return this.saveBatch(list);
             }
         } catch (Exception e) {
@@ -162,98 +158,6 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
         if (tablesColumns.size() > 0) {
             vos.removeIf(vo -> tablesColumns.contains(vo.getColumnName()));
         }
-    }
-
-    /**
-     * 初始化表字段實體
-     *
-     * @param tableId 表id
-     * @param vos     字段信息
-     * @return 篩選後的數據
-     */
-    private ArrayList<GenTableColumn> initializeColumns(Long tableId, ArrayList<TableFieldVO> vos) {
-        ArrayList<GenTableColumn> list = new ArrayList<>();
-
-        for (TableFieldVO vo : vos) {
-            // 列名
-            String columnName = vo.getColumnName();
-
-            // 填充字段
-            GenTableColumn column = new GenTableColumn(tableId, vo);
-            column.setJavaField(StringUtils.underlineToCamel(columnName));
-            // 移除末尾的參數
-            String columnType = NamingStrategy.substringBefore(vo.getColumnType(), CharacterConstant.LEFT_ROUND_BRACKETS);
-
-            // 設置java類型
-            if (isContains(DatabaseConstants.DATABASE_STRING_TYPE, columnType)) {
-                // 文本類型
-                column.setJavaType(DatabaseConstants.STRING_TYPE);
-            } else if (isContains(DatabaseConstants.DATABASE_DATE_TYPE, columnType)) {
-                // 時間類型
-                column.setJavaType(DatabaseConstants.LOCAL_DATE_TIME_TYPE);
-                column.setHtmlType(WebConstants.WEB_DATETIME);
-            } else if (isContains(DatabaseConstants.DATABASE_NUMBER_TYPE, columnType)) {
-                // 數字類型
-                String type = DatabaseConstants.INTEGER_TYPE;
-                if (isContains(DatabaseConstants.FLOATING_POINT, columnType)) {
-                    // 浮點型
-                    type = DatabaseConstants.BIG_DECIMAL_TYPE;
-                } else if ("bigint".equals(columnType) || StringUtils.endsWith(columnName, "id")) {
-                    // 主鍵或者包含id的字段
-                    type = DatabaseConstants.LONG_TYPE;
-                }
-                column.setJavaType(type);
-            }
-
-            // 主鍵
-            Boolean columnKey = vo.getColumnKey();
-            // 新增字段
-            if (!columnKey || isContains(DatabaseConstants.DATABASE_DATE_TYPE, columnType)) {
-                column.setIsInsert(false);
-            }
-            // 編輯字段
-            if (!columnKey && StringUtils.endsWith(columnName, "id")) {
-                column.setIsEdit(false);
-            }
-            // 列表字段
-            if (!columnKey && isContains(DatabaseConstants.DATABASE_NUMBER_TYPE, columnType)) {
-                column.setIsList(false);
-            }
-            // 查詢字段
-            if (!columnKey && !isContains(DatabaseConstants.COLUMN_TYPE_NOT_QUERY, columnType)
-                    && !isContains(DatabaseConstants.COLUMN_NOT_QUERY, columnName)) {
-                column.setIsQuery(false);
-            }
-            // 查詢類型
-            if (StringUtils.endsWith(columnName, "name")) {
-                column.setQueryType("like");
-            }
-            // 前端標簽
-            if (ObjectUtil.isEmpty(column.getHtmlType())) {
-                if (StringUtils.endsWith(columnName, "status")) {
-                    // 單選框
-                    column.setHtmlType(WebConstants.WEB_RADIO);
-                } else if (StringUtils.endsWith(columnName, "type") || StringUtils.endsWith(columnName, "sex")) {
-                    // 下拉框
-                    column.setHtmlType(WebConstants.WEB_SELECT);
-                } else if (isContains(DatabaseConstants.TEXT_TYPE, columnType)) {
-                    column.setHtmlType(WebConstants.WEB_TEXT);
-                }
-            }
-            list.add(column);
-        }
-        return list;
-    }
-
-    /**
-     * 數組是否包含關鍵字
-     *
-     * @param arr        數組
-     * @param columnType 字段類型
-     * @return 結果
-     */
-    private static Boolean isContains(String[] arr, String columnType) {
-        return Arrays.asList(arr).contains(columnType);
     }
 
 }

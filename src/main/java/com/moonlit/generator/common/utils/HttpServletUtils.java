@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2021/9/30 9:59
  * @email by.Moonlit@hotmail.com
  */
-public class HttpServletUtil {
+public class HttpServletUtils {
 
     /**
      * 获取当前请求的request对象

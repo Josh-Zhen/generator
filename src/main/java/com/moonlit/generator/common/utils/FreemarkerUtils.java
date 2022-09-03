@@ -1,7 +1,7 @@
 package com.moonlit.generator.common.utils;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.moonlit.generator.generator.constants.DatabaseConstants;
+import com.moonlit.generator.common.constant.DatabaseConstants;
 import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;

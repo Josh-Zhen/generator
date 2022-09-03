@@ -2,7 +2,7 @@ package com.moonlit.generator.common.page;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.moonlit.generator.common.utils.HttpServletUtil;
+import com.moonlit.generator.common.utils.HttpServletUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,7 +30,7 @@ public class PageFactory {
      * 默认分页，在使用时PageFactory.defaultPage会自动获取pageSize和pageNo参数
      */
     public static <T> Page<T> defaultPage() {
-        HttpServletRequest request = HttpServletUtil.getRequest();
+        HttpServletRequest request = HttpServletUtils.getRequest();
         int pageSize = 20;
         int pageNo = 1;
 

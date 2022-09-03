@@ -11,7 +11,7 @@ import com.moonlit.generator.common.constant.CharacterConstant;
  * @date 2022/2/11 17:19
  * @email by.Moonlit@hotmail.com
  */
-public class NamingStrategy {
+public class NamingStrategyUtils {
 
     /**
      * 首字母轉大寫
@@ -33,7 +33,7 @@ public class NamingStrategy {
      * @return 結果
      */
     public static String removePrefix(String name, String prefix) {
-        return name.replaceFirst(prefix, "");
+        return name.replaceFirst(prefix, CharacterConstant.EMPTY);
     }
 
     /**

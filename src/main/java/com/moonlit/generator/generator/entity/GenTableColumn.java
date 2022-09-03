@@ -2,6 +2,8 @@ package com.moonlit.generator.generator.entity;
 
 import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.moonlit.generator.common.constant.CharacterConstant;
+import com.moonlit.generator.common.utils.NamingStrategyUtils;
 import com.moonlit.generator.generator.entity.vo.TableFieldVO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -145,7 +147,7 @@ public class GenTableColumn implements Serializable {
     public GenTableColumn(Long tableId, TableFieldVO vo) {
         this.tableId = tableId;
         this.columnName = vo.getColumnName();
-        this.columnComment = vo.getColumnComment();
+        this.columnComment = NamingStrategyUtils.substringBefore(vo.getColumnComment(), CharacterConstant.LEFT_ROUND_BRACKETS);
         this.sort = vo.getOrdinalPosition();
         this.columnType = vo.getColumnType();
         this.isPrimaryKey = vo.getColumnKey();
