@@ -1,8 +1,12 @@
 package com.moonlit.generator.common.utils;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.constant.DatabaseConstants;
+import com.moonlit.generator.common.exception.BusinessException;
+import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTableColumn;
+import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
@@ -11,6 +15,8 @@ import freemarker.template.Template;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,6 +34,37 @@ public class FreemarkerUtils {
      * 模板文件后缀名
      */
     public static String SUFFIX = ".ftl";
+
+    /**
+     * 創建模板文件
+     *
+     * @param list 模板集合
+     * @return 文件名稱
+     */
+    public static ArrayList<String> createTemplateFile(Collection<GenTemplateConfig> list) {
+        // 模板不存在
+        if (list.size() == 0) {
+            throw new BusinessException(TemplateErrorCode.TEMPLATE_DOES_NOT_EXIST);
+        }
+        // 模板文件名稱
+        ArrayList<String> fileNames = new ArrayList<>();
+        // 初始化文件夾
+        FilesUtils.initializationFolder();
+
+        // 循環生成模板
+        for (GenTemplateConfig templateConfig : list) {
+            // 處理富文本數據
+            String templateData = TemplateUtils.formatText(templateConfig.getTemplate());
+            // 文件名稱 (格式：模板組編號-模板名稱.模板後綴名)
+            String fileName = templateConfig.getCollectionId() + CharacterConstant.HYPHEN + templateConfig.getName()
+                    + CharacterConstant.PERIOD + templateConfig.getSuffixName();
+            // 生成模板
+            FilesUtils.createTemplateFile(fileName, templateData);
+            // 保存模板文件名
+            fileNames.add(fileName);
+        }
+        return fileNames;
+    }
 
     /**
      * 加載模板

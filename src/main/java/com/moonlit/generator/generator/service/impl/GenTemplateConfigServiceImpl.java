@@ -1,18 +1,16 @@
 package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.constant.CharacterConstant;
-import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.utils.FilesUtils;
 import com.moonlit.generator.common.utils.FreemarkerUtils;
-import com.moonlit.generator.common.utils.TemplateUtils;
-import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
@@ -27,12 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 模板配置业务实现层
@@ -114,21 +115,72 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
      */
     @Override
     public ArrayList<PreviewTemplateDTO> previewTemplateByTableId(Long tableId) {
-        ArrayList<PreviewTemplateDTO> list = new ArrayList<>();
         TableConfigAndDataAndColumnsBO tableData = tableService.getTableData(tableId, 1L);
 
+        //獲取需要展示的模板
+        LambdaQueryWrapper<GenTemplateConfig> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenTemplateConfig::getDisplay, true).eq(GenTemplateConfig::getState, true);
+        List<GenTemplateConfig> templateList = this.list(queryWrapper);
+
+        return constructTemplate(false, tableData, templateList, null);
+    }
+
+    /**
+     * 生成代碼
+     *
+     * @param tableId       表id
+     * @param tableConfigId 配置id
+     * @param templates     模板數據
+     * @return 數據
+     */
+    @Override
+    public byte[] exportTemplate(Long tableId, Long tableConfigId, List<GenTemplateConfig> templates) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        // 構建一個zip文件數據流
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        // 構建需要導出的數據
+        TableConfigAndDataAndColumnsBO tableData = tableService.getTableData(tableId, tableConfigId);
+        constructTemplate(true, tableData, templates, zip);
+        return outputStream.toByteArray();
+    }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
+
+    /**
+     * 構建模板
+     *
+     * @param previewOrExport 預覽:false 生成:true
+     * @param tableData       表數據
+     * @param templateList    需要展示的模板
+     * @param zip             文件輸出流
+     * @return 結果集合
+     */
+    private ArrayList<PreviewTemplateDTO> constructTemplate(Boolean previewOrExport, TableConfigAndDataAndColumnsBO tableData, List<GenTemplateConfig> templateList, ZipOutputStream zip) {
+        ArrayList<PreviewTemplateDTO> list = new ArrayList<>();
         // 構建模板填充字段
         FreemarkerConditionBO condition = FreemarkerUtils.buildCondition(tableData);
 
         log.info("------------------ 模板生成中！ ------------------");
-        for (String templateName : createTemplateFile()) {
+        for (String templateName : FreemarkerUtils.createTemplateFile(templateList)) {
             try {
                 Template template = FreemarkerUtils.load(templateName);
                 StringWriter stringWriter = new StringWriter();
                 // 寫模板
                 template.process(condition, stringWriter);
-                // 將生成的模板存放進集合中
-                list.add(new PreviewTemplateDTO(templateName.split(CharacterConstant.HYPHEN)[1], stringWriter.toString()));
+
+                // 模板文件名
+                String fileName = templateName.split(CharacterConstant.HYPHEN)[1];
+                // 生成代碼
+                if (previewOrExport) {
+                    // 添加到zip
+                    zip.putNextEntry(new ZipEntry(FilesUtils.getFileName(condition, fileName)));
+                    IoUtil.writeUtf8(zip, true, stringWriter.toString());
+                    zip.closeEntry();
+                } else {
+                    // 預覽代碼
+                    // 將生成的模板存放進集合中
+                    list.add(new PreviewTemplateDTO(fileName, stringWriter.toString()));
+                }
             } catch (IOException | TemplateException e) {
                 // TODO 補異常
                 e.printStackTrace();
@@ -136,42 +188,6 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
             }
         }
         return list;
-    }
-
-    /*---------------------------------------- 内部方法 ----------------------------------------*/
-
-    /**
-     * 創建模板文件
-     *
-     * @return 文件名稱
-     */
-    private ArrayList<String> createTemplateFile() {
-        // 模板文件名稱
-        ArrayList<String> fileNames = new ArrayList<>();
-        // 初始化文件夾
-        FilesUtils.initializationFolder();
-
-        //獲取需要展示的模板
-        LambdaQueryWrapper<GenTemplateConfig> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(GenTemplateConfig::getDisplay, true);
-        Collection<GenTemplateConfig> list = this.list(queryWrapper);
-        // 模板不存在
-        if (list.size() == 0) {
-            throw new BusinessException(TemplateErrorCode.TEMPLATE_DOES_NOT_EXIST);
-        }
-        // 循環生成模板
-        for (GenTemplateConfig templateConfig : list) {
-            // 處理富文本數據
-            String templateData = TemplateUtils.formatText(templateConfig.getTemplate());
-            // 文件名稱 (格式：模板組編號-模板名稱.模板後綴名)
-            String fileName = templateConfig.getCollectionId() + CharacterConstant.HYPHEN + templateConfig.getName()
-                    + CharacterConstant.PERIOD + templateConfig.getSuffixName();
-            // 生成模板
-            FilesUtils.createTemplateFile(fileName, templateData);
-            // 保存模板文件名
-            fileNames.add(fileName);
-        }
-        return fileNames;
     }
 
 }

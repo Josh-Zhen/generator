@@ -3,10 +3,12 @@ package com.moonlit.generator.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTemplateCollection;
+import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateCollectionDTO;
 import com.moonlit.generator.generator.entity.vo.CollectionVO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 模板组业务层
@@ -56,4 +58,12 @@ public interface GenTemplateCollectionService extends IService<GenTemplateCollec
      * @return 结果集合
      */
     ArrayList<CollectionVO> getCollectionName();
+
+    /**
+     * 根據模板組id獲取組内所有狀態正常的模板
+     *
+     * @param templateCollectionId 模板組id
+     * @return 模板集合
+     */
+    List<GenTemplateConfig> getTemplateByCollectionId(Long templateCollectionId);
 }

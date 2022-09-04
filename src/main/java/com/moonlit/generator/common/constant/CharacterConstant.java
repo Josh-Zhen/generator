@@ -71,4 +71,9 @@ public final class CharacterConstant {
     public static String RIGHT_DOUBLE_DIVIDE = "\\\\";
 
     public static String EQUAL = "=";
+
+    /**
+     * 轉義的逗號
+     */
+    public static String ESCAPE_COMMA = "\\.";
 }

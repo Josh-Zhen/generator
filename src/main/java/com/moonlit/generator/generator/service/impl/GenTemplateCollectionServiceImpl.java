@@ -8,15 +8,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTemplateCollection;
+import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateCollectionDTO;
 import com.moonlit.generator.generator.entity.vo.CollectionVO;
 import com.moonlit.generator.generator.mapper.GenTemplateCollectionMapper;
 import com.moonlit.generator.generator.service.GenTemplateCollectionService;
+import com.moonlit.generator.generator.service.GenTemplateConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 模板组业务实现层
@@ -28,6 +32,9 @@ import java.util.Arrays;
  */
 @Service
 public class GenTemplateCollectionServiceImpl extends ServiceImpl<GenTemplateCollectionMapper, GenTemplateCollection> implements GenTemplateCollectionService {
+
+    @Autowired
+    private GenTemplateConfigService templateConfigService;
 
     /**
      * 分頁條件查詢模板组
@@ -88,6 +95,19 @@ public class GenTemplateCollectionServiceImpl extends ServiceImpl<GenTemplateCol
     @Override
     public ArrayList<CollectionVO> getCollectionName() {
         return baseMapper.getCollectionName();
+    }
+
+    /**
+     * 根據模板組id獲取組内所有狀態正常的模板
+     *
+     * @param templateCollectionId 模板組id
+     * @return 模板集合
+     */
+    @Override
+    public List<GenTemplateConfig> getTemplateByCollectionId(Long templateCollectionId) {
+        LambdaQueryWrapper<GenTemplateConfig> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(GenTemplateConfig::getCollectionId, templateCollectionId).eq(GenTemplateConfig::getState, true);
+        return templateConfigService.list(queryWrapper);
     }
 
 }

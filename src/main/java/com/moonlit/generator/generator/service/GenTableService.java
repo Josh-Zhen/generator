@@ -68,4 +68,5 @@ public interface GenTableService extends IService<GenTable> {
      * @return 數據
      */
     TableConfigAndDataAndColumnsBO getTableData(Long tableId, Long tableConfigId);
+
 }

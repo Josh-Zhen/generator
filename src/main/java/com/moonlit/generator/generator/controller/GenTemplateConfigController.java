@@ -1,17 +1,22 @@
 package com.moonlit.generator.generator.controller;
 
+import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.generator.entity.GenTable;
+import com.moonlit.generator.common.utils.FilesUtils;
+import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
-import com.moonlit.generator.generator.service.GenTableService;
+import com.moonlit.generator.generator.service.GenTemplateCollectionService;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 模板配置控制层
@@ -28,7 +33,7 @@ public class GenTemplateConfigController {
     @Autowired
     private GenTemplateConfigService templateConfigService;
     @Autowired
-    private GenTableService tablesService;
+    private GenTemplateCollectionService templateCollectionService;
 
     /**
      * 条件分页查询
@@ -70,9 +75,37 @@ public class GenTemplateConfigController {
      */
     @GetMapping("/preview/{tableId}")
     public Result<ArrayList<PreviewTemplateDTO>> preview(@PathVariable Long tableId) {
-        GenTable table = tablesService.getById(tableId);
-
         return Result.success(templateConfigService.previewTemplateByTableId(tableId));
     }
+
+    /**
+     * 導出代碼
+     *
+     * @param response      http響應
+     * @param author        作者名
+     * @param tableId       表id
+     * @param tableConfigId 表配置id
+     * @param collectionId  模板組id
+     */
+    @GetMapping("/export")
+    public void export(HttpServletResponse response, @RequestParam String author, @RequestParam Long tableId, @RequestParam Long tableConfigId, @RequestParam Long collectionId) {
+        // 模板
+        List<GenTemplateConfig> templates = templateCollectionService.getTemplateByCollectionId(collectionId);
+        try {
+            FilesUtils.constructZipFile(author, response, templateConfigService.exportTemplate(tableId, tableConfigId, templates));
+        } catch (IOException e) {
+            throw new BusinessException(TemplateErrorCode.EXPORT_CODE_EXCEPTION);
+        }
+    }
+
+    /**
+     * 批量導出代碼
+     *
+     * @param tableIds 表id集合
+     */
+    public void batchExport(HttpServletResponse response, @PathVariable String tableIds) {
+
+    }
+
 
 }

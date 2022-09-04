@@ -7,6 +7,7 @@ import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 模板配置业务层
@@ -57,5 +58,15 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
      * @return 結果
      */
     ArrayList<PreviewTemplateDTO> previewTemplateByTableId(Long tableId);
+
+    /**
+     * 生成代碼
+     *
+     * @param tableId       表id
+     * @param tableConfigId 配置id
+     * @param templates     模板數據
+     * @return 數據
+     */
+    byte[] exportTemplate(Long tableId, Long tableConfigId, List<GenTemplateConfig> templates);
 
 }

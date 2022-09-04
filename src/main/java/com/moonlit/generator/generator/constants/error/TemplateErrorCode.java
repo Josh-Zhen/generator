@@ -20,6 +20,7 @@ public enum TemplateErrorCode implements AbstractBaseExceptionEnum {
      */
     CREATE_TEMPLATE_FOLDER_ERROR(13000, "创建模板文件夹失败"),
     TEMPLATE_DOES_NOT_EXIST(13001, "模板不存在"),
+    EXPORT_CODE_EXCEPTION(13002, "导出代码异常"),
     ;
 
     private Integer code;

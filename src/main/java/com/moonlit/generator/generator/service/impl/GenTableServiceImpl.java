@@ -223,4 +223,5 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         }
         return StringUtils.underlineToCamel(tableName);
     }
+
 }

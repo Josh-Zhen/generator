@@ -117,12 +117,12 @@ public class HandleColumnUtils {
     /**
      * 數組是否包含關鍵字
      *
-     * @param arr        數組
-     * @param columnType 字段類型
+     * @param arr      數組
+     * @param keywords 關鍵字
      * @return 結果
      */
-    private static Boolean isContains(String[] arr, String columnType) {
-        return Arrays.asList(arr).contains(columnType);
+    public static Boolean isContains(String[] arr, String keywords) {
+        return Arrays.asList(arr).contains(keywords);
     }
 
 }
