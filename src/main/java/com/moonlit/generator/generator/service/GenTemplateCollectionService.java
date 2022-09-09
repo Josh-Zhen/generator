@@ -6,6 +6,7 @@ import com.moonlit.generator.generator.entity.GenTemplateCollection;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateCollectionDTO;
 import com.moonlit.generator.generator.entity.vo.CollectionVO;
+import com.moonlit.generator.generator.entity.vo.TemplateCollectionVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,4 +67,11 @@ public interface GenTemplateCollectionService extends IService<GenTemplateCollec
      * @return 模板集合
      */
     List<GenTemplateConfig> getTemplateByCollectionId(Long templateCollectionId);
+
+    /**
+     * 獲取模板組與模板名稱
+     *
+     * @return 结果集
+     */
+    ArrayList<TemplateCollectionVO> getTemplateCollection();
 }

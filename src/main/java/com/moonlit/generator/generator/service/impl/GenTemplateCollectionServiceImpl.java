@@ -11,6 +11,7 @@ import com.moonlit.generator.generator.entity.GenTemplateCollection;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateCollectionDTO;
 import com.moonlit.generator.generator.entity.vo.CollectionVO;
+import com.moonlit.generator.generator.entity.vo.TemplateCollectionVO;
 import com.moonlit.generator.generator.mapper.GenTemplateCollectionMapper;
 import com.moonlit.generator.generator.service.GenTemplateCollectionService;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
@@ -108,6 +109,16 @@ public class GenTemplateCollectionServiceImpl extends ServiceImpl<GenTemplateCol
         LambdaQueryWrapper<GenTemplateConfig> queryWrapper = Wrappers.lambdaQuery();
         queryWrapper.eq(GenTemplateConfig::getCollectionId, templateCollectionId).eq(GenTemplateConfig::getState, true);
         return templateConfigService.list(queryWrapper);
+    }
+
+    /**
+     * 獲取模板組與模板名稱
+     *
+     * @return 结果集
+     */
+    @Override
+    public ArrayList<TemplateCollectionVO> getTemplateCollection() {
+        return baseMapper.getTemplateCollection();
     }
 
 }

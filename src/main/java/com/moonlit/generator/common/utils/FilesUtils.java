@@ -1,6 +1,5 @@
 package com.moonlit.generator.common.utils;
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.moonlit.generator.common.constant.CharacterConstant;
 import com.moonlit.generator.common.exception.BusinessException;
@@ -9,7 +8,6 @@ import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ResourceUtils;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -99,21 +97,6 @@ public class FilesUtils {
     }
 
     /**
-     * 構建zip文件
-     *
-     * @param fileName 壓縮包名稱
-     * @param response http響應頭
-     * @param data     數據
-     */
-    public static void constructZipFile(String fileName, HttpServletResponse response, byte[] data) throws IOException {
-        response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".zip");
-        response.addHeader("Content-Length", "" + data.length);
-        response.setContentType("application/octet-stream; charset=UTF-8");
-        IoUtil.write(response.getOutputStream(), true, data);
-    }
-
-    /**
      * 獲取模板文件名
      *
      * @param condition    模板數據
@@ -134,27 +117,27 @@ public class FilesUtils {
         String templateFileName = templateName.split(CharacterConstant.ESCAPE_COMMA)[0].toLowerCase();
         String suffix = templateName.split(CharacterConstant.ESCAPE_COMMA)[1].toLowerCase();
         if ("java".equals(suffix) || "xml".equals(suffix)) {
-            fileName += javaPath;
+            fileName = javaPath;
             if ("serviceimpl".equals(templateFileName)) {
                 fileName += "/service/impl";
             } else if ("mapping".equals(templateFileName)) {
                 fileName += "/mapper/mapping";
             } else {
-                fileName = templateFileName;
+                fileName += CharacterConstant.LEFT_DIVIDE + templateFileName;
             }
             fileName = fileName + CharacterConstant.LEFT_DIVIDE + templateName;
         } else if ("vue".equals(suffix) || "js".equals(suffix)) {
-            fileName += WEB_PATH;
+            fileName = WEB_PATH;
             // 判斷是否是web頁面類型
             switch (templateFileName) {
                 case "list":
-                    fileName = "/views/" + moduleNameAndBusinessName + CharacterConstant.LEFT_DIVIDE + templateName;
+                    fileName += "/views" + moduleNameAndBusinessName + CharacterConstant.LEFT_DIVIDE + templateName;
                     break;
                 case "modal":
-                    fileName = "/views/" + moduleNameAndBusinessName + "/modules/" + templateName;
+                    fileName += "/views" + moduleNameAndBusinessName + "/modules/" + templateName;
                     break;
                 case "api":
-                    fileName = fileName + "/api/" + moduleNameAndBusinessName + condition.getObjectName() + suffix;
+                    fileName = fileName + "/api" + moduleNameAndBusinessName + condition.getObjectName() + suffix;
                     break;
                 default:
             }
@@ -162,7 +145,7 @@ public class FilesUtils {
             // 其他文件
             fileName = DEFAULT_PATH + CharacterConstant.LEFT_DIVIDE + templateName;
         }
-        System.out.println("-----文件路徑為：" + fileName);
+//        System.out.println("-----文件路徑為：" + fileName);
         return fileName;
     }
 }

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.constant.CharacterConstant;
+import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.utils.FilesUtils;
@@ -141,6 +142,13 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
         // 構建需要導出的數據
         TableConfigAndDataAndColumnsBO tableData = tableService.getTableData(tableId, tableConfigId);
         constructTemplate(true, tableData, templates, zip);
+        try {
+            // 關流
+            zip.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new BusinessException(1, "");
+        }
         return outputStream.toByteArray();
     }
 
@@ -174,7 +182,7 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
                 if (previewOrExport) {
                     // 添加到zip
                     zip.putNextEntry(new ZipEntry(FilesUtils.getFileName(condition, fileName)));
-                    IoUtil.writeUtf8(zip, true, stringWriter.toString());
+                    IoUtil.writeUtf8(zip, false, stringWriter.toString());
                     zip.closeEntry();
                 } else {
                     // 預覽代碼

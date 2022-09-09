@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.moonlit.generator.generator.entity.GenTemplateCollection;
 import com.moonlit.generator.generator.entity.vo.CollectionVO;
+import com.moonlit.generator.generator.entity.vo.TemplateCollectionVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -25,4 +26,10 @@ public interface GenTemplateCollectionMapper extends BaseMapper<GenTemplateColle
      */
     ArrayList<CollectionVO> getCollectionName();
 
+    /**
+     * 獲取模板組與模板名稱
+     *
+     * @return 结果集
+     */
+    ArrayList<TemplateCollectionVO> getTemplateCollection();
 }

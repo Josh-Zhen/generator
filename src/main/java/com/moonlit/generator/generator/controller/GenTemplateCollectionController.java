@@ -5,6 +5,7 @@ import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.entity.GenTemplateCollection;
 import com.moonlit.generator.generator.entity.dto.GenTemplateCollectionDTO;
 import com.moonlit.generator.generator.entity.vo.CollectionVO;
+import com.moonlit.generator.generator.entity.vo.TemplateCollectionVO;
 import com.moonlit.generator.generator.service.GenTemplateCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,13 +60,22 @@ public class GenTemplateCollectionController {
     }
 
     /**
-     * 获取组名称
+     * 获取组名称（字典）
      *
-     * @return 结果集合
+     * @return 结果集
      */
     @GetMapping("/getCollectionName")
     public Result<ArrayList<CollectionVO>> getCollectionName() {
         return Result.success(templateCollectionService.getCollectionName());
     }
 
+    /**
+     * 獲取模板組與模板名稱
+     *
+     * @return 结果集
+     */
+    @GetMapping("/getTemplateCollection")
+    public Result<ArrayList<TemplateCollectionVO>> getTemplateCollection() {
+        return Result.success(templateCollectionService.getTemplateCollection());
+    }
 }

@@ -7,4 +7,15 @@
         FROM gen_template_collection
     </select>
 
+    <select id="getTemplateCollection" resultType="com.moonlit.generator.generator.entity.vo.TemplateCollectionVO">
+        SELECT gtc.id,
+               gtc.name,
+               GROUP_CONCAT(CONCAT(tc.`name`, '.', tc.`suffix_name`) SEPARATOR '、 ') AS templateName
+        FROM gen_template_collection gtc
+                 JOIN gen_template_config tc ON tc.collection_id = gtc.id
+        WHERE gtc.state = 1
+          AND tc.state = 1
+        GROUP BY tc.collection_id
+    </select>
+
 </mapper>

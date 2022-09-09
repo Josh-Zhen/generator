@@ -1,9 +1,9 @@
 package com.moonlit.generator.generator.controller;
 
+import cn.hutool.core.io.IoUtil;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
-import com.moonlit.generator.common.utils.FilesUtils;
 import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
@@ -82,17 +82,26 @@ public class GenTemplateConfigController {
      * 導出代碼
      *
      * @param response      http響應
-     * @param author        作者名
+     * @param tableName     表名
      * @param tableId       表id
      * @param tableConfigId 表配置id
      * @param collectionId  模板組id
      */
     @GetMapping("/export")
-    public void export(HttpServletResponse response, @RequestParam String author, @RequestParam Long tableId, @RequestParam Long tableConfigId, @RequestParam Long collectionId) {
+    public void export(HttpServletResponse response, @RequestParam String tableName, @RequestParam Long tableId, @RequestParam Long tableConfigId, @RequestParam Long collectionId) {
         // 模板
         List<GenTemplateConfig> templates = templateCollectionService.getTemplateByCollectionId(collectionId);
+        byte[] data = templateConfigService.exportTemplate(tableId, tableConfigId, templates);
         try {
-            FilesUtils.constructZipFile(author, response, templateConfigService.exportTemplate(tableId, tableConfigId, templates));
+            // 構建zip文件
+            response.reset();
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Expose-Headers", "content-disposition");
+            response.setHeader("content-disposition", "attachment; filename=" + tableName + ".zip");
+            response.setHeader("Content-Length", String.valueOf(data.length));
+            response.setContentType("application/octet-stream");
+            response.setCharacterEncoding("UTF-8");
+            IoUtil.write(response.getOutputStream(), false, data);
         } catch (IOException e) {
             throw new BusinessException(TemplateErrorCode.EXPORT_CODE_EXCEPTION);
         }

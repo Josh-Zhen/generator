@@ -43,9 +43,8 @@ public class GenTableConfigVO {
         this.name = tableConfig.getName();
         String author = "作者：" + tableConfig.getAuthor();
         String packageName = " | 包名：" + tableConfig.getPackageName();
-        String moduleName = ObjectUtil.isNotEmpty(tableConfig.getModuleName()) ? " | 模块名：" + tableConfig.getModuleName() : CharacterConstant.EMPTY;
-        String tablePrefix = ObjectUtil.isNotEmpty(tableConfig.getTablePrefix()) ? " | 表前綴：" + tableConfig.getTablePrefix() : CharacterConstant.EMPTY;
-        String removePrefix = tableConfig.getRemovePrefix() ? "是" : "否";
-        this.remark = author + packageName + moduleName + tablePrefix + " | 是否移除表前綴：" + removePrefix;
+        String moduleName = ObjectUtil.isNotEmpty(tableConfig.getModuleName()) ? " | 模块名：\"" + tableConfig.getModuleName() + "\"" : CharacterConstant.EMPTY;
+        String tablePrefix = ObjectUtil.isNotEmpty(tableConfig.getTablePrefix()) ? " | 表前綴：\"" + tableConfig.getTablePrefix() + "\"" : CharacterConstant.EMPTY;
+        this.remark = author + packageName + moduleName + tablePrefix + " | 是否移除表前綴：" + (tableConfig.getRemovePrefix() ? "是" : "否");
     }
 }
