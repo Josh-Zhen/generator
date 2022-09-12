@@ -186,6 +186,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
             throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
         }
+
         RSA rsa = new RSA(systemConfig.getPrivateKey(), systemConfig.getPublicKey());
         String key = rsa.decryptStr(systemConfig.getSalt(), KeyType.PublicKey);
         AES aes = new AES(key.getBytes(StandardCharsets.UTF_8));
