@@ -62,11 +62,11 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
     /**
      * 生成代碼
      *
-     * @param tableId       表id
+     * @param tableIds      表id集合
      * @param tableConfigId 配置id
      * @param templates     模板數據
      * @return 數據
      */
-    byte[] exportTemplate(Long tableId, Long tableConfigId, List<GenTemplateConfig> templates);
+    byte[] exportTemplate(ArrayList<Long> tableIds, Long tableConfigId, List<GenTemplateConfig> templates);
 
 }

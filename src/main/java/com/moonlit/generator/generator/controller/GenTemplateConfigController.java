@@ -6,6 +6,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
+import com.moonlit.generator.generator.entity.dto.ExportDTO;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 import com.moonlit.generator.generator.service.GenTemplateCollectionService;
@@ -79,25 +80,24 @@ public class GenTemplateConfigController {
     }
 
     /**
-     * 導出代碼
+     * 批量導出代碼
      *
-     * @param response      http響應
-     * @param tableName     表名
-     * @param tableId       表id
-     * @param tableConfigId 表配置id
-     * @param collectionId  模板組id
+     * @param response  http響應
+     * @param exportDTO 表id集合
      */
-    @GetMapping("/export")
-    public void export(HttpServletResponse response, @RequestParam String tableName, @RequestParam Long tableId, @RequestParam Long tableConfigId, @RequestParam Long collectionId) {
-        // 模板
-        List<GenTemplateConfig> templates = templateCollectionService.getTemplateByCollectionId(collectionId);
-        byte[] data = templateConfigService.exportTemplate(tableId, tableConfigId, templates);
+    @PostMapping("/batchExport")
+    public void batchExport(HttpServletResponse response, @RequestBody ExportDTO exportDTO) {
+        // 獲取模板
+        List<GenTemplateConfig> templates = templateCollectionService.getTemplateByCollectionId(exportDTO.getCollectionId());
+
+        // 獲取導出的數據字節
+        byte[] data = templateConfigService.exportTemplate(exportDTO.getTableIds(), exportDTO.getTableConfigId(), templates);
+
         try {
             // 構建zip文件
             response.reset();
-            response.setHeader("Access-Control-Allow-Origin", "*");
             response.setHeader("Access-Control-Expose-Headers", "content-disposition");
-            response.setHeader("content-disposition", "attachment; filename=" + tableName + ".zip");
+            response.setHeader("content-disposition", "attachment; filename=" + exportDTO.getFileName() + ".zip");
             response.setHeader("Content-Length", String.valueOf(data.length));
             response.setContentType("application/octet-stream");
             response.setCharacterEncoding("UTF-8");
@@ -106,15 +106,5 @@ public class GenTemplateConfigController {
             throw new BusinessException(TemplateErrorCode.EXPORT_CODE_EXCEPTION);
         }
     }
-
-    /**
-     * 批量導出代碼
-     *
-     * @param tableIds 表id集合
-     */
-    public void batchExport(HttpServletResponse response, @PathVariable String tableIds) {
-
-    }
-
 
 }

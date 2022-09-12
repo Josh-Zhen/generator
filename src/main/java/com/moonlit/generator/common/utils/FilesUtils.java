@@ -104,7 +104,7 @@ public class FilesUtils {
      * @return 文件名
      */
     public static String getFileName(FreemarkerConditionBO condition, String templateName) {
-        String fileName = "";
+        String fileName;
         // 如果模塊名不存在則不添加
         String moduleNameAndBusinessName = (ObjectUtil.isEmpty(condition.getModuleName()) ? CharacterConstant.EMPTY : CharacterConstant.LEFT_DIVIDE + condition.getModuleName())
                 + CharacterConstant.LEFT_DIVIDE + condition.getBusinessName();
@@ -116,6 +116,7 @@ public class FilesUtils {
         // 判斷是否是java類型文件(去掉後綴名，並轉成小寫)
         String templateFileName = templateName.split(CharacterConstant.ESCAPE_COMMA)[0].toLowerCase();
         String suffix = templateName.split(CharacterConstant.ESCAPE_COMMA)[1].toLowerCase();
+        // 處理文件路徑
         if ("java".equals(suffix) || "xml".equals(suffix)) {
             fileName = javaPath;
             if ("serviceimpl".equals(templateFileName)) {
@@ -125,7 +126,13 @@ public class FilesUtils {
             } else {
                 fileName += CharacterConstant.LEFT_DIVIDE + templateFileName;
             }
-            fileName = fileName + CharacterConstant.LEFT_DIVIDE + templateName;
+
+            // 拼接文件名稱
+            if ("entity".equals(templateFileName)) {
+                fileName = fileName + CharacterConstant.LEFT_DIVIDE + condition.getClassName() + ".java";
+            } else {
+                fileName = fileName + CharacterConstant.LEFT_DIVIDE + condition.getClassName() + templateName;
+            }
         } else if ("vue".equals(suffix) || "js".equals(suffix)) {
             fileName = WEB_PATH;
             // 判斷是否是web頁面類型
@@ -137,7 +144,7 @@ public class FilesUtils {
                     fileName += "/views" + moduleNameAndBusinessName + "/modules/" + templateName;
                     break;
                 case "api":
-                    fileName = fileName + "/api" + moduleNameAndBusinessName + condition.getObjectName() + suffix;
+                    fileName = fileName + "/api" + moduleNameAndBusinessName + CharacterConstant.LEFT_DIVIDE + condition.getObjectName() + CharacterConstant.PERIOD + suffix;
                     break;
                 default:
             }
@@ -145,7 +152,6 @@ public class FilesUtils {
             // 其他文件
             fileName = DEFAULT_PATH + CharacterConstant.LEFT_DIVIDE + templateName;
         }
-//        System.out.println("-----文件路徑為：" + fileName);
         return fileName;
     }
 }

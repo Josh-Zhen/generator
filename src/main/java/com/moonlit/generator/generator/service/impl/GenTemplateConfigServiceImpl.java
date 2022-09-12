@@ -12,6 +12,7 @@ import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.utils.FilesUtils;
 import com.moonlit.generator.common.utils.FreemarkerUtils;
+import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
@@ -123,31 +124,38 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
         queryWrapper.eq(GenTemplateConfig::getDisplay, true).eq(GenTemplateConfig::getState, true);
         List<GenTemplateConfig> templateList = this.list(queryWrapper);
 
-        return constructTemplate(false, tableData, templateList, null);
+        return renderTemplate(false, tableData, templateList, null);
     }
 
     /**
      * 生成代碼
      *
-     * @param tableId       表id
+     * @param tableIds      表id集合
      * @param tableConfigId 配置id
      * @param templates     模板數據
-     * @return 數據
+     * @return 數據字節
      */
     @Override
-    public byte[] exportTemplate(Long tableId, Long tableConfigId, List<GenTemplateConfig> templates) {
+    public byte[] exportTemplate(ArrayList<Long> tableIds, Long tableConfigId, List<GenTemplateConfig> templates) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         // 構建一個zip文件數據流
         ZipOutputStream zip = new ZipOutputStream(outputStream);
+
         // 構建需要導出的數據
-        TableConfigAndDataAndColumnsBO tableData = tableService.getTableData(tableId, tableConfigId);
-        constructTemplate(true, tableData, templates, zip);
+        for (Long tableId : tableIds) {
+            // 數據内容
+            TableConfigAndDataAndColumnsBO tableData = tableService.getTableData(tableId, tableConfigId);
+            // 渲染模板
+            renderTemplate(true, tableData, templates, zip);
+        }
+
+        // 關流
         try {
-            // 關流
             zip.close();
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new BusinessException(1, "");
+            throw new BusinessException(TemplateErrorCode.EXPORT_CODE_EXCEPTION);
         }
         return outputStream.toByteArray();
     }
@@ -155,7 +163,7 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
-     * 構建模板
+     * 渲染模板
      *
      * @param previewOrExport 預覽:false 生成:true
      * @param tableData       表數據
@@ -163,12 +171,12 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
      * @param zip             文件輸出流
      * @return 結果集合
      */
-    private ArrayList<PreviewTemplateDTO> constructTemplate(Boolean previewOrExport, TableConfigAndDataAndColumnsBO tableData, List<GenTemplateConfig> templateList, ZipOutputStream zip) {
+    private ArrayList<PreviewTemplateDTO> renderTemplate(Boolean previewOrExport, TableConfigAndDataAndColumnsBO tableData, List<GenTemplateConfig> templateList, ZipOutputStream zip) {
         ArrayList<PreviewTemplateDTO> list = new ArrayList<>();
         // 構建模板填充字段
         FreemarkerConditionBO condition = FreemarkerUtils.buildCondition(tableData);
 
-        log.info("------------------ 模板生成中！ ------------------");
+        log.info("------------------ 模板渲染中！ ------------------");
         for (String templateName : FreemarkerUtils.createTemplateFile(templateList)) {
             try {
                 Template template = FreemarkerUtils.load(templateName);
@@ -190,9 +198,8 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
                     list.add(new PreviewTemplateDTO(fileName, stringWriter.toString()));
                 }
             } catch (IOException | TemplateException e) {
-                // TODO 補異常
                 e.printStackTrace();
-                log.error(e.getMessage());
+                throw new BusinessException(TemplateErrorCode.EXPORT_CODE_EXCEPTION);
             }
         }
         return list;
