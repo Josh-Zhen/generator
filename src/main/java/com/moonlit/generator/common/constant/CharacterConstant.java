@@ -76,4 +76,10 @@ public final class CharacterConstant {
      * 轉義的逗號
      */
     public static String ESCAPE_COMMA = "\\.";
+
+    /**
+     * 中文括號
+     */
+    public static String LEFT_ROUND_BRACKETS_CHINESE = "（";
+
 }

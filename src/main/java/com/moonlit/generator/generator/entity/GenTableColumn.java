@@ -148,6 +148,7 @@ public class GenTableColumn implements Serializable {
         this.tableId = tableId;
         this.columnName = vo.getColumnName();
         this.columnComment = NamingStrategyUtils.substringBefore(vo.getColumnComment(), CharacterConstant.LEFT_ROUND_BRACKETS);
+        this.columnComment = NamingStrategyUtils.substringBefore(this.columnComment, CharacterConstant.LEFT_ROUND_BRACKETS_CHINESE);
         this.sort = vo.getOrdinalPosition();
         this.columnType = vo.getColumnType();
         this.isPrimaryKey = vo.getColumnKey();

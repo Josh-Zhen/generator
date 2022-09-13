@@ -33,8 +33,12 @@ public class GenFieldMapping implements Serializable {
     private String mapping;
 
     /**
-     * 类型（0：String、1：Boolean、2、数组）
+     * 类型（0：String、1：Boolean、2、List）
      */
     private Integer type;
 
+    /**
+     * 状态（0 否 1 是）
+     */
+    private Boolean state;
 }

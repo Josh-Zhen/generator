@@ -138,10 +138,10 @@ public class FilesUtils {
             // 判斷是否是web頁面類型
             switch (templateFileName) {
                 case "list":
-                    fileName += "/views" + moduleNameAndBusinessName + CharacterConstant.LEFT_DIVIDE + templateName;
+                    fileName += "/views" + moduleNameAndBusinessName + CharacterConstant.LEFT_DIVIDE + condition.getClassName() + templateName;
                     break;
                 case "modal":
-                    fileName += "/views" + moduleNameAndBusinessName + "/modules/" + templateName;
+                    fileName += "/views" + moduleNameAndBusinessName + "/modal/" + condition.getClassName() + templateName;
                     break;
                 case "api":
                     fileName = fileName + "/api" + moduleNameAndBusinessName + CharacterConstant.LEFT_DIVIDE + condition.getObjectName() + CharacterConstant.PERIOD + suffix;
