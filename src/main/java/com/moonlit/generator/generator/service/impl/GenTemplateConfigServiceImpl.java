@@ -16,6 +16,7 @@ import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
+import com.moonlit.generator.generator.entity.dto.DeleteTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 import com.moonlit.generator.generator.mapper.GenTemplateConfigMapper;
@@ -33,6 +34,7 @@ import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -83,6 +85,10 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
      */
     @Override
     public Boolean insertTemplateConfig(GenTemplateConfig templateConfig) {
+        // 默认组无法操作
+        if (templateConfig.getCollectionId() == 1) {
+            throw new BusinessException(TemplateErrorCode.DEFAULT_GROUP_CANNOT_OPERATE);
+        }
         templateConfig.setCreateDate(LocalDateTime.now());
         return this.save(templateConfig);
     }
@@ -101,12 +107,24 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     /**
      * 批量删除
      *
-     * @param ids id集合
+     * @param dto 對象
      * @return 結果
      */
     @Override
-    public Boolean deleteTemplateConfigByIds(String ids) {
-        return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
+    public Boolean deleteTemplateConfigByIds(DeleteTemplateConfigDTO dto) {
+        // 無法刪除默認組的模板
+        if (dto.getCollectionId() == 1) {
+            throw new BusinessException(TemplateErrorCode.UNABLE_DELETE_FOR_DEFAULT);
+        }
+        // 默認組的模板不在需要刪除的list集合内
+        LambdaQueryWrapper<GenTemplateConfig> query = Wrappers.lambdaQuery();
+        query.eq(GenTemplateConfig::getCollectionId, 1);
+        Collection<GenTemplateConfig> templateConfigs = this.list(query);
+        Collection<String> list = Arrays.asList(Convert.toStrArray(dto.getIds()));
+        for (GenTemplateConfig templateConfig : templateConfigs) {
+            list.remove(templateConfig.getId().toString());
+        }
+        return this.removeByIds(list);
     }
 
     /**

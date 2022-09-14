@@ -5,8 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.generator.constants.error.FieldMappingErrorCode;
 import com.moonlit.generator.generator.entity.GenFieldMapping;
 import com.moonlit.generator.generator.mapper.GenFieldMappingMapper;
 import com.moonlit.generator.generator.service.GenFieldMappingService;
@@ -33,20 +35,9 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
      */
     @Override
     public PageResult<GenFieldMapping> pageList(GenFieldMapping fieldMapping) {
-        LambdaQueryWrapper<GenFieldMapping> queryWrapper = Wrappers.lambdaQuery();
-        if (ObjectUtil.isNotNull(fieldMapping)) {
-            if (ObjectUtil.isNotEmpty(fieldMapping.getId())) {
-                queryWrapper.eq(GenFieldMapping::getId, fieldMapping.getId());
-            }
-            if (ObjectUtil.isNotEmpty(fieldMapping.getComment())) {
-                queryWrapper.eq(GenFieldMapping::getComment, fieldMapping.getComment());
-            }
-            if (ObjectUtil.isNotEmpty(fieldMapping.getMapping())) {
-                queryWrapper.eq(GenFieldMapping::getMapping, fieldMapping.getMapping());
-            }
-            if (ObjectUtil.isNotEmpty(fieldMapping.getType())) {
-                queryWrapper.eq(GenFieldMapping::getType, fieldMapping.getType());
-            }
+        LambdaQueryWrapper<GenFieldMapping> queryWrapper = null;
+        if (ObjectUtil.isNotEmpty(fieldMapping)) {
+            queryWrapper = Wrappers.lambdaQuery(fieldMapping);
         }
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
@@ -59,8 +50,7 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
      */
     @Override
     public List<GenFieldMapping> selectFieldMappingList(GenFieldMapping fieldMapping) {
-        LambdaQueryWrapper<GenFieldMapping> queryWrapper = Wrappers.lambdaQuery();
-        return this.list(queryWrapper);
+        return this.list(Wrappers.lambdaQuery(fieldMapping));
     }
 
     /**
@@ -71,17 +61,19 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
      */
     @Override
     public Boolean insertFieldMapping(GenFieldMapping fieldMapping) {
+        judgeComment(fieldMapping);
         return this.save(fieldMapping);
     }
 
     /**
      * 修改键值映射
      *
-     * @param fieldMapping mapping实体
+     * @param fieldMapping 键值映射实体
      * @return 结果
      */
     @Override
     public Boolean updateFieldMapping(GenFieldMapping fieldMapping) {
+        judgeComment(fieldMapping);
         return this.updateById(fieldMapping);
     }
 
@@ -96,4 +88,17 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 
+    /**
+     * 判斷是否存在已啓用的鍵
+     *
+     * @param fieldMapping 键值映射实体
+     */
+    private void judgeComment(GenFieldMapping fieldMapping) {
+        LambdaQueryWrapper<GenFieldMapping> query = Wrappers.lambdaQuery();
+        query.eq(GenFieldMapping::getComment, fieldMapping.getComment())
+                .eq(GenFieldMapping::getState, fieldMapping.getState());
+        if (ObjectUtil.isNotEmpty(this.getOne(query))) {
+            throw new BusinessException(FieldMappingErrorCode.COMMENT_IS_EXIST);
+        }
+    }
 }

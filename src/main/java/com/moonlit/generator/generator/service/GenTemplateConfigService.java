@@ -3,6 +3,7 @@ package com.moonlit.generator.generator.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
+import com.moonlit.generator.generator.entity.dto.DeleteTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 
@@ -46,10 +47,10 @@ public interface GenTemplateConfigService extends IService<GenTemplateConfig> {
     /**
      * 批量删除
      *
-     * @param ids id集合
+     * @param dto 對象
      * @return 結果
      */
-    Boolean deleteTemplateConfigByIds(String ids);
+    Boolean deleteTemplateConfigByIds(DeleteTemplateConfigDTO dto);
 
     /**
      * 根據id預覽代碼

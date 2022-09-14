@@ -41,4 +41,5 @@ public class GenFieldMapping implements Serializable {
      * 状态（0 否 1 是）
      */
     private Boolean state;
+
 }

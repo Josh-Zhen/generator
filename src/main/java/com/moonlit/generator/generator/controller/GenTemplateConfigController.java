@@ -6,6 +6,7 @@ import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.common.response.Result;
 import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
+import com.moonlit.generator.generator.entity.dto.DeleteTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.ExportDTO;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
@@ -33,6 +34,7 @@ public class GenTemplateConfigController {
 
     @Autowired
     private GenTemplateConfigService templateConfigService;
+
     @Autowired
     private GenTemplateCollectionService templateCollectionService;
 
@@ -64,8 +66,8 @@ public class GenTemplateConfigController {
      * 批量删除
      */
     @PostMapping("/delete")
-    public Result<Boolean> delete(String ids) {
-        return Result.success(templateConfigService.deleteTemplateConfigByIds(ids));
+    public Result<Boolean> delete(DeleteTemplateConfigDTO dto) {
+        return Result.success(templateConfigService.deleteTemplateConfigByIds(dto));
     }
 
     /**

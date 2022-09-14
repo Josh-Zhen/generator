@@ -63,7 +63,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
                 queryWrapper.eq(GenDatabase::getAddress, genDatabaseDTO.getAddress());
             }
             if (ObjectUtil.isNotEmpty(genDatabaseDTO.getName())) {
-                queryWrapper.like(GenDatabase::getName, "%" + genDatabaseDTO.getName() + "%");
+                queryWrapper.like(GenDatabase::getName, genDatabaseDTO.getName());
             }
         }
         queryWrapper.orderByDesc(GenDatabase::getCreateDate);

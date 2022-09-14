@@ -7,8 +7,6 @@ import com.moonlit.generator.generator.service.GenFieldMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 键值映射控制层
  *
@@ -32,17 +30,6 @@ public class GenFieldMappingController {
     @GetMapping("/pageList")
     public Result<PageResult<GenFieldMapping>> page(GenFieldMapping fieldMapping) {
         return Result.success(fieldMappingService.pageList(fieldMapping));
-    }
-
-    /**
-     * 查询键值映射列表
-     *
-     * @param fieldMapping 键值映射实体
-     * @return 键值映射集合
-     */
-    @GetMapping("/list")
-    public Result<List<GenFieldMapping>> list(GenFieldMapping fieldMapping) {
-        return Result.success(fieldMappingService.selectFieldMappingList(fieldMapping));
     }
 
     /**
