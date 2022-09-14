@@ -113,17 +113,22 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     @Override
     public Boolean deleteTemplateConfigByIds(DeleteTemplateConfigDTO dto) {
         // 無法刪除默認組的模板
-        if (dto.getCollectionId() == 1) {
+        if (ObjectUtil.isNotEmpty(dto.getCollectionId()) && dto.getCollectionId() == 1) {
             throw new BusinessException(TemplateErrorCode.UNABLE_DELETE_FOR_DEFAULT);
         }
+
         // 默認組的模板不在需要刪除的list集合内
         LambdaQueryWrapper<GenTemplateConfig> query = Wrappers.lambdaQuery();
         query.eq(GenTemplateConfig::getCollectionId, 1);
         Collection<GenTemplateConfig> templateConfigs = this.list(query);
-        Collection<String> list = Arrays.asList(Convert.toStrArray(dto.getIds()));
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(Convert.toStrArray(dto.getIds())));
         for (GenTemplateConfig templateConfig : templateConfigs) {
             list.remove(templateConfig.getId().toString());
         }
+        if (list.size() == 0) {
+            throw new BusinessException(TemplateErrorCode.UNABLE_DELETE_FOR_DEFAULT);
+        }
+
         return this.removeByIds(list);
     }
 

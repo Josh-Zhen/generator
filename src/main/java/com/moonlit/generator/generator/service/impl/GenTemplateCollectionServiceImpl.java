@@ -5,8 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.generator.constants.error.TemplateErrorCode;
 import com.moonlit.generator.generator.entity.GenTemplateCollection;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.dto.GenTemplateCollectionDTO;
@@ -89,6 +91,10 @@ public class GenTemplateCollectionServiceImpl extends ServiceImpl<GenTemplateCol
         Collection<String> list = Arrays.asList(Convert.toStrArray(ids));
         // 不刪除默認組
         list.remove("1");
+        if (list.size() == 0) {
+            throw new BusinessException(TemplateErrorCode.UNABLE_DELETE_FOR_DEFAULT_GROUP);
+        }
+
         return this.removeByIds(list);
     }
 
