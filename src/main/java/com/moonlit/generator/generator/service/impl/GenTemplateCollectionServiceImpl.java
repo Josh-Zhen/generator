@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -88,7 +87,7 @@ public class GenTemplateCollectionServiceImpl extends ServiceImpl<GenTemplateCol
      */
     @Override
     public Boolean deleteTemplateCollectionByIds(String ids) {
-        Collection<String> list = Arrays.asList(Convert.toStrArray(ids));
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(Convert.toStrArray(ids)));
         // 不刪除默認組
         list.remove("1");
         if (list.size() == 0) {
