@@ -15,10 +15,7 @@ import freemarker.template.Template;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * freemarker工具類
@@ -85,14 +82,14 @@ public class FreemarkerUtils {
      * 構建條件
      *
      * @param dataBo 数据内容
+     * @param map    用戶自定義的键值對
      * @return 條件
      */
-    public static FreemarkerConditionBO buildCondition(TableConfigAndDataAndColumnsBO dataBo) {
+    public static FreemarkerConditionBO buildCondition(TableConfigAndDataAndColumnsBO dataBo, HashMap<String, Object> map) {
         FreemarkerConditionBO conditionBO = new FreemarkerConditionBO(dataBo);
         // 處理列信息
         handleColumns(conditionBO, dataBo.getTableColumns());
-
-        // TODO 後續需要補上用戶自定義的類型
+        conditionBO.setMap(map);
         return conditionBO;
     }
 

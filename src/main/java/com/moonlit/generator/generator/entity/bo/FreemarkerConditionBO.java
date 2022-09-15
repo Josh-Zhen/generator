@@ -5,6 +5,7 @@ import com.moonlit.generator.generator.entity.GenTableColumn;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -79,6 +80,11 @@ public class FreemarkerConditionBO {
      * 主鍵列信息
      */
     private GenTableColumn primaryKeyColumn;
+
+    /**
+     * 附加數據(數據來源於键值映射表)
+     */
+    private HashMap<String, Object> map;
 
     /**
      * 構造器

@@ -20,6 +20,7 @@ import com.moonlit.generator.generator.entity.dto.DeleteTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.GenTemplateConfigDTO;
 import com.moonlit.generator.generator.entity.dto.PreviewTemplateDTO;
 import com.moonlit.generator.generator.mapper.GenTemplateConfigMapper;
+import com.moonlit.generator.generator.service.GenFieldMappingService;
 import com.moonlit.generator.generator.service.GenTableService;
 import com.moonlit.generator.generator.service.GenTemplateConfigService;
 import freemarker.template.Template;
@@ -53,6 +54,9 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
 
     @Autowired
     private GenTableService tableService;
+
+    @Autowired
+    private GenFieldMappingService fieldMappingService;
 
     /**
      * 分頁條件查詢模板配置
@@ -196,8 +200,9 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
      */
     private ArrayList<PreviewTemplateDTO> renderTemplate(Boolean previewOrExport, TableConfigAndDataAndColumnsBO tableData, List<GenTemplateConfig> templateList, ZipOutputStream zip) {
         ArrayList<PreviewTemplateDTO> list = new ArrayList<>();
+
         // 構建模板填充字段
-        FreemarkerConditionBO condition = FreemarkerUtils.buildCondition(tableData);
+        FreemarkerConditionBO condition = FreemarkerUtils.buildCondition(tableData, fieldMappingService.selectFieldMappingList());
 
         log.info("------------------ 模板渲染中！ ------------------");
         for (String templateName : FreemarkerUtils.createTemplateFile(templateList)) {

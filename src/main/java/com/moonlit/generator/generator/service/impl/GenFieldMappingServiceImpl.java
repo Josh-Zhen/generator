@@ -15,7 +15,8 @@ import com.moonlit.generator.generator.service.GenFieldMappingService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * 键值映射业务实现层
@@ -43,14 +44,24 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
     }
 
     /**
-     * 查询键值映射列表
+     * 查询啓用的键值映射集合s
      *
-     * @param fieldMapping 键值映射实体
      * @return 键值映射集合
      */
     @Override
-    public List<GenFieldMapping> selectFieldMappingList(GenFieldMapping fieldMapping) {
-        return this.list(Wrappers.lambdaQuery(fieldMapping));
+    public HashMap<String, Object> selectFieldMappingList() {
+        HashMap<String, Object> map = new HashMap<>(0);
+        LambdaQueryWrapper<GenFieldMapping> query = Wrappers.lambdaQuery();
+        query.eq(GenFieldMapping::getState, true);
+        for (GenFieldMapping fieldMapping : this.list(query)) {
+            if (fieldMapping.getType() == 2) {
+                map.put(fieldMapping.getComment(), Collections.singletonList(fieldMapping.getMapping()));
+            } else {
+                map.put(fieldMapping.getComment(), fieldMapping.getMapping());
+            }
+
+        }
+        return map;
     }
 
     /**
@@ -87,6 +98,8 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
     public Boolean deleteFieldMappingByIds(String ids) {
         return this.removeByIds(Arrays.asList(Convert.toStrArray(ids)));
     }
+
+    /*---------------------------------------- 内部方法 ----------------------------------------*/
 
     /**
      * 判斷是否存在已啓用的鍵

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.entity.GenFieldMapping;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * 键值映射业务层
@@ -24,12 +24,11 @@ public interface GenFieldMappingService extends IService<GenFieldMapping> {
     PageResult<GenFieldMapping> pageList(GenFieldMapping fieldMapping);
 
     /**
-     * 查询键值映射列表
+     * 查询啓用的键值映射集合
      *
-     * @param fieldMapping 键值映射实体
      * @return 键值映射集合
      */
-    List<GenFieldMapping> selectFieldMappingList(GenFieldMapping fieldMapping);
+    HashMap<String, Object> selectFieldMappingList();
 
     /**
      * 新增键值映射
