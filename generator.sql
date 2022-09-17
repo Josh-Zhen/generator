@@ -253,7 +253,7 @@ CREATE TABLE `gen_field_mapping`
     `id`      int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT COMMENT '主键',
     `comment` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '键',
     `mapping` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '值',
-    `type`    tinyint(1)                                                   NOT NULL COMMENT '类型（0：String、1：Boolean、2、List）',
+    `type`    tinyint(1)                                                   NOT NULL COMMENT '类型（0：String、1：Boolean、2：Integer、3：List）',
     `state`   tinyint(1)                                                   NOT NULL DEFAULT 1 COMMENT '状态（0 否 1 是）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB

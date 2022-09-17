@@ -33,7 +33,7 @@ public class GenFieldMapping implements Serializable {
     private String mapping;
 
     /**
-     * 类型（0：String、1：Boolean、2、List）
+     * 类型（0：String、1：Boolean、2：Integer、3：List）
      */
     private Integer type;
 
