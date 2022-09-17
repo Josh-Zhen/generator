@@ -54,12 +54,24 @@ public class GenFieldMappingServiceImpl extends ServiceImpl<GenFieldMappingMappe
         LambdaQueryWrapper<GenFieldMapping> query = Wrappers.lambdaQuery();
         query.eq(GenFieldMapping::getState, true);
         for (GenFieldMapping fieldMapping : this.list(query)) {
-            if (fieldMapping.getType() == 2) {
-                map.put(fieldMapping.getComment(), Collections.singletonList(fieldMapping.getMapping()));
-            } else {
-                map.put(fieldMapping.getComment(), fieldMapping.getMapping());
+            switch (fieldMapping.getType()) {
+                case 1:
+                    // 布爾類型
+                    map.put(fieldMapping.getComment(), Boolean.valueOf(fieldMapping.getMapping()));
+                    break;
+                case 2:
+                    // 数字类型
+                    map.put(fieldMapping.getComment(), Integer.valueOf(fieldMapping.getMapping()));
+                    break;
+                case 3:
+                    // 數組類型
+                    map.put(fieldMapping.getComment(), Collections.singletonList(fieldMapping.getMapping()));
+                    break;
+                default:
+                    // 字符串類型
+                    map.put(fieldMapping.getComment(), fieldMapping.getMapping());
+                    break;
             }
-
         }
         return map;
     }

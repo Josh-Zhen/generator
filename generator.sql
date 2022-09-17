@@ -67,7 +67,7 @@ CREATE TABLE `dict_data`
     `update_date` datetime                                                NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 32
+  AUTO_INCREMENT = 33
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '系统字典值表';
 
@@ -106,7 +106,8 @@ VALUES (1, 1, '停用', '0', 1, NULL, 1, NOW(), NULL),
        (28, 6, '范围', 'like', 5, NULL, 1, NOW(), NULL),
        (29, 7, 'String', '0', 1, NULL, 1, NOW(), NULL),
        (30, 7, 'Boolean', '1', 2, NULL, 1, NOW(), NULL),
-       (31, 7, 'List', '2', 3, NULL, 1, NOW(), NULL);
+       (31, 7, 'Integer', '2', 3, NULL, 1, NOW(), NULL),
+       (32, 7, 'List', '3', 4, NULL, 1, NOW(), NULL);
 COMMIT;
 
 -- ----------------------------
@@ -266,7 +267,7 @@ CREATE TABLE `gen_field_mapping`
 BEGIN;
 INSERT INTO `gen_field_mapping`
 VALUES (1, 'email', 'email.com', 0, 1),
-       (2, 'testList', 'a,b,c,d', 2, 1),
+       (2, 'testList', 'a,b,c,d', 3, 1),
        (3, 'testBoolean', 'true', 1, 1);
 COMMIT;
 
@@ -315,7 +316,7 @@ CREATE TABLE `gen_template_config`
     `create_date`   datetime                                                     NULL     DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 20
+  AUTO_INCREMENT = 19
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '模板配置表';
 
