@@ -89,7 +89,9 @@ public class FreemarkerUtils {
         FreemarkerConditionBO conditionBO = new FreemarkerConditionBO(dataBo);
         // 處理列信息
         handleColumns(conditionBO, dataBo.getTableColumns());
-        conditionBO.setMap(map);
+        if (map.size() > 0) {
+            conditionBO.setMap(map);
+        }
         return conditionBO;
     }
 
