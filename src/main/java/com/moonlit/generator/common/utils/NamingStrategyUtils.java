@@ -1,5 +1,6 @@
 package com.moonlit.generator.common.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.moonlit.generator.common.constant.CharacterConstant;
 
@@ -82,8 +83,12 @@ public class NamingStrategyUtils {
      * @return 業務描述
      */
     public static String getBusinessComment(String tableComment) {
-        int index = tableComment.length() - 1;
-        return tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
+        String businessName = "";
+        if (ObjectUtil.isNotEmpty(tableComment)) {
+            int index = tableComment.length() - 1;
+            businessName = tableComment.substring(index).contains("表") ? tableComment.substring(0, index) : tableComment;
+        }
+        return businessName;
     }
 
 }
