@@ -102,12 +102,16 @@ public class FreemarkerUtils {
      * @param columns     字段信息集合
      */
     private static void handleColumns(FreemarkerConditionBO conditionBO, List<GenTableColumn> columns) {
+        // 包集合
+        HashSet<String> importList = new HashSet<>();
+
         for (GenTableColumn column : columns) {
             // 處理特殊數據類型導包
-            conditionBO.setImportList(handleImportList(column));
+            handleImportList(importList, column);
             // 設置主鍵列
             conditionBO.setPrimaryKeyColumn(filterPrimaryKeyColumn(column));
         }
+        conditionBO.setImportList(importList);
         // 如果沒有主鍵則使用第一列作爲默認主鍵列
         if (ObjectUtil.isEmpty(conditionBO.getPrimaryKeyColumn())) {
             conditionBO.setPrimaryKeyColumn(columns.get(0));
@@ -117,11 +121,10 @@ public class FreemarkerUtils {
     /**
      * 處理特殊數據類型導包
      *
-     * @param column 字段信息
-     * @return 返回需要导入的包列表
+     * @param importList 需要導入的包集合
+     * @param column     字段信息
      */
-    private static HashSet<String> handleImportList(GenTableColumn column) {
-        HashSet<String> importList = new HashSet<>();
+    private static void handleImportList(HashSet<String> importList, GenTableColumn column) {
         // 判斷數據類型
         if (DatabaseConstants.LOCAL_DATE_TIME_TYPE.equals(column.getJavaType())) {
             importList.add("java.time.LocalDateTime");
@@ -130,7 +133,6 @@ public class FreemarkerUtils {
         } else if (DatabaseConstants.BIG_DECIMAL_TYPE.equals(column.getJavaType())) {
             importList.add("java.math.BigDecimal");
         }
-        return importList;
     }
 
     /**
