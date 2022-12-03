@@ -15,14 +15,12 @@ import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.constants.error.TableConfigErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
 import com.moonlit.generator.generator.entity.GenTable;
-import com.moonlit.generator.generator.entity.GenTableConfig;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
 import com.moonlit.generator.generator.entity.dto.GenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
-import com.moonlit.generator.generator.mapper.GenTableConfigMapper;
 import com.moonlit.generator.generator.mapper.GenTableMapper;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
 import com.moonlit.generator.generator.service.GenTableColumnService;
@@ -55,9 +53,6 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     private GenSystemConfigService systemConfigService;
 
     @Autowired
-    private GenTableConfigMapper tableConfigMapper;
-
-    @Autowired
     private GenTableColumnService tableColumnService;
 
     /**
@@ -80,6 +75,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
                 queryWrapper.like(GenTable::getTableComment, genTableDTO.getTableComment());
             }
         }
+        queryWrapper.orderByDesc(GenTable::getCreateDate);
         return new PageResult<>(this.page(PageFactory.defaultPage(), queryWrapper));
     }
 
@@ -94,7 +90,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     public Boolean insertTable(SaveGenTableDTO saveDTO) {
         for (DatabaseTablesVO tablesVO : saveDTO.getList()) {
             try {
-                GenTable tables = initializeTable(saveDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment(), saveDTO.getTableConfigId());
+                GenTable tables = initializeTable(saveDTO.getDatabaseId(), tablesVO.getTableName(), tablesVO.getTableComment());
                 baseMapper.insert(tables);
                 // 插入數據後的主鍵
                 Long row = tables.getId();
@@ -118,11 +114,6 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
      */
     @Override
     public Boolean updateTable(GenTable genTable) {
-        GenTable table = this.getById(genTable.getId());
-        // 表配置變動
-        if (!genTable.getConfigId().equals(table.getConfigId())) {
-            genTable.setObjectName(convertClassName(genTable.getTableName(), genTable.getConfigId()));
-        }
         genTable.setUpdateDate(LocalDateTime.now());
         return this.updateById(genTable);
     }
@@ -179,6 +170,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     @Override
     public TableConfigAndDataAndColumnsBO getTableData(Long tableId, Long tableConfigId) {
         TableConfigAndDataAndColumnsBO tableData = baseMapper.getTableData(tableId, tableConfigId);
+        tableData.setObjectName(StringUtils.firstToLowerCase(tableData.getObjectName()));
 
         // 查詢不到作者配置
         if (ObjectUtil.isEmpty(tableData.getTableConfigId())) {
@@ -194,34 +186,17 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     /**
      * 初始化表實體
      *
-     * @param databaseId    數據庫id
-     * @param tableName     表名
-     * @param tableComment  表注釋
-     * @param tableConfigId 表配置id
+     * @param databaseId   數據庫id
+     * @param tableName    表名
+     * @param tableComment 表注釋
      * @return 表實體
      */
-    private GenTable initializeTable(Long databaseId, String tableName, String tableComment, Long tableConfigId) {
-        GenTable genTable = new GenTable(databaseId, tableName, tableComment, tableConfigId);
-        genTable.setObjectName(convertClassName(tableName, tableConfigId));
+    private GenTable initializeTable(Long databaseId, String tableName, String tableComment) {
+        GenTable genTable = new GenTable(databaseId, tableName, tableComment);
+        genTable.setObjectName(StringUtils.underlineToCamel(tableName));
         genTable.setBusinessName(NamingStrategyUtils.getBusinessName(tableName));
         genTable.setFunctionName(NamingStrategyUtils.getBusinessComment(tableComment));
         return genTable;
-    }
-
-    /**
-     * 表名轉類名
-     *
-     * @param tableName     表名稱
-     * @param tableConfigId 表配置id
-     * @return 類名稱
-     */
-    private String convertClassName(String tableName, Long tableConfigId) {
-        GenTableConfig tablesConfig = tableConfigMapper.selectById(tableConfigId);
-        // 是否移除表前綴
-        if (tablesConfig.getRemovePrefix()) {
-            return NamingStrategyUtils.removePrefixAndCamel(tableName, tablesConfig.getTablePrefix());
-        }
-        return StringUtils.underlineToCamel(tableName);
     }
 
 }

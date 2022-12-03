@@ -24,7 +24,7 @@ public class GenTableConfigVO {
     private Long id;
 
     /**
-     * 配置名稱
+     * 配置名称
      */
     private String name;
 

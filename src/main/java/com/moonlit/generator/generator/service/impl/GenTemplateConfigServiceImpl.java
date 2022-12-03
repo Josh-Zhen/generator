@@ -192,7 +192,7 @@ public class GenTemplateConfigServiceImpl extends ServiceImpl<GenTemplateConfigM
     /**
      * 渲染模板
      *
-     * @param previewOrExport 預覽:false 生成:true
+     * @param previewOrExport 預覽:false 導出:true
      * @param tableData       表數據
      * @param templateList    需要展示的模板
      * @param zip             文件輸出流

@@ -67,7 +67,7 @@ CREATE TABLE `dict_data`
     `update_date` datetime                                                NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 33
+  AUTO_INCREMENT = 31
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci COMMENT = '系统字典值表';
 
@@ -83,31 +83,29 @@ VALUES (1, 1, '停用', '0', 1, NULL, 1, NOW(), NULL),
        (5, 3, 'MySQL', '0', 1, NULL, 1, NOW(), NULL),
        (6, 3, 'PostgreSQL', '1', 2, NULL, 1, NOW(), NULL),
        (7, 3, 'Oracle', '2', 3, NULL, 1, NOW(), NULL),
-       (8, 3, 'SQLite', '3', 4, NULL, 1, NOW(), NULL),
-       (9, 3, 'MariaDB', '4', 5, NULL, 1, NOW(), NULL),
-       (10, 4, 'String', 'String', 1, NULL, 1, NOW(), NULL),
-       (11, 4, 'Integer', 'Integer', 2, NULL, 1, NOW(), NULL),
-       (12, 4, 'Float', 'Float', 3, NULL, 1, NOW(), NULL),
-       (13, 4, 'Double', 'Double', 4, NULL, 1, NOW(), NULL),
-       (14, 4, 'Long', 'Long', 5, NULL, 1, NOW(), NULL),
-       (15, 4, 'Boolean', 'Boolean', 6, NULL, 1, NOW(), NULL),
-       (16, 4, 'LocalDateTime', 'LocalDateTime', 7, NULL, 1, NOW(), NULL),
-       (17, 4, 'BigDecimal', 'BigDecimal', 8, NULL, 1, NOW(), NULL),
-       (18, 5, '输入框', 'input', 1, NULL, 1, NOW(), NULL),
-       (19, 5, '文本域', 'text', 2, NULL, 1, NOW(), NULL),
-       (20, 5, '下拉框', 'dropdown', 3, NULL, 1, NOW(), NULL),
-       (21, 5, '复选框', 'checkbox', 4, NULL, 1, NOW(), NULL),
-       (22, 5, '单选框', 'radio', 5, NULL, 1, NOW(), NULL),
-       (23, 5, '日期控件', 'datetime', 6, NULL, 1, NOW(), NULL),
-       (24, 6, '等于', 'eq', 1, NULL, 1, NOW(), NULL),
-       (25, 6, '不等于', 'ne', 2, NULL, 1, NOW(), NULL),
-       (26, 6, '大于', 'gt', 3, NULL, 1, NOW(), NULL),
-       (27, 6, '小于', 'lt', 4, NULL, 1, NOW(), NULL),
-       (28, 6, '范围', 'like', 5, NULL, 1, NOW(), NULL),
-       (29, 7, 'String', '0', 1, NULL, 1, NOW(), NULL),
-       (30, 7, 'Boolean', '1', 2, NULL, 1, NOW(), NULL),
-       (31, 7, 'Integer', '2', 3, NULL, 1, NOW(), NULL),
-       (32, 7, 'List', '3', 4, NULL, 1, NOW(), NULL);
+       (8, 4, 'String', 'String', 1, NULL, 1, NOW(), NULL),
+       (9, 4, 'Integer', 'Integer', 2, NULL, 1, NOW(), NULL),
+       (10, 4, 'Float', 'Float', 3, NULL, 1, NOW(), NULL),
+       (11, 4, 'Double', 'Double', 4, NULL, 1, NOW(), NULL),
+       (12, 4, 'Long', 'Long', 5, NULL, 1, NOW(), NULL),
+       (13, 4, 'Boolean', 'Boolean', 6, NULL, 1, NOW(), NULL),
+       (14, 4, 'LocalDateTime', 'LocalDateTime', 7, NULL, 1, NOW(), NULL),
+       (15, 4, 'BigDecimal', 'BigDecimal', 8, NULL, 1, NOW(), NULL),
+       (16, 5, '输入框', 'input', 1, NULL, 1, NOW(), NULL),
+       (17, 5, '文本域', 'text', 2, NULL, 1, NOW(), NULL),
+       (18, 5, '下拉框', 'dropdown', 3, NULL, 1, NOW(), NULL),
+       (19, 5, '复选框', 'checkbox', 4, NULL, 1, NOW(), NULL),
+       (20, 5, '单选框', 'radio', 5, NULL, 1, NOW(), NULL),
+       (21, 5, '日期控件', 'datetime', 6, NULL, 1, NOW(), NULL),
+       (22, 6, '等于', 'eq', 1, NULL, 1, NOW(), NULL),
+       (23, 6, '不等于', 'ne', 2, NULL, 1, NOW(), NULL),
+       (24, 6, '大于', 'gt', 3, NULL, 1, NOW(), NULL),
+       (25, 6, '小于', 'lt', 4, NULL, 1, NOW(), NULL),
+       (26, 6, '范围', 'like', 5, NULL, 1, NOW(), NULL),
+       (27, 7, 'String', '0', 1, NULL, 1, NOW(), NULL),
+       (28, 7, 'Boolean', '1', 2, NULL, 1, NOW(), NULL),
+       (29, 7, 'Integer', '2', 3, NULL, 1, NOW(), NULL),
+       (30, 7, 'List', '3', 4, NULL, 1, NOW(), NULL);
 COMMIT;
 
 -- ----------------------------
@@ -176,7 +174,6 @@ CREATE TABLE `gen_table`
     `object_name`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '对象名',
     `business_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '业务名',
     `function_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '功能名',
-    `config_id`     int(10) UNSIGNED                                              NOT NULL COMMENT '配置表id',
     `create_date`   datetime                                                      NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_date`   datetime                                                      NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
@@ -224,7 +221,7 @@ DROP TABLE IF EXISTS `gen_table_config`;
 CREATE TABLE `gen_table_config`
 (
     `id`            int(10) UNSIGNED                                              NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `name`          varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名稱',
+    `name`          varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名称',
     `author`        varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL     DEFAULT NULL COMMENT '作者',
     `package_name`  varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '包名',
     `module_name`   varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '模块名',
@@ -236,7 +233,7 @@ CREATE TABLE `gen_table_config`
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
   CHARACTER SET = utf8mb4
-  COLLATE = utf8mb4_general_ci COMMENT = '配置表';
+  COLLATE = utf8mb4_general_ci COMMENT = '基础配置表';
 
 -- ----------------------------
 -- Records of gen_table_config

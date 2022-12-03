@@ -18,7 +18,6 @@ public class GenColumnDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     /**
      * 數據表id
      */

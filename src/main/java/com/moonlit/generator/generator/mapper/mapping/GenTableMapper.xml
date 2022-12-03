@@ -16,7 +16,13 @@
                gtc.package_name AS packageName,
                gtc.module_name  AS moduleName,
                gt.table_comment AS tableComment,
-               gt.object_name   AS objectName,
+               (CASE gtc.remove_prefix
+                    WHEN 1 THEN
+                        REPLACE(gt.object_name, gtc.table_prefix, '')
+                    ELSE
+                        gt.object_name
+                   END
+                   )            AS objectName,
                gt.business_name AS businessName,
                gt.function_name AS functionName
         FROM `gen_table` gt

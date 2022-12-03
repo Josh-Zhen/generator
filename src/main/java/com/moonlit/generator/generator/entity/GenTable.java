@@ -56,11 +56,6 @@ public class GenTable implements Serializable {
     private String functionName;
 
     /**
-     * 配置表id
-     */
-    private Long configId;
-
-    /**
      * 创建时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = DatePattern.NORM_DATETIME_PATTERN)
@@ -78,13 +73,11 @@ public class GenTable implements Serializable {
      * @param databaseId   庫id
      * @param tableName    表名
      * @param tableComment 表描述
-     * @param configId     配置表id
      */
-    public GenTable(Long databaseId, String tableName, String tableComment, Long configId) {
+    public GenTable(Long databaseId, String tableName, String tableComment) {
         this.databaseId = databaseId;
         this.tableName = tableName;
         this.tableComment = tableComment;
-        this.configId = configId;
         this.createDate = LocalDateTime.now();
     }
 }

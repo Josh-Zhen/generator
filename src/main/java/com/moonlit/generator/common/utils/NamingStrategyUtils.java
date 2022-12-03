@@ -27,31 +27,6 @@ public class NamingStrategyUtils {
     }
 
     /**
-     * 去掉指定的前缀
-     *
-     * @param name   字段
-     * @param prefix 前綴
-     * @return 結果
-     */
-    public static String removePrefix(String name, String prefix) {
-        return name.replaceFirst(prefix, CharacterConstant.EMPTY);
-    }
-
-    /**
-     * 去掉下划线前缀且将后半部分转成驼峰格式
-     *
-     * @param name        表名
-     * @param tablePrefix 表前綴
-     * @return 結果
-     */
-    public static String removePrefixAndCamel(String name, String tablePrefix) {
-        if (!name.contains(tablePrefix)) {
-            return StringUtils.underlineToCamel(name);
-        }
-        return StringUtils.underlineToCamel(removePrefix(name, tablePrefix));
-    }
-
-    /**
      * 取條件之前的字符串
      *
      * @param str       源字符串

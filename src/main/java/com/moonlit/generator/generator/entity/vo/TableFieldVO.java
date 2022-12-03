@@ -39,7 +39,7 @@ public class TableFieldVO implements Serializable {
     /**
      * 順序
      */
-    private Long ordinalPosition;
+    private Integer ordinalPosition;
 
     /**
      * 備注

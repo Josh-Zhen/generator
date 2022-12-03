@@ -31,9 +31,4 @@ public class SaveGenTableDTO implements Serializable {
      */
     private ArrayList<DatabaseTablesVO> list;
 
-    /**
-     * 表配置id
-     */
-    @NotNull(message = "数据表配置id不能为空")
-    private Long tableConfigId;
 }

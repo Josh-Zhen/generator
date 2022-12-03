@@ -48,7 +48,7 @@ public class GenTableColumn implements Serializable {
     /**
      * 排序
      */
-    private Long sort;
+    private Integer sort;
 
     /**
      * 列类型
