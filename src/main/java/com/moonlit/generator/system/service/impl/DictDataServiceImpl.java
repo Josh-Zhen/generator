@@ -9,12 +9,14 @@ import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.system.entity.DictData;
 import com.moonlit.generator.system.entity.vo.DictVO;
+import com.moonlit.generator.system.error.SystemCodeEnum;
 import com.moonlit.generator.system.mapper.DictDataMapper;
 import com.moonlit.generator.system.service.DictDataService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -110,18 +112,25 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     }
 
     /**
-     * 校验是否存在相同键
+     * 校验是否存在相同名称或键
      *
      * @param dictData 参数
      */
     private void checkValueExists(DictData dictData) {
         LambdaQueryWrapper<DictData> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(DictData::getId, dictData.getId())
-                .eq(DictData::getValue, dictData.getValue());
-        DictData one = this.getOne(queryWrapper);
-        if (null != one && !dictData.getId().equals(one.getId())) {
-            if (dictData.getValue().equals(one.getValue())) {
-                throw new BusinessException(11013, "键已存在");
+        queryWrapper.eq(DictData::getTypeId, dictData.getTypeId())
+                .and(wq -> wq.eq(DictData::getName, dictData.getName())
+                        .or()
+                        .eq(DictData::getValue, dictData.getValue()));
+        Collection<DictData> list = this.list(queryWrapper);
+        if (list.size() > 0) {
+            for (DictData data : list) {
+                if (dictData.getName().equals(data.getName()) && !dictData.getId().equals(data.getId())) {
+                    throw new BusinessException(SystemCodeEnum.NAME_ALREADY_EXISTS);
+                }
+                if (dictData.getValue().equals(data.getValue()) && !dictData.getId().equals(data.getId())) {
+                    throw new BusinessException(SystemCodeEnum.VALUE_ALREADY_EXISTS);
+                }
             }
         }
     }
