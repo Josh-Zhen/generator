@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
+import com.moonlit.generator.system.entity.DictData;
 import com.moonlit.generator.system.entity.DictType;
 import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.error.SystemCodeEnum;
@@ -15,6 +16,7 @@ import com.moonlit.generator.system.service.DictDataService;
 import com.moonlit.generator.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -104,7 +106,11 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class, timeout = 30)
     public Boolean deleteDictTypeById(Long id) {
+        LambdaQueryWrapper<DictData> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(DictData::getTypeId, id);
+        dictDataService.remove(wrapper);
         return this.removeById(id);
     }
 

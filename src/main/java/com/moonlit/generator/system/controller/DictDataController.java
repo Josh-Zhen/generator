@@ -34,7 +34,7 @@ public class DictDataController {
     }
 
     /**
-     * 新增保存字典管理
+     * 新增字典管理
      *
      * @param dictData 实体
      * @return 结果
