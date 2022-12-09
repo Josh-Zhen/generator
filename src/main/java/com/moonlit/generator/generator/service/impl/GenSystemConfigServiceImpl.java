@@ -50,13 +50,8 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
      */
     @Override
     public String getRsaKey() {
-        GenSystemConfig systemConfig = baseMapper.selectById(1);
-        String salt = systemConfig.getSalt();
-        if (ObjectUtil.isEmpty(salt)) {
-            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
-        }
-        RSA rsa = new RSA(null, systemConfig.getPublicKey());
-        return rsa.decryptStr(salt, KeyType.PublicKey);
+        GenSystemConfig systemConfig = this.getById(1L);
+        return this.decryptSalt(systemConfig.getSalt(), systemConfig.getPublicKey());
     }
 
     /**
@@ -68,21 +63,16 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
     @Transactional(rollbackFor = Exception.class, timeout = 30)
     public String refreshKey() {
         GenSystemConfig systemConfig = this.getById(1L);
-        if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
-            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
-        }
-        // 獲取原始密鑰
-        RSA rsa = new RSA(null, systemConfig.getPublicKey());
-        String originalKey = rsa.decryptStr(systemConfig.getSalt(), KeyType.PublicKey);
+        String originalKey = this.decryptSalt(systemConfig.getSalt(), systemConfig.getPublicKey());
 
         // 获取新加密密钥
-        rsa = new RSA();
+        RSA rsa = new RSA();
         systemConfig.setPublicKey(rsa.getPublicKeyBase64());
         String privateKey = rsa.getPrivateKeyBase64();
         systemConfig.setPrivateKey(privateKey);
 
         // 新的數據密鑰
-        String salt = RandomUtil.randomString(16);
+        String salt = RandomUtil.randomString(64);
         String dataKey = rsa.encryptBase64(salt, KeyType.PrivateKey);
         if (systemConfig.getState()) {
             systemConfig.setSalt(dataKey);
@@ -121,6 +111,21 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
         }
         systemConfig.setSalt(dto.getSalt());
         return this.updateById(systemConfig);
+    }
+
+    /**
+     * 解密AES
+     *
+     * @param salt      AES数据
+     * @param publicKey RSA公钥
+     * @return AES密钥
+     */
+    private String decryptSalt(String salt, String publicKey) {
+        if (ObjectUtil.isEmpty(salt)) {
+            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
+        }
+        RSA rsa = new RSA(null, publicKey);
+        return rsa.decryptStr(salt, KeyType.PublicKey);
     }
 
 }

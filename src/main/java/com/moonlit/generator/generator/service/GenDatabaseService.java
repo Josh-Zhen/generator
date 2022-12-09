@@ -65,11 +65,4 @@ public interface GenDatabaseService extends IService<GenDatabase> {
      */
     List<DictVO> dropDown();
 
-    /**
-     * 数据加密
-     *
-     * @param data 数据
-     * @return 结果
-     */
-    String encrypt(String data);
 }

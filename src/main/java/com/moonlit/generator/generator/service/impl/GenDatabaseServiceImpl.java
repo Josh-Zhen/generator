@@ -2,23 +2,18 @@ package com.moonlit.generator.generator.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.symmetric.AES;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moonlit.generator.common.exception.BusinessException;
 import com.moonlit.generator.common.page.PageFactory;
 import com.moonlit.generator.common.page.PageResult;
 import com.moonlit.generator.generator.constants.DatabaseDriverConstant;
-import com.moonlit.generator.generator.constants.error.DatabaseErrorCode;
 import com.moonlit.generator.generator.entity.GenDatabase;
-import com.moonlit.generator.generator.entity.GenSystemConfig;
 import com.moonlit.generator.generator.entity.dto.GenDatabaseDTO;
 import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
-import com.moonlit.generator.generator.mapper.GenSystemConfigMapper;
 import com.moonlit.generator.generator.service.GenDatabaseService;
+import com.moonlit.generator.generator.service.GenSystemConfigService;
 import com.moonlit.generator.system.entity.vo.DictVO;
 import com.moonlit.generator.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +42,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
     private DictTypeService dictTypeService;
 
     @Autowired
-    private GenSystemConfigMapper systemConfigMapper;
+    private GenSystemConfigService systemConfigService;
 
     /**
      * 条件分页查询
@@ -78,8 +73,8 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
      */
     @Override
     public Boolean insertDatabase(GenDatabase genDatabase) {
-        genDatabase.setUserName(encrypt(genDatabase.getUserName()));
-        genDatabase.setPassword(encrypt(genDatabase.getPassword()));
+        genDatabase.setUserName(this.encrypt(genDatabase.getUserName()));
+        genDatabase.setPassword(this.encrypt(genDatabase.getPassword()));
         this.matchDriver(genDatabase);
         genDatabase.setCreateDate(LocalDateTime.now());
         return this.save(genDatabase);
@@ -97,10 +92,10 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
 
         // 校验用户名与密码是否修改过
         if (!db.getUserName().equals(genDatabase.getUserName())) {
-            genDatabase.setUserName(encrypt(genDatabase.getUserName()));
+            genDatabase.setUserName(this.encrypt(genDatabase.getUserName()));
         }
         if (!db.getPassword().equals(genDatabase.getPassword())) {
-            genDatabase.setPassword(encrypt(genDatabase.getPassword()));
+            genDatabase.setPassword(this.encrypt(genDatabase.getPassword()));
         }
         this.matchDriver(genDatabase);
         genDatabase.setUpdateDate(LocalDateTime.now());
@@ -180,16 +175,9 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
      * @param data 数据
      * @return 结果
      */
-    @Override
-    public String encrypt(String data) {
-        GenSystemConfig systemConfig = systemConfigMapper.selectById(1);
-        if (ObjectUtil.isEmpty(systemConfig.getSalt())) {
-            throw new BusinessException(DatabaseErrorCode.KEY_NOT_SET);
-        }
-
-        RSA rsa = new RSA(systemConfig.getPrivateKey(), systemConfig.getPublicKey());
-        String key = rsa.decryptStr(systemConfig.getSalt(), KeyType.PublicKey);
-        AES aes = new AES(key.getBytes(StandardCharsets.UTF_8));
+    private String encrypt(String data) {
+        AES aes = new AES(systemConfigService.getRsaKey().getBytes(StandardCharsets.UTF_8));
         return aes.encryptBase64(data);
     }
+
 }

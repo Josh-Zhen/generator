@@ -27,7 +27,7 @@ CREATE TABLE `dict_type`
     `sort`        tinyint(2) UNSIGNED                                           NOT NULL COMMENT '排序',
     `remark`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '备注',
     `status`      tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '状态（0停用 1正常）',
-    `create_date` datetime                                                      NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date` datetime                                                      NOT NULL COMMENT '创建时间',
     `update_date` datetime                                                      NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `code_index` (`code`) USING BTREE
@@ -63,7 +63,7 @@ CREATE TABLE `dict_data`
     `sort`        tinyint(2) UNSIGNED                                           NOT NULL COMMENT '排序',
     `remark`      varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '备注',
     `status`      tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '状态（0正常 1停用）',
-    `create_date` datetime                                                      NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date` datetime                                                      NOT NULL COMMENT '创建时间',
     `update_date` datetime                                                      NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -119,7 +119,7 @@ CREATE TABLE `gen_system_config`
     `public_key`  text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '公钥',
     `salt`        text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '盐',
     `state`       tinyint(1) UNSIGNED                                   NOT NULL DEFAULT 1 COMMENT '盐是否持久化(0:否 1:是)',
-    `create_date` datetime                                              NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date` datetime                                              NOT NULL COMMENT '创建时间',
     `update_date` datetime                                              NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -153,7 +153,7 @@ CREATE TABLE `gen_database`
     `driver_class_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '数据库驱动',
     `user_name`         text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci         NOT NULL COMMENT '用户名',
     `password`          text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci         NOT NULL COMMENT '密码（私钥加密）',
-    `create_date`       datetime                                                      NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date`       datetime                                                      NOT NULL COMMENT '创建时间',
     `update_date`       datetime                                                      NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -175,7 +175,7 @@ CREATE TABLE `gen_table`
     `business_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '业务名',
     `function_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '功能名',
     `config_id`     int(10) UNSIGNED                                              NOT NULL COMMENT '配置表id',
-    `create_date`   datetime                                                      NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date`   datetime                                                      NOT NULL COMMENT '创建时间',
     `update_date`   datetime                                                      NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -200,14 +200,14 @@ CREATE TABLE `gen_table_column`
     `is_required`    tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '是否为空（0否，1是）',
     `java_type`      varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT 'String' COMMENT 'JAVA类型',
     `java_field`     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'JAVA字段名',
-    `is_insert`      tinyint(1)                                                    NOT NULL DEFAULT 1 COMMENT '是否为插入字段（0否，1是）',
-    `is_edit`        tinyint(1)                                                    NOT NULL DEFAULT 1 COMMENT '是否编辑字段（0否，1是）',
-    `is_list`        tinyint(1)                                                    NOT NULL DEFAULT 1 COMMENT '是否列表字段（0否，1是）',
-    `is_query`       tinyint(1)                                                    NOT NULL DEFAULT 1 COMMENT '是否查询字段（0否，1是）',
+    `is_insert`      tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '是否为插入字段（0否，1是）',
+    `is_edit`        tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '是否编辑字段（0否，1是）',
+    `is_list`        tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '是否列表字段（0否，1是）',
+    `is_query`       tinyint(1) UNSIGNED                                           NOT NULL DEFAULT 1 COMMENT '是否查询字段（0否，1是）',
     `query_type`     varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci   NOT NULL DEFAULT 'eq' COMMENT '查询方式（等于-eq、不等于-ne、大于-gt、小于-lt、范围-like）',
     `html_type`      varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT 'input' COMMENT '显示类型（文本框-input、文本域-text、下拉框-dropdown、复选框-checkbox、单选框-radio、日期控件-datetime）',
     `dict_type`      varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL     DEFAULT NULL COMMENT '字典类型',
-    `create_date`    datetime                                                      NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date`    datetime                                                      NOT NULL COMMENT '创建时间',
     `update_date`    datetime                                                      NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -229,7 +229,7 @@ CREATE TABLE `gen_table_config`
     `date_format`   varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '时间格式',
     `table_prefix`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL COMMENT '表前綴',
     `remove_prefix` tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 0 COMMENT '移除表前綴(0 否 1 是)',
-    `create_date`   datetime                                                     NULL     DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date`   datetime                                                     NOT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
@@ -251,8 +251,8 @@ CREATE TABLE `gen_field_mapping`
     `id`      int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT COMMENT '主键',
     `comment` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '键',
     `mapping` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci        NOT NULL COMMENT '值',
-    `type`    tinyint(1)                                                   NOT NULL DEFAULT 0 COMMENT '类型（0：String、1：Boolean、2：Integer、3：List）',
-    `state`   tinyint(1)                                                   NOT NULL DEFAULT 1 COMMENT '状态（0 否 1 是）',
+    `type`    tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 0 COMMENT '类型（0：String、1：Boolean、2：Integer、3：List）',
+    `state`   tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 1 COMMENT '状态（0 否 1 是）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
@@ -275,8 +275,8 @@ CREATE TABLE `gen_template_collection`
 (
     `id`          int(10) UNSIGNED                                             NOT NULL AUTO_INCREMENT COMMENT 'id',
     `name`        varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模板名称',
-    `state`       tinyint(1)                                                   NOT NULL DEFAULT 1 COMMENT '状态（0否、1是）',
-    `create_date` datetime                                                     NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `state`       tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 1 COMMENT '状态（0否、1是）',
+    `create_date` datetime                                                     NOT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
@@ -307,7 +307,7 @@ CREATE TABLE `gen_template_config`
     `suffix_name`   varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模板后缀名',
     `display`       tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 0 COMMENT '展示（0:否 1:是）',
     `state`         tinyint(1) UNSIGNED                                          NOT NULL DEFAULT 1 COMMENT '状态（0:否 1:是）',
-    `create_date`   datetime                                                     NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `create_date`   datetime                                                     NOT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 19

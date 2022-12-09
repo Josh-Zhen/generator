@@ -18,6 +18,8 @@ spring:
       login-timeout: 5
       max-lifetime: 60000
       read-only: false
+  main:
+    allow-circular-references: true
 
 mybatis-plus:
   mapper-locations: classpath*:**/mapper/*/*.xml
