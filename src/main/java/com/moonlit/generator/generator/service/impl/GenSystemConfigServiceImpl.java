@@ -72,7 +72,7 @@ public class GenSystemConfigServiceImpl extends ServiceImpl<GenSystemConfigMappe
         systemConfig.setPrivateKey(privateKey);
 
         // 新的數據密鑰
-        String salt = RandomUtil.randomString(64);
+        String salt = RandomUtil.randomString(16);
         String dataKey = rsa.encryptBase64(salt, KeyType.PrivateKey);
         if (systemConfig.getState()) {
             systemConfig.setSalt(dataKey);
