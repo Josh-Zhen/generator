@@ -91,12 +91,15 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         GenDatabase db = this.getById(genDatabase.getId());
 
         // 校验用户名与密码是否修改过
-        if (!db.getUserName().equals(genDatabase.getUserName())) {
-            genDatabase.setUserName(this.encrypt(genDatabase.getUserName()));
+        String encryptUserName = this.encrypt(genDatabase.getUserName());
+        if (!db.getUserName().equals(encryptUserName)) {
+            genDatabase.setUserName(encryptUserName);
         }
-        if (!db.getPassword().equals(genDatabase.getPassword())) {
-            genDatabase.setPassword(this.encrypt(genDatabase.getPassword()));
+        String encryptPassword = this.encrypt(genDatabase.getPassword());
+        if (!db.getPassword().equals(encryptPassword)) {
+            genDatabase.setPassword(encryptPassword);
         }
+
         this.matchDriver(genDatabase);
         genDatabase.setUpdateDate(LocalDateTime.now());
         return this.updateById(genDatabase);
@@ -164,6 +167,7 @@ public class GenDatabaseServiceImpl extends ServiceImpl<GenDatabaseMapper, GenDa
         for (DictVO vo : vos) {
             if (genDatabase.getType().equals(Integer.parseInt(vo.getKey()))) {
                 genDatabase.setDriverClassName(DatabaseDriverConstant.getDriverClass(vo.getName()));
+                return;
             }
         }
     }

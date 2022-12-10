@@ -19,9 +19,7 @@ public enum DatabaseDriverConstant {
     // 驅動
     MySQL("com.mysql.cj.jdbc.Driver"),
     PostgreSQL("org.postgresql.Driver"),
-    Oracle("oracle.jdbc.OracleDriver"),
-    SQLite("org.sqlite.JDBC"),
-    MariaDB("org.mariadb.jdbc.Driver"),
+    Oracle("oracle.jdbc.OracleDriver")
     ;
 
     private String driven;
