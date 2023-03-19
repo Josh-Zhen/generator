@@ -49,5 +49,5 @@ public class WebConstants {
     /**
      * 狀態常量
      */
-    public static final String[] STATE = {"sex", "status", "state", "type"};
+    public static final String[] STATE = {"sex", "state", "status", "type"};
 }

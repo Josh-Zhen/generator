@@ -17,20 +17,17 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfig {
 
-    private CorsConfiguration buildConfig() {
+    @Bean
+    public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOriginPattern("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setMaxAge(3600L);
         corsConfiguration.setAllowCredentials(true);
-        return corsConfiguration;
-    }
 
-    @Bean
-    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig());
+        source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);
     }
 }

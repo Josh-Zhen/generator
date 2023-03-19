@@ -65,7 +65,7 @@ public class HandleColumnUtils {
 
             // 主鍵
             Boolean columnKey = vo.getColumnKey();
-            // 排除主鍵
+            // 非主鍵列
             if (!columnKey) {
                 // 插入字段
                 if (isContains(DatabaseConstants.DATABASE_DATE_TYPE, columnType)) {
@@ -86,9 +86,8 @@ public class HandleColumnUtils {
                         || isContains(DatabaseConstants.COLUMN_NOT_QUERY, columnName)) {
                     column.setIsQuery(false);
                 }
-            }
-            // 主鍵列不可插入、編輯
-            if (columnKey) {
+            } else {
+                // 主鍵列不可插入、編輯
                 column.setIsInsert(false);
                 column.setIsEdit(false);
             }
@@ -97,6 +96,7 @@ public class HandleColumnUtils {
             if (StringUtils.endsWith(columnName, "name") || isContains(DatabaseConstants.TEXT_TYPE, columnType)) {
                 column.setQueryType(DatabaseConstants.CONDITION_TYPE[4]);
             }
+
             // 前端標簽
             if (ObjectUtil.isEmpty(column.getHtmlType())) {
                 if (StringUtils.endsWith(columnName, WebConstants.STATE[0]) || StringUtils.endsWith(columnName, WebConstants.STATE[1])) {
@@ -121,7 +121,7 @@ public class HandleColumnUtils {
      * @param keywords 關鍵字
      * @return 結果
      */
-    public static Boolean isContains(String[] arr, String keywords) {
+    private static Boolean isContains(String[] arr, String keywords) {
         return Arrays.asList(arr).contains(keywords);
     }
 

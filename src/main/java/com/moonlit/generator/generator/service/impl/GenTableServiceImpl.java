@@ -20,8 +20,8 @@ import com.moonlit.generator.generator.entity.dto.GenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveGenTableDTO;
 import com.moonlit.generator.generator.entity.dto.SaveTableColumnDTO;
 import com.moonlit.generator.generator.entity.vo.DatabaseTablesVO;
-import com.moonlit.generator.generator.mapper.GenDatabaseMapper;
 import com.moonlit.generator.generator.mapper.GenTableMapper;
+import com.moonlit.generator.generator.service.GenDatabaseService;
 import com.moonlit.generator.generator.service.GenSystemConfigService;
 import com.moonlit.generator.generator.service.GenTableColumnService;
 import com.moonlit.generator.generator.service.GenTableService;
@@ -47,7 +47,7 @@ import java.util.List;
 public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> implements GenTableService {
 
     @Autowired
-    private GenDatabaseMapper databaseMapper;
+    private GenDatabaseService databaseService;
 
     @Autowired
     private GenSystemConfigService systemConfigService;
@@ -141,9 +141,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
     @Override
     public List<DatabaseTablesVO> list(Long databaseId) {
         // 檢查庫是否存在
-        LambdaQueryWrapper<GenDatabase> queryWrapper = Wrappers.lambdaQuery();
-        queryWrapper.eq(GenDatabase::getId, databaseId);
-        GenDatabase genDatabase = databaseMapper.selectOne(queryWrapper);
+        GenDatabase genDatabase = databaseService.getById(databaseId);
         if (ObjectUtil.isEmpty(genDatabase)) {
             throw new BusinessException(DatabaseErrorCode.DATABASE_NOT_EXIST);
         }
@@ -152,7 +150,7 @@ public class GenTableServiceImpl extends ServiceImpl<GenTableMapper, GenTable> i
         String rsaKey = systemConfigService.getRsaKey();
         // 獲取庫内所有的表
         ArrayList<DatabaseTablesVO> list = MySqlUtils.getTablesDetails(genDatabase, rsaKey);
-        List<String> tableNames = this.baseMapper.selectTableNames(databaseId);
+        List<String> tableNames = baseMapper.selectTableNames(databaseId);
         // 移除已存在的表
         if (tableNames.size() > 0) {
             list.removeIf(databaseTablesVO -> tableNames.contains(databaseTablesVO.getTableName()));
