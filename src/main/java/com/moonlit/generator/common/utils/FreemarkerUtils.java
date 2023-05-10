@@ -9,7 +9,6 @@ import com.moonlit.generator.generator.entity.GenTableColumn;
 import com.moonlit.generator.generator.entity.GenTemplateConfig;
 import com.moonlit.generator.generator.entity.bo.FreemarkerConditionBO;
 import com.moonlit.generator.generator.entity.bo.TableConfigAndDataAndColumnsBO;
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
@@ -73,7 +72,7 @@ public class FreemarkerUtils {
         // 加載模板路徑
         configuration.setDirectoryForTemplateLoading(new File(FilesUtils.getPath()));
         // 設置字符集
-        configuration.setDefaultEncoding(OutputFormat.Defaults.Encoding);
+        configuration.setDefaultEncoding("UTF-8");
         // 加載模板
         return configuration.getTemplate(templateName + SUFFIX);
     }

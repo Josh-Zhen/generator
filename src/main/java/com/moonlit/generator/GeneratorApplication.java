@@ -16,7 +16,7 @@ public class GeneratorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GeneratorApplication.class, args);
-        log.info("月光生成器——启动成功！");
+        log.info("启动成功！");
     }
 
 }
