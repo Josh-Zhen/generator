@@ -1,5 +1,6 @@
 package com.moonlit.generator.generator.entity.bo;
 
+import cn.hutool.core.util.RandomUtil;
 import com.moonlit.generator.common.utils.NamingStrategyUtils;
 import com.moonlit.generator.generator.entity.GenTableColumn;
 import lombok.Data;
@@ -45,6 +46,11 @@ public class FreemarkerConditionBO {
      * 描述
      */
     private String comment;
+
+    /**
+     * 版本Uid
+     */
+    private String serialVersionUid;
 
     /**
      * 業務名
@@ -97,6 +103,7 @@ public class FreemarkerConditionBO {
         this.moduleName = dataBo.getModuleName();
         this.datetime = dataBo.getDatetime();
         this.comment = dataBo.getFunctionName();
+        this.serialVersionUid = RandomUtil.randomNumbers(17);
         this.businessName = dataBo.getBusinessName();
         this.className = NamingStrategyUtils.firstToUpperCase(dataBo.getObjectName());
         this.objectName = dataBo.getObjectName();
